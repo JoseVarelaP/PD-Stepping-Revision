@@ -20,6 +20,9 @@ t[#t+1] = LoadActor( THEME:GetPathG("","Light_BottomMenuBar") )..{
 
 t[#t+1] = Def.ActorFrame{
 	OnCommand=cmd(x,SCREEN_RIGHT-60;y,SCREEN_CENTER_Y-90;diffusealpha,0;zoom,0.8;sleep,0.3;decelerate,0.2;zoom,1;diffusealpha,1);
+	OffCommand=cmd(playcommand,"GoAway");
+	CancelMessageCommand=cmd(playcommand,"GoAway");
+	GoAwayCommand=cmd(accelerate,0.2;addx,100;diffusealpha,0);
 	
 	LoadActor( THEME:GetPathG("","SelectMusic/BannerFrame") )..{
 		OnCommand=cmd(horizalign,right;zoom,1.5;SetTextureFiltering,false);
@@ -104,7 +107,7 @@ t[#t+1] = Def.ActorFrame{
 
 		CursorP1=LoadActor(THEME:GetPathG('SelectMusic/DifficultyList', 'cursor p1'))..{
 			Name='CursorP1';
-			InitCommand=cmd(x,-140;y,-1;player,PLAYER_1;zoom,1.5);
+			InitCommand=cmd(player,PLAYER_1;zoom,0);
 			ChangeCommand=cmd(stoptweening;bounceend,0.15);
 		};
 		CursorP1Frame=Def.ActorFrame{
@@ -113,7 +116,7 @@ t[#t+1] = Def.ActorFrame{
 		};
 		CursorP2=LoadActor(THEME:GetPathG('SelectMusic/DifficultyList', 'cursor p2'))..{
 			Name='CursorP2';
-			InitCommand=cmd(x,-140;y,-1;player,PLAYER_2;zoom,1.5);
+			InitCommand=cmd(player,PLAYER_2;zoom,0);
 			ChangeCommand=cmd(stoptweening;bounceend,0.15);
 		};
 		CursorP2Frame=Def.ActorFrame {
@@ -147,11 +150,22 @@ t[#t+1] = Def.ActorFrame{
 
 local Spacing = 120
 
-for i=1,2 do
-	t[#t+1] = LoadActor( THEME:GetPathG("","SelectMusic/ScrollArrow") )..{
-		InitCommand=cmd(x,SCREEN_LEFT+5;horizalign,left;zoom,2;y,(i == 1 and SCREEN_CENTER_Y-Spacing) or SCREEN_CENTER_Y+Spacing );
-		OnCommand=cmd(zoomy,(i == 1 and 2) or -2);
-	};
-end
+t[#t+1] = LoadActor( THEME:GetPathG("","SelectMusic/ScrollArrow") )..{
+	InitCommand=cmd(x,SCREEN_LEFT+5;horizalign,left;zoom,2;y,SCREEN_CENTER_Y+Spacing);
+	OnCommand=cmd(zoomy,-2);
+	NextSongMessageCommand=cmd(stoptweening;y,SCREEN_CENTER_Y+Spacing+10;decelerate,0.2;y,SCREEN_CENTER_Y+Spacing);
+	OffCommand=cmd(playcommand,"GoAway");
+	CancelMessageCommand=cmd(playcommand,"GoAway");
+	GoAwayCommand=cmd(accelerate,0.2;addx,-100;diffusealpha,0);
+};
+
+t[#t+1] = LoadActor( THEME:GetPathG("","SelectMusic/ScrollArrow") )..{
+	InitCommand=cmd(x,SCREEN_LEFT+5;horizalign,left;zoom,2;y,SCREEN_CENTER_Y-Spacing);
+	OnCommand=cmd(zoomy,2);
+	PreviousSongMessageCommand=cmd(stoptweening;y,SCREEN_CENTER_Y-Spacing-10;decelerate,0.2;y,SCREEN_CENTER_Y-Spacing);
+	OffCommand=cmd(playcommand,"GoAway");
+	CancelMessageCommand=cmd(playcommand,"GoAway");
+	GoAwayCommand=cmd(accelerate,0.2;addx,-100;diffusealpha,0);
+};
 
 return t;

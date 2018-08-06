@@ -35,7 +35,7 @@ local t = Def.ActorFrame{}
 local CharacterToLoad = CHARMAN:GetRandomCharacter();
 
 t[#t+1] = Def.ActorFrame{
-	OnCommand=cmd(fov,90;);
+	OnCommand=cmd(fov,90);
 	Def.Model {
 		Meshes=CharacterToLoad:GetModelPath(),
 		Materials=CharacterToLoad:GetModelPath(),

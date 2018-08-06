@@ -2,9 +2,73 @@ local t = Def.ActorFrame{
 	OnCommand=cmd(fov,90);
 }
 
-t[#t+1] = Def.Quad{
-	OnCommand=cmd(FullScreen;diffuse,color("0,0.7,0.6,0.1"));
-}
+-- Load the character BEFORE doing anything.
+-- This is because calling the command directly 
+-- before loading it first will make a mesh of 
+-- loading everything with other characters.
+local CharacterToLoad = CHARMAN:GetRandomCharacter();
+local Sec_CharacterToLoad = CHARMAN:GetRandomCharacter();
+local Thr_CharacterToLoad = CHARMAN:GetRandomCharacter();
+local Fou_CharacterToLoad = CHARMAN:GetRandomCharacter();
+local Fif_CharacterToLoad = CHARMAN:GetRandomCharacter();
+
+
+local function GenerateModel(CharacterToGrab, MaxToGet, zpos, xpos, cullmode, rate)
+	local t = Def.Model {
+			Condition=ThemePrefs.Get("AllowMultipleModels") and ThemePrefs.Get("ModelsInRoom") > MaxToGet;
+			Meshes=CharacterToGrab:GetModelPath(),
+			Materials=CharacterToGrab:GetModelPath(),
+			Bones=CharacterToGrab:GetWarmUpAnimationPath(),
+			OnCommand=function(self)
+				self:rate(rate):cullmode(cullmode):z(zpos):x(xpos)
+			end,
+		};
+
+	return t;
+end
+
+local FuturaToLoad = ( 
+		ThemePrefs.Get("CurrentStageLighting") == "Auto" and 
+			((Hour() < 6 or Hour() > 19) and "Night" or "Day")
+		) or ThemePrefs.Get("CurrentStageLighting")
+
+t[#t+1] = Def.ActorFrame{
+	InitCommand=cmd(Center;rotationy,180;spin;z,WideScale(300,400);addy,10;effectmagnitude,0,10,0);
+	OnCommand=cmd(addy,20;addx,100;addz,-40;decelerate,3;addx,-100;addz,40;addy,-20);
+
+		Def.ActorFrame{
+		OnCommand=cmd(wag;effectmagnitude,0,0,2;effectperiod,5);
+
+
+		Def.Model {
+			-- In case the Locations are killing perfomance, then
+			-- disable it completely when going to None.
+			Condition=ThemePrefs.Get("CurrentStageLocation") ~= "None";
+			Meshes=ThemePrefs.Get("CurrentStageLocation").."/model.txt";
+			Materials=ThemePrefs.Get("CurrentStageLocation").."/"..FuturaToLoad.."_material.txt";
+			Bones=ThemePrefs.Get("CurrentStageLocation").."/model.txt";
+			OnCommand=function(self)
+				self:cullmode("CullMode_Back")
+			end,
+		};
+
+		GenerateModel(Sec_CharacterToLoad, 1, 26, 51, "CullMode_None", 0.7);
+		GenerateModel(Thr_CharacterToLoad, 2, -25, -81, "CullMode_None", 0.7);
+		GenerateModel(Fou_CharacterToLoad, 3, -28, 90, "CullMode_None", 0.7);
+		GenerateModel(Fif_CharacterToLoad, 4, 25, -15, "CullMode_None", 0.7);
+		
+		Def.Model {
+			Condition=ThemePrefs.Get("ShowCharactersOnHome");
+			Meshes=CharacterToLoad:GetModelPath(),
+			Materials=CharacterToLoad:GetModelPath(),
+			Bones=CharacterToLoad:GetDanceAnimationPath(),
+			OnCommand=function(self)
+				self:rate(0.7):cullmode("CullMode_None")
+			end,
+		};
+	};
+
+};
 
 t[#t+1] = LoadActor( THEME:GetPathG("","BGElements/CircleInner") )..{
 	OnCommand=cmd(x,SCREEN_RIGHT;diffusealpha,0.3;spin;effectmagnitude,0,0,24;zoom,1.2);
@@ -48,28 +112,4 @@ t[#t+1] = LoadActor( THEME:GetPathG("","BGElements/CircleOuter") )..{
 t[#t+1] = LoadActor( THEME:GetPathG("","BGMenuTile") )..{
 	OnCommand=cmd(x,SCREEN_RIGHT-50;zoomx,0.5;zoomy,1.5;horizalign,right;CenterY;diffusealpha,0.5;texcoordvelocity,0,0.25;customtexturerect,0,0,1,2);
 };
-
--- Load the character BEFORE doing anything.
--- This is because calling the command will make a mesh of 
--- loading everything with other characters.
-local CharacterToLoad = CHARMAN:GetRandomCharacter();
-
-t[#t+1] = Def.Model {
-	Meshes=CharacterToLoad:GetModelPath(),
-	Materials=CharacterToLoad:GetModelPath(),
-	-- For this, we'll change the location to a bone being used,
-	-- by using a function to call it.
-	-- Let's setup the Rest animation for now.
-	Bones=CharacterToLoad:GetDanceAnimationPath(),
-	OnCommand=function(self)
-		-- Set their y rotation to our view.
-		-- And also apply a z that will get the model closer to the camera.
-		-- Now that we've setup the rest animation, we'll need to also setup the Y position
-		-- back to a lower one.
-		self:Center():rotationy(200):z(405):addy(12)
-		-- lets pause the animation
-		:rate(0.05):cullmode("CullMode_None")
-	end,
-};
-
 return t;

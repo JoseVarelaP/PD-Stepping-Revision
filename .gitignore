@@ -1,0 +1,5 @@
+*.DS_Store
+Scripts/*.DS_Store
+Sounds/*.DS_Store
+Languages/*.DS_Store
+BGAnimations/*.DS_Store

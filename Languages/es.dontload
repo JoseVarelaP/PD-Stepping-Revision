@@ -1,0 +1,47 @@
+[Common]
+WindowTitle=Hatsune Miku: Project Diva (Stepping Revision Project)
+StepMania=Project Diva (Stepping Revision Project)
+
+[TitleExplanations]
+Game Start=¡Comienza una nueva partida!
+Options=Ajusta varias preferencias o ajustes del juego.
+Edit/Share=
+Jukebox=
+Select Game=
+Exit=
+
+[OptionTitles]
+FastLoad=Carga Rápida
+FastLoadAdditionalSongs=CargaR. Adicionales
+SRCredits=Créditos de PD: Stepping Revision
+AllowMultipleModels=Allow Multiple Models
+CurrentStageLighting=Current Stage Lighting
+CurrentStageLocation=Current Location
+ModelsInRoom=Models In Room
+
+[OptionExplanations]
+SRCredits=Check out who made Project Diva: Stepping Revision possible!
+AllowMultipleModels=(CAN CAUSE PERFORMANCE ISSUES)\n\nThis enables the background to load more than one model at a time. Positioning depends on the stage selected.
+CurrentStageLighting=Change the setting if the current stage will automaticly cycle during the time of day or manually set it to your liking.
+CurrentStageLocation=Select a stage that will be set as the theme's background.\n\n(Locations with (+P) indicate that they might cause perfomance issues.)
+ModelsInRoom=Adjust the ammount of models that will appear on the room. You can set a maximum of 5.
+
+[OptionNames]
+Day=Día
+Night=Noche
+
+[ScreenSelectMusic]
+# Button Guide
+Tip_ButtonHelp=Si necesitas ayuda, puedes mantener presionado &SELECT; para una pequeña guia.
+ButtonHelp=&LEFT; y &RIGHT; Cambian la dificultad.\n&UP; y &DOWN; Cambian la canción.\n\nPresiona &START; para seleccionar una canción. Esto te traerá a un resumen de la canción que jugarás. Presiona &START; otra vez para confirmar. O presiona &UP; o &DOWN; para cambiar a otra canción y cancelar la selección.
+
+# Player join message
+PlayerJoinP_1=A new player
+PlayerJoinP_2=has joined the session.
+
+# Instructions
+Inst_Decided=Presiona &START; para confirmar.\nPresiona &UP; o &DOWN; para cancelar.
+Inst_DiffSel=Presiona &START; dos veces para confirmar, &LEFT; o &RIGHT; para cambiar la difficultad.\nPresiona &UP; o &DOWN; para cancelar.
+
+ContAttacks=Contiene Ataques de Canción
+ContBGAnims=Contiene Animaciones de Fondo/Vídeo

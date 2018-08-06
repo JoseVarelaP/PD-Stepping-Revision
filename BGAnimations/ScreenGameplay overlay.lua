@@ -47,4 +47,8 @@ for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 	end
 end
 
+t[#t+1] = Def.Quad{
+	OnCommand=cmd(FullScreen;diffuse,Color.Black;linear,1;diffusealpha,0);
+}
+
 return t;

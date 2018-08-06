@@ -5,21 +5,21 @@ t[#t+1] = LoadActor( THEME:GetPathG("","Light_BottomMenuBar") )..{
 };
 
 t[#t+1] = LoadActor( THEME:GetPathG("","ThemeLogo") )..{
-	InitCommand=cmd(x,SCREEN_RIGHT-100;horizalign,right;y,100;zoom,0.4;diffusealpha,0);
+	InitCommand=cmd(shadowlengthy,2;x,SCREEN_RIGHT-100;horizalign,right;y,100;zoom,0.4;diffusealpha,0);
 	OnCommand=cmd(sleep,.3;decelerate,0.2;diffusealpha,1);
 	OffCommand=cmd(accelerate,0.2;diffusealpha,0);
 };
 
 t[#t+1] = LoadFont("Common Normal")..{
-	Text="Stepping Revision Project\nVersion 0.2.3",
-	InitCommand=cmd(x,SCREEN_RIGHT-100;horizalign,right;y,60;zoom,0.5;diffusealpha,0);
+	Text="Stepping Revision Project\nVersion ".. PDSRPInfo["Version"],
+	InitCommand=cmd(shadowlengthy,2;x,SCREEN_RIGHT-100;horizalign,right;y,60;zoom,0.5;diffusealpha,0);
 	OnCommand=cmd(sleep,.3;decelerate,0.2;diffusealpha,1);
 	OffCommand=cmd(accelerate,0.2;diffusealpha,0);
 };
 
 t[#t+1] = LoadFont("Common Normal")..{
-	Text="Project by Jose_Varela - 2018\nOriginal Work (C) SEGA / (C) Crypton Future Media, Inc.",
-	InitCommand=cmd(x,SCREEN_RIGHT-100;horizalign,right;y,SCREEN_BOTTOM-70;zoom,0.4;diffusealpha,0);
+	Text="Project by "..PDSRPInfo["Author"].." - 2018\nOriginal Work (C) ".. PDSRPInfo["OriginalWork"][1] .." / (C) ".. PDSRPInfo["OriginalWork"][2];
+	InitCommand=cmd(shadowlengthy,1;x,SCREEN_RIGHT-100;horizalign,right;y,SCREEN_BOTTOM-70;zoom,0.4;diffusealpha,0);
 	OnCommand=cmd(sleep,.3;decelerate,0.2;diffusealpha,0.5);
 	OffCommand=cmd(accelerate,0.2;diffusealpha,0);
 };
