@@ -10,17 +10,18 @@
 	in StepMania are flipped, and set the Z position depending on Aspect Ratio because
 	the z field changes on the current Aspect Ratio, so correct that.
 ]]
-local t = Def.ActorFrame{
-	OnCommand=cmd(Center;fov,90;rotationy,180;z,WideScale(300,400);addy,10;);
-}
 
---[[
-	Load the character BEFORE doing anything.
-	This is because calling the command directly 
-	before loading it first will make a mesh of 
-	loading everything with other characters.
-]]
-local CharacterToLoad = GAMESTATE:GetCharacter(PLAYER_1);
+local function HasAnyCharacters(pn)
+	return GAMESTATE:IsPlayerEnabled(pn) and GAMESTATE:GetCharacter(pn):GetDisplayName() ~= "default"
+end
+local t = Def.ActorFrame{
+	OnCommand=cmd(Center;fov,90;rotationy,180;z,WideScale(300,400);addy,10);
+};
+
+t[#t+1] = Def.Quad{
+	Condition=ThemePrefs.Get("DedicatedCharacterShow") and (ThemePrefs.Get("CurrentStageLocation") ~= "None" and (HasAnyCharacters(PLAYER_1) or HasAnyCharacters(PLAYER_2)));
+	OnCommand=cmd(zoomto,1000,1000;diffuse,Color.Black);
+};
 
 -- This is to load the stage's time of day.
 -- It goes along the Current Stage Lighting setting found on the
@@ -55,7 +56,7 @@ local DebugMode = true
 -- In case you want frame-by-frame info on specific stuff.
 local MassiveLog = false
 local function CameraRandom()
-	return math.random(1,3)
+	return math.random(1,5)
 end
 
 -- Messages to trace when Debug Mode is on.
@@ -115,7 +116,7 @@ t[#t+1] = Def.Quad{
 	if now<start then
 		self:queuecommand("WaitForStart")
 	else
-		self:queuemessage("Camera"..CameraRandom())
+		self:queuemessage("Camera1")
 		self:sleep(Frm)
 		self:queuecommand("TrackTime")
 	end
@@ -142,7 +143,7 @@ t[#t+1] = Def.Quad{
 
 -- Stage Enviroment
 t[#t+1] = Def.ActorFrame{
-	Condition=ThemePrefs.Get("DedicatedCharacterShow");
+	Condition=ThemePrefs.Get("DedicatedCharacterShow") and (HasAnyCharacters(PLAYER_1) or HasAnyCharacters(PLAYER_2));
 	InitCommand=cmd(queuecommand,"BeginCamera");
 	BeginCameraCommand=cmd();
 
@@ -164,52 +165,58 @@ local function BothPlayersEnabled()
 	return GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsPlayerEnabled(PLAYER_2)
 end
 
-for player in ivalues(PlayerNumber) do
-	-- Load the Character
-	t[#t+1] = Def.Model {
-			Condition=GAMESTATE:IsPlayerEnabled(player) and GAMESTATE:GetCharacter(player):GetDisplayName() ~= "default",
-			Meshes=GAMESTATE:GetCharacter(player):GetModelPath(),
-			Materials=GAMESTATE:GetCharacter(player):GetModelPath(),
-			Bones=GAMESTATE:GetCharacter(player):GetDanceAnimationPath(),
-			InitCommand=function(self)
-				self:cullmode("CullMode_None")
-				DebugMessages.ModelLoad()
-			-- position time
-			if BothPlayersEnabled() then
-				-- reminder that x position is inverted because we inverted the Y axis
-				-- to make the character face towards the screen.
-				self:x( (player == PLAYER_1 and 8) or -8 )
-			end
-
-			SCREENMAN:SystemMessage( GAMESTATE:GetCharacter(PLAYER_1):GetDisplayName() )
-
-			ModelBeat = GAMESTATE:GetSongBeat();
-			if ThemePrefs.Get("DediModelBPM") then
+if HasAnyCharacters(PLAYER_1) or HasAnyCharacters(PLAYER_2) then
+	for player in ivalues(PlayerNumber) do
+		-- Load the Character
+		t[#t+1] = Def.Model {
+				Condition=GAMESTATE:IsPlayerEnabled(player) and GAMESTATE:GetCharacter(player):GetDisplayName() ~= "default",
+				Meshes=GAMESTATE:GetCharacter(player):GetModelPath(),
+				Materials=GAMESTATE:GetCharacter(player):GetModelPath(),
+				Bones=GAMESTATE:GetCharacter(player):GetDanceAnimationPath(),
+				InitCommand=function(self)
+					self:cullmode("CullMode_None")
+					DebugMessages.ModelLoad()
+				-- position time
+				if BothPlayersEnabled() then
+					-- reminder that x position is inverted because we inverted the Y axis
+					-- to make the character face towards the screen.
+					self:x( (player == PLAYER_1 and 8) or -8 )
+				end
+	
+				ModelBeat = GAMESTATE:GetSongBeat();
 				self:queuecommand("UpdateRate")
-			end
-			end,
-
-			-- Update Model animation speed depending on song's BPM.
-			-- To match SM's way of animation speeds.
-			UpdateRateCommand=function(self)
-			if now<=ModelBeat then
-				self:rate(0)
-				if DebugMode and MassiveLog then
-					Trace("Animation Paused!!!")
+				end,
+	
+				-- Update Model animation speed depending on song's BPM.
+				-- To match SM's way of animation speeds.
+				UpdateRateCommand=function(self)
+				if ThemePrefs.Get("DediModelBPM") then
+					if now<=ModelBeat then
+						self:rate(0)
+						if DebugMode and MassiveLog then
+							Trace("Animation Paused!!!")
+						end
+					else
+						self:rate(0.5*GAMESTATE:GetSongBPS())
+						if DebugMode and MassiveLog then
+							Trace("New Model Rate: ".. 0.5*GAMESTATE:GetSongBPS() .." - Current BPS: ".. GAMESTATE:GetSongBPS())
+							Trace( now.. " - ".. ModelBeat )
+							Trace( self:GetDefaultAnimation() )
+						end
+					end
+				else
+					self:rate(0.5*GAMESTATE:GetSongBPS())
+					if DebugMode and MassiveLog then
+						Trace("New Model Rate: ".. 0.5*GAMESTATE:GetSongBPS() .." - Current BPS: ".. GAMESTATE:GetSongBPS())
+						Trace( self:GetDefaultAnimation() )
+					end
 				end
-			else
-				self:rate(0.5*GAMESTATE:GetSongBPS())
-				if DebugMode and MassiveLog then
-					Trace("New Model Rate: ".. 0.5*GAMESTATE:GetSongBPS() .." - Current BPS: ".. GAMESTATE:GetSongBPS())
-					Trace( now.. " - ".. ModelBeat )
-					Trace( self:GetDefaultAnimation() )
-				end
-			end
-			ModelBeat = GAMESTATE:GetSongBeat();
-			self:sleep(Frm)
-			self:queuecommand("UpdateRate")
-			end,
-		};
+				ModelBeat = GAMESTATE:GetSongBeat();
+				self:sleep(Frm)
+				self:queuecommand("UpdateRate")
+				end,
+			};
+	end
 end
 
 -- Some song info before we start
@@ -261,25 +268,40 @@ t[#t+1] = Def.ActorFrame{
 };
 
 -- some utilities
-local function ResetRotation(self)
+local function ResetCamera(self)
 	self:rotationy(180):rotationx(0):rotationz(0)
+	:z(WideScale(300,400))
+	:stopeffect()
 end
 
 -- The cameras
+-- You can add more by adding another camera MessageCommand.
+-- Feel free to also PR additions!
 t.InitialTweenMessageCommand=function(self)
 	self:addz(-40):decelerate(3):addz(40)
 end
 t.Camera1MessageCommand=function(self)
-	ResetRotation(self)
-	self:rotationy(45):rotationx(20):rotationz(-30)
+	ResetCamera(self)
+	self:rotationx(30):spin()
+	:z(WideScale(200,300))
+	:effectmagnitude(0,10,0)
 end
 t.Camera2MessageCommand=function(self)
-	ResetRotation(self)
-	self:rotationy(140):rotationz(10):rotationx(-10)
+	ResetCamera(self)
+	self:rotationy(45):rotationx(20):rotationz(-30)
 end
 t.Camera3MessageCommand=function(self)
-	ResetRotation(self)
+	ResetCamera(self)
+	self:rotationy(140):rotationz(10):rotationx(-10)
+end
+t.Camera4MessageCommand=function(self)
+	ResetCamera(self)
 	self:rotationy(210):rotationx(25)
+end
+t.Camera5MessageCommand=function(self)
+	ResetCamera(self)
+	self:rotationx(70)
+	:z(WideScale(190,290))
 end
 
 return t;

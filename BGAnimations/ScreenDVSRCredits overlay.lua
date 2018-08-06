@@ -63,11 +63,13 @@ t[#t+1] = Def.ActorScroller {
  	Blank();
  	GenerateHeader("Graphics");
  	GenerateNormal("Jose_Varela");
- 	GenerateNormal("Random Talking Bush");
+ 	GenerateNormal("Ploaj");
  	GenerateNormal("Akira Sora");	 	
  	Blank();
  	GenerateHeader("Modelling/Rigging");
- 	GenerateNormal("Jose_Varela");	
+ 	GenerateNormal("Jose_Varela");
+ 	GenerateNormal("nampukkk");
+ 	GenerateNormal("senseitag");
  	Blank();
  	GenerateHeader("Special Thanks");
  	GenerateNormal("UKSRT Discord");
