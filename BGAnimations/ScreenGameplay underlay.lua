@@ -167,7 +167,7 @@ end
 for player in ivalues(PlayerNumber) do
 	-- Load the Character
 	t[#t+1] = Def.Model {
-			Condition=GAMESTATE:IsPlayerEnabled(player),
+			Condition=GAMESTATE:IsPlayerEnabled(player) and GAMESTATE:GetCharacter(player):GetDisplayName() ~= "default",
 			Meshes=GAMESTATE:GetCharacter(player):GetModelPath(),
 			Materials=GAMESTATE:GetCharacter(player):GetModelPath(),
 			Bones=GAMESTATE:GetCharacter(player):GetDanceAnimationPath(),
@@ -180,6 +180,8 @@ for player in ivalues(PlayerNumber) do
 				-- to make the character face towards the screen.
 				self:x( (player == PLAYER_1 and 8) or -8 )
 			end
+
+			SCREENMAN:SystemMessage( GAMESTATE:GetCharacter(PLAYER_1):GetDisplayName() )
 
 			ModelBeat = GAMESTATE:GetSongBeat();
 			if ThemePrefs.Get("DediModelBPM") then
