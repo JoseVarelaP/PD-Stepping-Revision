@@ -185,6 +185,23 @@ t[#t+1] = Def.ActorFrame {
 			};
 		};
 
+		Def.ActorFrame{
+			OnCommand=cmd(zoom,1.5;y,-180;x,-300);
+			StartSelectingStepsMessageCommand=function(self)
+			self:visible(false)
+			if GAMESTATE:GetCurrentSong() and GAMESTATE:GetCurrentSong():HasAttacks() then
+				self:visible(true)
+			end
+			end,
+			LoadActor( THEME:GetPathG("","SelectMusic/ICON_ContainsLyrics") )..{
+				OnCommand=cmd(horizalign,right);
+			};
+			LoadFont("Common Normal")..{
+				Text=Screen.String("ContLyrics");
+				InitCommand=cmd(horizalign,left;x,10;zoom,0.5;shadowlengthy,2);
+			};
+		};
+
 		Def.StepsDisplayList{
 			Name="StepsDisplayListColored";
 			OnCommand=cmd(zoom,0.8;x,0;y,100);

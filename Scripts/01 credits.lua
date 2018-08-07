@@ -27,7 +27,7 @@ PDSRPInfo = {
 
 function GenerateHeader(texttomake)
 	local t = Def.ActorFrame{
-		LoadFont("Common Normal")..{
+		LoadFont("Common Bold")..{
  			Text=texttomake;
  			InitCommand=cmd(wrapwidthpixels,WideScale(400,500));
  			OnCommand=cmd(x,10;zoom,0.8;horizalign,left;strokecolor,color("0,0.5,0.8,1"));
