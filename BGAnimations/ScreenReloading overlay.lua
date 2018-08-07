@@ -19,7 +19,7 @@ t[#t+1] = Def.ActorFrame{
 	};
 
 	LoadFont("Common Normal")..{
-		Text="Now returning...",
+		Text=Screen.String("Message"),
 		InitCommand=cmd(zoom,0.5;wrapwidthpixels,500);
 	};
 

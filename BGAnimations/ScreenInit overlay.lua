@@ -44,7 +44,7 @@ t[#t+1] = Def.ActorFrame{
 	};
 
 	LoadFont("Common Normal")..{
-		Text="Please keep in mind:\n\nThis theme is not going for a specific PD style, but rather giving it its own spin on it.\nCheck README.md for more information.",
+		Text=Screen.String("Message"),
 		InitCommand=cmd(zoom,0.5;wrapwidthpixels,500);
 	};
 

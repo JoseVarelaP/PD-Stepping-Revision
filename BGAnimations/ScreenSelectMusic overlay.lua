@@ -95,17 +95,17 @@ t[#t+1] = Def.ActorFrame {
 			end;
 		};
 		
-		LoadFont("Common Normal")..{
+		LoadFont("Common Bold")..{
 			Text="I will update",
 			StartSelectingStepsMessageCommand=function(self) self:settext( GAMESTATE:GetCurrentSong():GetDisplayMainTitle() ) end,
-			InitCommand=cmd(shadowlengthy,3;zoom,1.2;wrapwidthpixels,500;horizalign,left;x,-260;vertspacing,8;vertalign,top;y,-80);
+			InitCommand=cmd(maxwidth,300;shadowlengthy,3;zoom,1.2;wrapwidthpixels,500;horizalign,left;x,-260;vertspacing,8;vertalign,top;y,-75);
 		};
-		LoadFont("Common Normal")..{
+		LoadFont("Common Bold")..{
 			Text="I will update",
 			StartSelectingStepsMessageCommand=function(self) self:settext( GAMESTATE:GetCurrentSong():GetDisplaySubTitle() ) end,
-			InitCommand=cmd(shadowlengthy,3;zoom,0.8;wrapwidthpixels,500;horizalign,left;x,-260;vertspacing,8;vertalign,top;y,-50);
+			InitCommand=cmd(maxwidth,300;shadowlengthy,3;zoom,0.8;wrapwidthpixels,500;horizalign,left;x,-260;vertspacing,8;vertalign,top;y,-50);
 		};
-		LoadFont("Common Normal")..{
+		LoadFont("Common Bold")..{
 			Text="I will update",
 			StartSelectingStepsMessageCommand=function(self) 
 			local song = GAMESTATE:GetCurrentSong()
@@ -120,7 +120,7 @@ t[#t+1] = Def.ActorFrame {
 		};
 
 		Def.BitmapText{
-			Font="Common Normal",
+			Font="Common Bold",
 			OnCommand=cmd(shadowlengthy,3;zoom,0.8;wrapwidthpixels,500;horizalign,right;x,260;vertspacing,8;vertalign,top;y,-70);
 			StartSelectingStepsMessageCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong()
@@ -139,7 +139,7 @@ t[#t+1] = Def.ActorFrame {
 			end;
 			},
 
-		LoadFont("Common Normal")..{
+		LoadFont("Common Bold")..{
 			Text="I will update",
 			StartSelectingStepsMessageCommand=function(self)
 				self:settext( GAMESTATE:GetCurrentSong():GetDisplayArtist() )
@@ -278,7 +278,7 @@ for player in ivalues(PlayerNumber) do
 				CurrentStepsP1ChangedMessageCommand=cmd(queuecommand,"Update");
 				UpdateCommand=function(self)
 				if GAMESTATE:IsPlayerEnabled(player) then
-					self:settext( PROFILEMAN:GetProfile(player):GetDisplayName().."'s Score")
+					self:settextf( THEME:GetString("ScreenSelectMusic","PlayerScore"), PROFILEMAN:GetProfile(player):GetDisplayName() )
 				end
 				end,
 			};
@@ -339,7 +339,7 @@ for player in ivalues(PlayerNumber) do
 			Condition=not GAMESTATE:IsPlayerEnabled(player);
 			InitCommand=cmd(zoom,0.8;wrapwidthpixels,600;);
 			PlayerJoinedMessageCommand=function(self)
-			self:settext( THEME:GetString("ScreenSelectMusic","PlayerJoinP_1").." ("..PROFILEMAN:GetProfile(player):GetDisplayName()..") "..THEME:GetString("ScreenSelectMusic","PlayerJoinP_2") )
+			self:settextf( THEME:GetString("ScreenSelectMusic","PlayerJoin"), PROFILEMAN:GetProfile(player):GetDisplayName() )
 			end,
 		};
 	};

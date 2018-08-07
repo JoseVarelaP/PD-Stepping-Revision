@@ -17,7 +17,7 @@ t[#t+1] = Def.ActorFrame{
 	};
 
 	LoadFont("Common Normal")..{
-		Text="Please wait while the settings are being saved...\n\nYou might experience a audio hiccup or two.\nYou'll be redirected to the Main Menu shortly.",
+		Text=Screen.String("Message"),
 		InitCommand=cmd(zoom,0.5;wrapwidthpixels,500);
 	};
 
