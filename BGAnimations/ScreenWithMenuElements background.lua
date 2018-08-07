@@ -44,9 +44,9 @@ t[#t+1] = Def.ActorFrame{
 			-- In case the Locations are killing perfomance, then
 			-- disable it completely when going to None.
 			Condition=ThemePrefs.Get("CurrentStageLocation") ~= "None";
-			Meshes=ThemePrefs.Get("CurrentStageLocation").."/model.txt";
-			Materials=ThemePrefs.Get("CurrentStageLocation").."/"..FuturaToLoad.."_material.txt";
-			Bones=ThemePrefs.Get("CurrentStageLocation").."/model.txt";
+			Meshes=Diva_GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
+			Materials=Diva_GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/"..FuturaToLoad.."_material.txt");
+			Bones=Diva_GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
 			OnCommand=function(self)
 				self:cullmode("CullMode_Back")
 			end,

@@ -151,9 +151,9 @@ t[#t+1] = Def.ActorFrame{
 		-- Load the Stage
 		Def.Model {
 			Condition=ThemePrefs.Get("CurrentStageLocation") ~= "None";
-			Meshes=ThemePrefs.Get("CurrentStageLocation").."/model.txt";
-			Materials=ThemePrefs.Get("CurrentStageLocation").."/"..FuturaToLoad.."_material.txt";
-			Bones=ThemePrefs.Get("CurrentStageLocation").."/model.txt";
+			Meshes=Diva_GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
+			Materials=Diva_GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/"..FuturaToLoad.."_material.txt");
+			Bones=Diva_GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
 			OnCommand=function(self)
 				self:cullmode("CullMode_Back")
 			end,
