@@ -6,6 +6,6 @@ return Def.ActorFrame {
 
 	Def.InputList {
 		Font="Common Normal",
-		InitCommand=cmd(x,SCREEN_CENTER_X-250;y,SCREEN_CENTER_Y;zoom,0.7;halign,0;);
+		InitCommand=cmd(x,SCREEN_CENTER_X-250;y,SCREEN_CENTER_Y;zoom,0.7;halign,0);
 	};
 };

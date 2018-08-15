@@ -9,15 +9,15 @@ t[#t+1] = Def.ActorFrame {
 	LoadActor( THEME:GetPathG("","WideInterpreter"), { File="Global/TextBox", Width=SCREEN_WIDTH/1.5, Height=50 } )..{
 	InitCommand=cmd(diffuse,1,0,0,0);
 	OnCommand=cmd(finishtweening;zoom,0;zoom,1;diffusealpha,1);
-	OffCommand=cmd(sleep,3;linear,0.5;diffusealpha,0;);
+	OffCommand=cmd(sleep,3;linear,0.5;diffusealpha,0);
 	};
 
 	Def.BitmapText{
 		Font="Common Normal";
 		Name="Text";
-		InitCommand=cmd(maxwidth,850;shadowlength,1;diffusealpha,0;);
+		InitCommand=cmd(maxwidth,850;shadowlength,1;diffusealpha,0);
 		OnCommand=cmd(finishtweening;zoom,0;zoom,0.5;diffusealpha,1);
-		OffCommand=cmd(sleep,3;linear,0.5;diffusealpha,0;);
+		OffCommand=cmd(sleep,3;linear,0.5;diffusealpha,0);
 	};
 	SystemMessageMessageCommand = function(self, params)
 		self:GetChild("Text"):settext( params.Message );

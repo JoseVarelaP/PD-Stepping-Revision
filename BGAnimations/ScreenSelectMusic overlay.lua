@@ -354,7 +354,7 @@ for player in ivalues(PlayerNumber) do
 
 		LoadFont("Common Normal")..{
 			Condition=not GAMESTATE:IsPlayerEnabled(player);
-			InitCommand=cmd(zoom,0.8;wrapwidthpixels,600;);
+			InitCommand=cmd(zoom,0.8;wrapwidthpixels,600);
 			PlayerJoinedMessageCommand=function(self)
 			self:settextf( THEME:GetString("ScreenSelectMusic","PlayerJoin"), PROFILEMAN:GetProfile(player):GetDisplayName() )
 			end,

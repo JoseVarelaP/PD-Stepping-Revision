@@ -1,25 +1,3 @@
--- To add a section to the credits, use the following:
--- local theme_credits= {
--- 	name= "Theme Credits", -- the name of your section
--- 	"Me", -- The people you want to list in your section.
--- 	"Myself",
--- 	"My other self",
---  {logo= "pro_dude", name= "Pro self"}, -- Someone who has a logo image.
---     -- This logo image would be "Graphics/CreditsLogo pro_dude.png".
--- }
--- StepManiaCredits.AddSection(theme_credits)
---
--- If you want to add your section after an existing section, use the following:
--- StepManiaCredits.AddSection(theme_credits, 7)
---
--- Or position can be the name of a section to insert after:
--- StepManiaCredits.AddSection(theme_credits, "Special Thanks")
---
--- Or if you want to add your section before a section:
--- StepManiaCredits.AddSection(theme_credits, "Special Thanks", true)
-
--- StepManiaCredits is defined in _fallback/Scripts/04 CreditsHelpers.lua.
-
 local line_on = cmd(y,-3;vertalign,top;wrapwidthpixels,WideScale(400,520);horizalign,left;zoom,WideScale(0.5,0.6);strokecolor,color("#444444");shadowcolor,color("#444444");shadowlength,1)
 local section_on = cmd(wrapwidthpixels,WideScale(400,520);horizalign,left;zoom,WideScale(0.6,0.8);diffuse,color("#88DDFF");strokecolor,color("#446688");shadowcolor,color("#446688");shadowlength,1)
 local subsection_on = cmd(wrapwidthpixels,WideScale(400,520);horizalign,left;zoom,WideScale(0.5,0.7);diffuse,color("#88DDFF");strokecolor,color("#446688");shadowcolor,color("#446688");shadowlength,1)

@@ -1,30 +1,4 @@
--- local ListOfSettingsToLookFor = {
--- 	ThemePrefs.Get("AllowMultipleModels"),
--- 	ThemePrefs.Get("ModelsInRoom"),
--- 	ThemePrefs.Get("CurrentStageLighting"),
--- 	ThemePrefs.Get("CurrentStageLocation"),
--- 	ThemePrefs.Get("DedicatedCharacterShow"),
--- 	ThemePrefs.Get("ShowCharactersOnHome"),
--- 	ThemePrefs.Get("MainCharacterOnHome"),
--- 	ThemePrefs.Get("DediModelBPM"),
--- 	ThemePrefs.Get("DediSongData"),
--- 	ThemePrefs.Get("DediMeasureCamera"),
--- }
-
--- for i=1,#ListOfSettingsToLookFor do
--- 	if not ThemePrefs.Get("AllowMultipleModels") then
--- 		Trace("Required setting not found, creating...")
--- 		SCREENMAN:SystemMessage("Required setting not found, creating...")
--- 		ThemePrefs.ForceSave()
--- 	end
--- end
-
-local t = Def.ActorFrame{
-    OnCommand=function(self)
-    	--THEME:RunLuaScripts()
-        --ThemePrefs.ForceSave()
-	end,
-};
+local t = Def.ActorFrame{};
 
 t[#t+1] = Def.Quad{ Name="BGQuad"};
 t[#t+1] = LoadActor( THEME:GetPathG("","Intro/Jose") )..{ Name="Jose" };
