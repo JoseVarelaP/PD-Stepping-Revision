@@ -1,6 +1,5 @@
 # Project Diva: Stepping Revision Project
-<center><img src="Docs/Github_icon.png"></center>
----------------------------------------
+<center><img src="Docs/Github_icon.png" style="width:200px"></center>
 
 ## Purpose
 The entire purpose of this little project is to make a Theme for StepMania that goes around the style of the Project Diva games, while giving it its own spin on it. It is mostly a 1st and Append mix of styles right now. Later on I plan on adding more.
