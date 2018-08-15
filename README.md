@@ -1,4 +1,5 @@
 # Project Diva: Stepping Revision Project
+<center><img src="Docs/Github_icon.png"></center>
 ---------------------------------------
 
 ## Purpose
