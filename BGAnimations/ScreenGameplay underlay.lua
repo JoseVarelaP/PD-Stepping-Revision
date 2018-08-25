@@ -155,7 +155,7 @@ t[#t+1] = Def.ActorFrame{
 			Materials=Diva_GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/"..FuturaToLoad.."_material.txt");
 			Bones=Diva_GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
 			OnCommand=function(self)
-				self:cullmode("CullMode_Back")
+				self:cullmode("CullMode_None")
 			end,
 		};
 
@@ -283,8 +283,10 @@ end
 t.Camera1MessageCommand=function(self)
 	ResetCamera(self)
 	self:rotationx(30):spin()
-	:z(WideScale(200,300))
 	:effectmagnitude(0,10,0)
+	if ThemePrefs.Get("CurrentStageLocation") ~= "Japonica" then
+		self:z(WideScale(200,300))
+	end
 end
 t.Camera2MessageCommand=function(self)
 	ResetCamera(self)

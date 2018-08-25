@@ -51,7 +51,7 @@ t[#t+1] = Def.ActorFrame{
 			Materials=Diva_GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/"..FuturaToLoad.."_material.txt");
 			Bones=Diva_GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
 			OnCommand=function(self)
-				self:cullmode("CullMode_Back")
+				self:cullmode("CullMode_None")
 			end,
 		};
 
