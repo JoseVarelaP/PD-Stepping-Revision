@@ -29,12 +29,16 @@ DSet = {
 		local Result = ''
 
 		Result = Result .. "GameStart,"
+		Result = Result .. "QuickPlay,"
 		Result = Result .. "Options,"
 		Result = Result .. "Edit,"
 		Result = Result .. "Jukebox,"
 		Result = Result .. "Exit,"
 
 		return Result
+		end,
+		ChoiceQuickPlay = function()
+		return "applydefaultoptions;screen,ScreenSelectMusic;style,single;text,QuickPlay"
 		end,
 	},
 	ScreenOptionsService = {
@@ -91,6 +95,12 @@ DSet = {
 			end
 
 			Result = Result .. "ShowCharactersOnHome,"
+
+			Result = Result .. "EnableRandomSongPlay,"
+
+			if ThemePrefs.Get("EnableRandomSongPlay") then
+				Result = Result .. "FolderToPlayRandomMusic,"				
+			end
 
 			-- dunno how the fuck i can make this work.
 			-- if someone knows, I would be great to know.

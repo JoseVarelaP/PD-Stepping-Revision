@@ -61,7 +61,7 @@ t[#t+1] = Def.ActorFrame{
 			Condition=ThemePrefs.Get("ShowCharactersOnHome");
 			Meshes=CharacterToLoad:GetModelPath(),
 			Materials=CharacterToLoad:GetModelPath(),
-			Bones=CharacterToLoad:GetDanceAnimationPath(),
+			Bones=CharacterToLoad:GetWarmUpAnimationPath(),
 			OnCommand=function(self)
 				self:rate(0.7):cullmode("CullMode_None")
 			end,

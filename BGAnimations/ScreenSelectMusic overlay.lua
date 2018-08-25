@@ -1,6 +1,10 @@
 -- hi im jose and welcome to jackass
 
-local t = Def.ActorFrame{}
+local t = Def.ActorFrame{
+	OnCommand=function(self)
+	Diva_ResetRandomSong()
+	end,
+}
 
 local function HasSubtitles()
 	return string.len( GAMESTATE:GetCurrentSong():GetDisplaySubTitle() ) > 1
@@ -316,6 +320,40 @@ for player in ivalues(PlayerNumber) do
 				self:settext( PercentScore(player) )
 				end,
 			};
+	};
+end
+
+local function BothPlayersEnabled()
+	return GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsPlayerEnabled(PLAYER_2)
+end
+
+for player in ivalues(PlayerNumber) do
+	-- Load the Character
+	t[#t+1] = Def.ActorFrame{
+		OnCommand=cmd(fov,90;z,300;Center;SetDrawByZPosition,true;diffusealpha,0;zoom,0);
+		NextSongMessageCommand=cmd(playcommand,"Close");
+		PreviousSongMessageCommand=cmd(playcommand,"Close");
+		StartSelectingStepsMessageCommand=cmd(stoptweening;decelerate,0.2;zoom,1;diffusealpha,1);
+		StepsChosenMessageCommand=cmd(playcommand,"Close");
+		PlayerJoinedMessageCommand=cmd(playcommand,"Close");
+		CancelMessageCommand=cmd(playcommand,"Close");
+		CloseCommand=cmd(stoptweening;decelerate,0.3;zoom,0.6;diffusealpha,0);
+
+			Def.Model {
+			Condition=GAMESTATE:IsPlayerEnabled(player) and GAMESTATE:GetCharacter(player):GetDisplayName() ~= "default",
+			Meshes=GAMESTATE:GetCharacter(player):GetModelPath(),
+			Materials=GAMESTATE:GetCharacter(player):GetModelPath(),
+			Bones=GAMESTATE:GetCharacter(player):GetRestAnimationPath(),
+			InitCommand=function(self)
+				self:cullmode("CullMode_None")
+				:rotationy(170):y(7):zoom(0.35)
+			-- position time
+			self:x( (player == PLAYER_1 and -12) or 12 )
+			if BothPlayersEnabled() then
+				self:rotationy( (player == PLAYER_1 and 90) or -90 )
+			end
+			end,
+		};
 	};
 end
 

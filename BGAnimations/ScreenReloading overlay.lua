@@ -4,6 +4,7 @@ local t = Def.ActorFrame{
 	end,
 	OnCommand=cmd(sleep,2;queuecommand,"SaveAndReload");
 	SaveAndReloadCommand=function(self)
+	Diva_ResetRandomSong()
 	SCREENMAN:SetNewScreen("ScreenTitleMenu")
 	end,
 }

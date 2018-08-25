@@ -25,7 +25,6 @@ return Def.ActorFrame{
     },
 
     -- Bottom
-    -- Top
     LoadActor(THEME:GetPathG('',''..File))..{ InitCommand=cmd(y,Height/2+14;vertalign,bottom;setstate,6;pause;horizalign,right;x,-Width/2);
     },
     LoadActor(THEME:GetPathG('',''..File))..{ InitCommand=cmd(y,Height/2+14;vertalign,bottom;setstate,7;pause;zoomtowidth,Width);

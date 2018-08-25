@@ -141,6 +141,21 @@ local Prefs =
 		Choices = range(4),
 		Values = range(4),
 	},
+
+	-- Some other stuff
+	EnableRandomSongPlay =
+	{
+		Default = false,
+		Choices = { OptionNameString("Off"), OptionNameString("On") },
+		Values = { false,true },
+	},
+
+	FolderToPlayRandomMusic =
+	{
+		Default = MusicFolder_AddChoices(1),
+		Choices = MusicFolder_AddChoices(),
+		Values = MusicFolder_AddChoices(),
+	},
 }
 
 ThemePrefs.InitAll(Prefs)
