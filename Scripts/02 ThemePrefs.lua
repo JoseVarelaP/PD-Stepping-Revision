@@ -117,8 +117,8 @@ local Prefs =
 	CurrentStageLocation =
 	{
 		Default = "None",
-		Choices = { "None", "Rooftop" },
-		Values = { "None", "Rooftop" },
+		Choices = { "None", "Rooftop", "Japonica (+P)" },
+		Values = { "None", "Rooftop", "Japonica" },
 	},
 
 	DedicatedCharacterShow =

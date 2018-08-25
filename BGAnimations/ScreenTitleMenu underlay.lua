@@ -1,6 +1,8 @@
 local t = Def.ActorFrame{
 	OnCommand=function(self)
-	GAMESTATE:SetPreferredSong(DIVA_RandomSong)
+	if ThemePrefs.Get("EnableRandomSongPlay") then
+		GAMESTATE:SetPreferredSong(DIVA_RandomSong)
+	end
 	end,
 }
 
