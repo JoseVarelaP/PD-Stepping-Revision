@@ -106,9 +106,9 @@ DSet = {
 			-- if someone knows, I would be great to know.
 			-- if you wanna see what i tried doing, check ThemePrefs.lua
 
-			-- if ThemePrefs.Get("ShowCharactersOnHome") then
-			-- 	Result = Result .. "MainCharacterOnHome,"
-			-- end
+			if ThemePrefs.Get("ShowCharactersOnHome") then
+				Result = Result .. "MainCharacterOnHome,"
+			end
 
 			if ThemePrefs.Get("ShowCharactersOnHome") then
 				Result = Result .. "AllowMultipleModels,"

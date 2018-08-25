@@ -50,25 +50,45 @@ end
 -- However, the ThemePrefs function doesn't like it, and I'm already pulling my hair
 -- off trying to figure out why the fuck is it not working
 
--- local function ReturnCharacterNames()
--- 	local CharacterNamesTable = {}
+local function ReturnCharacterNames()
+	local CharacterNamesTable = {}
 
--- 	for i=1,table.getn(CHARMAN:GetAllCharacters()) do
--- 		table.insert(CharacterNamesTable, CHARMAN:GetAllCharacters()[i]:GetDisplayName())
--- 	end
+	for i=1,table.getn(CHARMAN:GetAllCharacters()) do
+		table.insert(CharacterNamesTable, CHARMAN:GetAllCharacters()[i]:GetDisplayName())
+	end
 
--- 	return CharacterNamesTable
--- end
+	return CharacterNamesTable
+end
 
--- local function ReturnCharacterIDs()
--- 	local TableToReturn = {}
+local function ReturnCharacterIDs()
+	local TableToReturn = {}
 
--- 	for i=1,table.getn(CHARMAN:GetAllCharacters()) do
--- 		table.insert(CharacterNamesTable, CHARMAN:GetAllCharacters()[i]:GetCharacterID())
--- 	end
+	for i=1,table.getn(CHARMAN:GetAllCharacters()) do
+		table.insert(CharacterNamesTable, CHARMAN:GetAllCharacters()[i]:GetCharacterID())
+	end
 
--- 	return TableToReturn
--- end
+	return TableToReturn
+end
+
+function MusicFolder_AddChoices(n)
+	local TableToReturn = {}
+
+	for i=1,table.getn(SONGMAN:GetSongGroupNames()) do
+		table.insert(TableToReturn, SONGMAN:GetSongGroupNames()[i])
+	end
+
+	table.insert(TableToReturn, "All");
+
+	if TableToReturn ~= nil then
+		if n == nil then
+			return TableToReturn;
+		else
+			return TableToReturn[n];
+		end
+	else
+		return
+	end
+end
 
 -- Now let's start adding the options
 local Prefs =
