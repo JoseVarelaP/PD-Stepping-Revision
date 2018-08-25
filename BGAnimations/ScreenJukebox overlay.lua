@@ -58,13 +58,21 @@ t[#t+1] = Def.ActorFrame{
 }
 
 t[#t+1] = Def.ActorFrame{
-	OnCommand=cmd(CenterY;x,SCREEN_RIGHT-20);
-	
-	LoadFont("Common Normal")..{
-	Text=SecondsToMMSS(GAMESTATE:GetCurrentSong():MusicLengthSeconds());
-	InitCommand=cmd(horizalign,right,zoom,1;shadowlengthy,2);
+		InitCommand=cmd(playcommand,"Update");
+		LoadFont("Common normal")..{
+			Text="00:00";
+			OnCommand=cmd(x,SCREEN_RIGHT-30;horizalign,right;y,SCREEN_CENTER_Y-6;zoom,0.7);
+			UpdateCommand=function(self)
+				local song = GAMESTATE:GetCurrentSong();
+				if song then
+					self:settext(SecondsToMMSS(GAMESTATE:GetCurMusicSeconds()).." / "..SecondsToMMSS(song:MusicLengthSeconds()));
+					self:sleep(0.1);
+					self:queuecommand("Update");
+				end
+			end;
+		};
 	};
 
-}
+
 
 return t;
