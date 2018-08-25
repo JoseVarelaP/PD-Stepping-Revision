@@ -7,6 +7,9 @@ local t = Def.ActorFrame{
 -- before loading it first will make a mesh of 
 -- loading everything with other characters.
 local CharacterToLoad = CHARMAN:GetRandomCharacter();
+if ThemePrefs.Get("MainCharacterOnHome") then
+	CharacterToLoad = CHARMAN:GetCharacter(ThemePrefs.Get("MainCharacterOnHome"));
+end
 local Sec_CharacterToLoad = CHARMAN:GetRandomCharacter();
 local Thr_CharacterToLoad = CHARMAN:GetRandomCharacter();
 local Fou_CharacterToLoad = CHARMAN:GetRandomCharacter();

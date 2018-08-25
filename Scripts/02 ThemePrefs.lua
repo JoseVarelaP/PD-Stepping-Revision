@@ -64,7 +64,7 @@ local function ReturnCharacterIDs()
 	local TableToReturn = {}
 
 	for i=1,table.getn(CHARMAN:GetAllCharacters()) do
-		table.insert(CharacterNamesTable, CHARMAN:GetAllCharacters()[i]:GetCharacterID())
+		table.insert(TableToReturn, CHARMAN:GetAllCharacters()[i]:GetCharacterID())
 	end
 
 	return TableToReturn
@@ -135,12 +135,12 @@ local Prefs =
 		Values = { false,true },
 	},
 
-	-- MainCharacterOnHome =
-	-- {
-	-- 	Default = ReturnCharacterNames()[1],
-	-- 	Choices = ReturnCharacterNames(),
-	-- 	Values = ReturnCharacterNames(),
-	-- },
+	MainCharacterOnHome =
+	{
+		Default = ReturnCharacterNames()[1],
+		Choices = ReturnCharacterNames(),
+		Values = ReturnCharacterIDs(),
+	},
 
 	-- Dedicated character settings
 	DediModelBPM =
