@@ -2,6 +2,7 @@ local t = Def.ActorFrame{
 	OnCommand=function(self)
 	if ThemePrefs.Get("EnableRandomSongPlay") then
 		GAMESTATE:SetPreferredSong(DIVA_RandomSong)
+		MESSAGEMAN:Broadcast("ShowBackground")
 	end
 	end,
 }

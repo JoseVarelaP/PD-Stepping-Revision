@@ -115,4 +115,26 @@ t[#t+1] = LoadActor( THEME:GetPathG("","BGElements/CircleOuter") )..{
 t[#t+1] = LoadActor( THEME:GetPathG("","BGMenuTile") )..{
 	OnCommand=cmd(x,SCREEN_RIGHT-50;zoomx,0.5;zoomy,1.5;horizalign,right;CenterY;diffusealpha,0.5;texcoordvelocity,0,0.25;customtexturerect,0,0,1,2);
 };
+
+if ThemePrefs.Get("ShowRandomSongBackground") then
+	t[#t+1] = LoadActor( DIVA_RandomSong:GetBackgroundPath() )..{
+		InitCommand=cmd(FullScreen;diffusealpha,0;fadetop,1);
+		DivaSongChangedMessageCommand=function(self)
+		if DIVA_RandomSong:GetBackgroundPath() then
+			self:Load( DIVA_RandomSong:GetBackgroundPath() )
+			self:scale_or_crop_background()
+			self:diffusealpha(0)
+		end
+		end,
+		HideBackgroundMessageCommand=cmd(linear,0.2;diffusealpha,0);
+		ShowBackgroundMessageCommand=function(self)
+		self:linear(0.2)
+		self:diffusealpha(0.5)
+		if ThemePrefs.Get("CurrentStageLocation") ~= "None" or ThemePrefs.Get("ShowCharactersOnHome") then
+			self:diffusealpha(0.2)
+		end
+		end,
+	};
+end
+
 return t;

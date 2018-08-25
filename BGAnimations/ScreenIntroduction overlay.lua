@@ -18,6 +18,11 @@ t[#t+1] = Def.ActorFrame{
 	};
 };
 
+local ThemeNamesToLoad = {
+	"PD-Stepping-Revision",
+	"PD-Stepping-Revision-master",
+};
+
 t.OnCommand=function(self)
 	-- get everything
 	local Jose = self:GetChild("Jose");
@@ -36,7 +41,11 @@ t.OnCommand=function(self)
 	]]
 	if not AlreadyReloaded then
 		AlreadyReloaded = true
-		THEME:SetTheme("DV-Stepping-Revision")
+		for i=1,#ThemeNamesToLoad do
+			if THEME:DoesThemeExist(ThemeNamesToLoad[i]) then
+				THEME:SetTheme(ThemeNamesToLoad[i])
+			end
+		end
 	end
 
 	if not DIVA_RandomSong then

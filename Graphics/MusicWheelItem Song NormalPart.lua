@@ -27,7 +27,7 @@ local gc = Var("GameCommand");
 		end,
 		};
 
-		LoadFont("", "handel gothic") ..{
+		LoadFont("Common Normal") ..{
 		Text="This is test";
 		OnCommand=cmd(x,30;horizalign,left;shadowlength,1);
 		GainFocusCommand=cmd(stoptweening;zoom,1.1);

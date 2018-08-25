@@ -19,7 +19,7 @@ local gc = Var("GameCommand");
 		LoseFocusCommand=cmd(stoptweening;linear,0.1;diffusealpha,0);
 		};
 
-		LoadFont("", "handel gothic") ..{
+		LoadFont("Common Normal") ..{
 		Text=THEME:GetString( 'ScreenTitleMenu', Var("GameCommand"):GetText() );
 		OnCommand=cmd(x,30;horizalign,left;strokecolor,Color.Black);
 		GainFocusCommand=cmd(stoptweening;decelerate,0.1;zoom,1.1;diffuse,Color.White);

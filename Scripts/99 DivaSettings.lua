@@ -100,7 +100,8 @@ DSet = {
 			Result = Result .. "EnableRandomSongPlay,"
 
 			if ThemePrefs.Get("EnableRandomSongPlay") then
-				Result = Result .. "FolderToPlayRandomMusic,"				
+				Result = Result .. "FolderToPlayRandomMusic,"
+				Result = Result .. "ShowRandomSongBackground,"
 			end
 
 			if ThemePrefs.Get("ShowCharactersOnHome") then
@@ -118,6 +119,9 @@ DSet = {
 
 		LineDediCharsSettings = function()
 		return "gamecommand;screen,ScreenDediCharsSettings;name,Dedicated Character Settings"
+		end,
+		RowTransform = function(self,positionIndex,itemIndex,numItems)
+		self:y( (SCREEN_CENTER_Y-120) + (28*positionIndex) )
 		end,
 	},
 

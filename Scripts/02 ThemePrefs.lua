@@ -117,7 +117,7 @@ local Prefs =
 	CurrentStageLocation =
 	{
 		Default = "None",
-		Choices = { "None", "Rooftop", "Japonica (+P)" },
+		Choices = { OptionNameString("None"), "Rooftop", "Japonica (+P)" },
 		Values = { "None", "Rooftop", "Japonica" },
 	},
 
@@ -164,6 +164,13 @@ local Prefs =
 
 	-- Some other stuff
 	EnableRandomSongPlay =
+	{
+		Default = false,
+		Choices = { OptionNameString("Off"), OptionNameString("On") },
+		Values = { false,true },
+	},
+
+	ShowRandomSongBackground =
 	{
 		Default = false,
 		Choices = { OptionNameString("Off"), OptionNameString("On") },

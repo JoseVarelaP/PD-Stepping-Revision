@@ -11,7 +11,7 @@ local gc = Var("GameCommand");
 		OnCommand=cmd(horizalign,left;zoom,1.5;x,4;y,0);
 		};
 
-		LoadFont("", "handel gothic") ..{
+		LoadFont("Common Normal") ..{
 		Text="This is test";
 		OnCommand=cmd(x,30;horizalign,left;shadowlength,1);
 		SetMessageCommand=function(self,params)

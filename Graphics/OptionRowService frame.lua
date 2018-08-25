@@ -11,6 +11,7 @@ local ItemsToTweenColor = {
 	-- Choices that show up when enabling stuff, will appear purple.
 	{"ModelsInRoom", color("0.8,0,0.8,1"), color("0.7,0,0.7,0.5")},
 	{"FolderToPlayRandomMusic", color("0.8,0,0.8,1"), color("0.7,0,0.7,0.5")},
+	{"ShowRandomSongBackground", color("0.8,0,0.8,1"), color("0.7,0,0.7,0.5")},
 	{"CurrentStageLighting", color("0.8,0,0.8,1"), color("0.7,0,0.7,0.5")},
 
 	{"DediModelBPM", color("0.8,0,0.8,1"), color("0.7,0,0.7,0.5")},
@@ -25,6 +26,7 @@ local UnlockableOptions = {
 	"Dedicated Character Settings",
 	"ModelsInRoom",
 	"FolderToPlayRandomMusic",
+	"ShowRandomSongBackground",
 	"CurrentStageLighting",
 }
 

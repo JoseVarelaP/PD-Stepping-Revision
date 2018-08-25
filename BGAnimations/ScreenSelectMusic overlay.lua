@@ -3,6 +3,7 @@
 local t = Def.ActorFrame{
 	OnCommand=function(self)
 	DIVA:ResetRandomSong()
+	MESSAGEMAN:Broadcast("HideBackground")
 	end,
 }
 

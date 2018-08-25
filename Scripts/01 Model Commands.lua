@@ -38,6 +38,7 @@ function DIVA:ResetRandomSong()
 		else
 			DIVA_RandomSong = SONGMAN:GetRandomSong()
 		end
+		MESSAGEMAN:Broadcast("DivaSongChanged")
     end
 end
 

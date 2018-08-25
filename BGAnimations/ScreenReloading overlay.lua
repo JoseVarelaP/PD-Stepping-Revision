@@ -2,7 +2,7 @@ local t = Def.ActorFrame{
 	InitCommand=function(self)
 	ThemePrefs.Save()
 	end,
-	OnCommand=cmd(sleep,2;queuecommand,"SaveAndReload");
+	OnCommand=cmd(sleep,0.5;queuecommand,"SaveAndReload");
 	SaveAndReloadCommand=function(self)
 	DIVA:ResetRandomSong()
 	SCREENMAN:SetNewScreen("ScreenTitleMenu")
