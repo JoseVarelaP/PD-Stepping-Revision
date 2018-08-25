@@ -11,7 +11,7 @@ local function Cont_Position()
 end
 
 t[#t+1] = Def.ActorFrame{
-	BeginCommand=cmd(x,WideScale(140,Cont_Position());zoom,1;diffusealpha,0;decelerate,0.2;diffusealpha,1);
+	BeginCommand=cmd(x,WideScale(60,Cont_Position());zoom,1;diffusealpha,0;decelerate,0.2;diffusealpha,1);
 	OffCommand=cmd(addy,-10;decelerate,0.2;addy,10;sleep,0.5;accelerate,0.2;zoom,0);
 	CancelMessageCommand=cmd(accelerate,0.1;diffusealpha,0);
 

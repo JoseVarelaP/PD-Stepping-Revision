@@ -1,19 +1,5 @@
 local t = Def.ActorFrame{}
 
--- x,-230;y,70
-
-local function SongData(ToObtain, xpos, ypos, halign)
-	local t = LoadFont("Common Normal")..{
-	OnCommand=cmd(zoom,0.7;horizalign,halign or middle;x,xpos;y,ypos);
-	UpdateCommand=function(self) self:settext( (GAMESTATE:GetCurrentSong() and ToObtain) or "" ) end,
-	CurrentSongChangedMessageCommand=cmd(playcommand,"Update");
-	CurrentP1StepsChangedMessageCommand=cmd(playcommand,"Update");
-	CurrentP2StepsChangedMessageCommand=cmd(playcommand,"Update");
-	};
-
-	return t;
-end
-
 t[#t+1] = LoadActor( THEME:GetPathG("","Light_BottomMenuBar") )..{
 	OnCommand=cmd(x,SCREEN_RIGHT;horizalign,right;zoom,2;SetTextureFiltering,false;;y,SCREEN_BOTTOM;vertalign,bottom);
 };
@@ -91,6 +77,18 @@ t[#t+1] = Def.ActorFrame{
 		self:visible(false)
 		if GAMESTATE:GetCurrentSong() then
 			if GAMESTATE:GetCurrentSong():HasAttacks() then
+				self:visible(true)
+			end
+		end
+		end,
+	};
+
+	LoadActor( THEME:GetPathG("","SelectMusic/ICON_ContainsLyrics") )..{
+		OnCommand=cmd(horizalign,right;zoom,1.5;SetTextureFiltering,false;y,20;x,-80);
+		CurrentSongChangedMessageCommand=function(self)
+		self:visible(false)
+		if GAMESTATE:GetCurrentSong() then
+			if GAMESTATE:GetCurrentSong():HasLyrics() then
 				self:visible(true)
 			end
 		end

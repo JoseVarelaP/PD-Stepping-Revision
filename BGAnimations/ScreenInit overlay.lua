@@ -6,7 +6,7 @@ local t = Def.ActorFrame{
             ThemePrefs.ForceSave()
         end
     ThemePrefs.Save()
-    Diva_ResetRandomSong()
+    DIVA:ResetRandomSong()
 end
 }
 

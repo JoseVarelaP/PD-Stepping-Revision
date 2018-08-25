@@ -79,14 +79,15 @@ DSet = {
 		LineNames = function()
 			Result = ""
 		
-			if ThemePrefs.Get("CurrentStageLocation") and ThemePrefs.Get("CurrentStageLocation") ~= "None" then
-				Result = Result .. "CurrentStageLighting,"
-			end
 		
 			-- Currently this is still being tested. (ok not really)
 			-- It has been already tested, it works flawlessly.
 			-- Only issue right now will be to find appropiate locations.
 			Result = Result .. "CurrentStageLocation,"
+			
+			if ThemePrefs.Get("CurrentStageLocation") and ThemePrefs.Get("CurrentStageLocation") ~= "None" then
+				Result = Result .. "CurrentStageLighting,"
+			end
 
 			Result = Result .. "DedicatedCharacterShow,"
 
@@ -101,10 +102,6 @@ DSet = {
 			if ThemePrefs.Get("EnableRandomSongPlay") then
 				Result = Result .. "FolderToPlayRandomMusic,"				
 			end
-
-			-- dunno how the fuck i can make this work.
-			-- if someone knows, I would be great to know.
-			-- if you wanna see what i tried doing, check ThemePrefs.lua
 
 			if ThemePrefs.Get("ShowCharactersOnHome") then
 				Result = Result .. "MainCharacterOnHome,"

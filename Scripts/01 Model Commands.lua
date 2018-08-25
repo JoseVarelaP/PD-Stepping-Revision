@@ -1,16 +1,46 @@
-function Diva_GetPathLocation(filepart1,filepart2)
+-- Main Stepping Revision functions
+DIVA = {
+	-- Command line debug stuff
+	Folder_Random = function()
+	Trace(
+		"-----------------------------------\n"..
+		"New Folder_Random Song: " ..
+		DIVA_RandomSong:GetDisplayFullTitle().." - "
+		..DIVA_RandomSong:GetDisplayArtist().."\n"..
+		"-----------------------------------"
+	)
+	end,
+	SingleSongWarning = function()
+	Trace(	
+		"-----------------------------------\n"..
+		"ATTENTION:\n"..
+		"Current Folder only contains 1 song. Playing it...\n"..
+		"-----------------------------------"
+	)
+	end,
+}
+
+function DIVA:GetPathLocation(filepart1,filepart2)
 	return "/"..THEME:GetCurrentThemeDirectory().."/Locations/"..filepart1 .. filepart2
 end
 
-function Diva_ResetRandomSong()
-	if DIVA_RandomSong then
-    	if ThemePrefs.Get("EnableRandomSongPlay") then
-			if ThemePrefs.Get("FolderToPlayRandomMusic") ~= "All" then
-				local Sel = SONGMAN:GetSongsInGroup(ThemePrefs.Get("FolderToPlayRandomMusic"))
+function DIVA:ResetRandomSong()
+	if DIVA_RandomSong and ThemePrefs.Get("EnableRandomSongPlay") then
+		if ThemePrefs.Get("FolderToPlayRandomMusic") ~= "All" then
+			local Sel = SONGMAN:GetSongsInGroup(ThemePrefs.Get("FolderToPlayRandomMusic"))
+			if #Sel > 1 then
 				DIVA_RandomSong = Sel[math.random(1,#Sel)]
+				DIVA:Folder_Random()
 			else
-				DIVA_RandomSong = SONGMAN:GetRandomSong()
+				DIVA_RandomSong = Sel[1]
+				DIVA:SingleSongWarning()
 			end
+		else
+			DIVA_RandomSong = SONGMAN:GetRandomSong()
 		end
     end
+end
+
+function DIVA:HasSubtitles(WhatToLoad)
+	return string.len( WhatToLoad:GetDisplaySubTitle() ) > 1
 end

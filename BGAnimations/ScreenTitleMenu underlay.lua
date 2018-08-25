@@ -45,7 +45,7 @@ if ThemePrefs.Get("EnableRandomSongPlay") then
 		InitCommand=GlobalItems;
 		OnCommand=function(self)
 		local ToMove = -2
-		if string.len(DIVA_RandomSong:GetDisplaySubTitle()) > 1 then
+		if DIVA:HasSubtitles(DIVA_RandomSong) then
 			ToMove = -10
 		end
 		self:y(ToMove)

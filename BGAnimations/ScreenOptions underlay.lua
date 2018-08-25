@@ -1,6 +1,8 @@
 local t = Def.ActorFrame{
 	OnCommand=function(self)
 	ThemePrefs.Save()
+	-- Lock input so the labels have time to finish
+	SCREENMAN:GetTopScreen():lockinput(0.6)
 	end,
 }
 

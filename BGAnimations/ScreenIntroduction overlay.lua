@@ -43,7 +43,7 @@ t.OnCommand=function(self)
 		DIVA_RandomSong = SONGMAN:GetRandomSong()
 	end
 
-	Diva_ResetRandomSong()
+	DIVA:ResetRandomSong()
 
 
 	-- now let's roll

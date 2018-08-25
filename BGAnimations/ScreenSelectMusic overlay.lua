@@ -2,13 +2,9 @@
 
 local t = Def.ActorFrame{
 	OnCommand=function(self)
-	Diva_ResetRandomSong()
+	DIVA:ResetRandomSong()
 	end,
 }
-
-local function HasSubtitles()
-	return string.len( GAMESTATE:GetCurrentSong():GetDisplaySubTitle() ) > 1
-end
 
 local function PercentScore(pn)
 	local SongOrCourse, StepsOrTrail;
@@ -148,7 +144,7 @@ t[#t+1] = Def.ActorFrame {
 			StartSelectingStepsMessageCommand=function(self)
 				self:settext( GAMESTATE:GetCurrentSong():GetDisplayArtist() )
 				self:y(-50)
-				if HasSubtitles() then
+				if DIVA:HasSubtitles(GAMESTATE:GetCurrentSong()) then
 					self:y(-30)
 				end
 			end,
@@ -193,7 +189,7 @@ t[#t+1] = Def.ActorFrame {
 			OnCommand=cmd(zoom,1.5;y,-180;x,-300);
 			StartSelectingStepsMessageCommand=function(self)
 			self:visible(false)
-			if GAMESTATE:GetCurrentSong() and GAMESTATE:GetCurrentSong():HasAttacks() then
+			if GAMESTATE:GetCurrentSong() and GAMESTATE:GetCurrentSong():HasLyrics() then
 				self:visible(true)
 			end
 			end,

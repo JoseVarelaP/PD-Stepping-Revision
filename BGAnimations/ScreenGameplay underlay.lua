@@ -14,6 +14,7 @@
 local function HasAnyCharacters(pn)
 	return GAMESTATE:IsPlayerEnabled(pn) and GAMESTATE:GetCharacter(pn):GetDisplayName() ~= "default"
 end
+
 local t = Def.ActorFrame{
 	OnCommand=cmd(Center;fov,90;rotationy,180;z,WideScale(300,400);addy,10);
 };
@@ -151,9 +152,9 @@ t[#t+1] = Def.ActorFrame{
 		-- Load the Stage
 		Def.Model {
 			Condition=ThemePrefs.Get("CurrentStageLocation") ~= "None";
-			Meshes=Diva_GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
-			Materials=Diva_GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/"..FuturaToLoad.."_material.txt");
-			Bones=Diva_GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
+			Meshes=DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
+			Materials=DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/"..FuturaToLoad.."_material.txt");
+			Bones=DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
 			OnCommand=function(self)
 				self:cullmode("CullMode_None")
 			end,
