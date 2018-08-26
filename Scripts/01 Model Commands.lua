@@ -11,12 +11,7 @@ DIVA = {
 	)
 	end,
 	SingleSongWarning = function()
-	Trace(	
-		"-----------------------------------\n"..
-		"ATTENTION:\n"..
-		"Current Folder only contains 1 song. Playing it...\n"..
-		"-----------------------------------"
-	)
+	lua.ReportScriptError( "Random Song Play: Current Folder only contains 1 song. StepMania might get confused when picking the song via random. Selecting to index 1.")
 	end,
 }
 

@@ -15,7 +15,7 @@ if ThemePrefs.Get("CurrentStageLocation") ~= "None" then
 		};
 	
 		LoadFont("Common Normal")..{
-			Text="If you have any 3D noteskin enabled right now, you might experience a lot of culling problems. I'm trying to fix this issue as much as I can.\n\nI hope you understand.\nJose_Varela",
+			Text="If you have any 3D noteskin enabled right now, you might experience a lot of culling problems. I'm trying to fix this issue as much as I can.\n\nI hope you understand.",
 			InitCommand=cmd(zoom,0.5;wrapwidthpixels,500);
 		};
 	
