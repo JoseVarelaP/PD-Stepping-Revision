@@ -1,4 +1,6 @@
-local t = Def.ActorFrame{}
+local t = Def.ActorFrame{
+	OnCommand=cmd(SetDrawByZPosition,true);
+};
 
 t[#t+1] = LoadActor( THEME:GetPathG("","Gameplay/TopInfo") )..{
 	OnCommand=cmd(x,SCREEN_RIGHT;horizalign,right;zoom,2;SetTextureFiltering,false;vertalign,top);
