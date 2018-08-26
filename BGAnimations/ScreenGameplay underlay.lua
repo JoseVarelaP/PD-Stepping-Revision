@@ -166,63 +166,65 @@ local function BothPlayersEnabled()
 	return GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsPlayerEnabled(PLAYER_2)
 end
 
-if HasAnyCharacters(PLAYER_1) or HasAnyCharacters(PLAYER_2) then
-	for player in ivalues(PlayerNumber) do
-		-- Load the Character
-		t[#t+1] = Def.Model {
-				Condition=GAMESTATE:IsPlayerEnabled(player) and GAMESTATE:GetCharacter(player):GetDisplayName() ~= "default",
-				Meshes=GAMESTATE:GetCharacter(player):GetModelPath(),
-				Materials=GAMESTATE:GetCharacter(player):GetModelPath(),
-				Bones=GAMESTATE:GetCharacter(player):GetDanceAnimationPath(),
-				InitCommand=function(self)
-					self:cullmode("CullMode_None")
-					DebugMessages.ModelLoad()
-				-- position time
-				if BothPlayersEnabled() then
-					-- reminder that x position is inverted because we inverted the Y axis
-					-- to make the character face towards the screen.
-					self:x( (player == PLAYER_1 and 8) or -8 )
-				end
-	
-				ModelBeat = GAMESTATE:GetSongBeat();
-				self:queuecommand("UpdateRate")
-				end,
-	
-				-- Update Model animation speed depending on song's BPM.
-				-- To match SM's way of animation speeds.
-				UpdateRateCommand=function(self)
-				if ThemePrefs.Get("DediModelBPM") then
-					if now<=ModelBeat then
-						self:rate(0)
-						if DebugMode and MassiveLog then
-							Trace("Animation Paused!!!")
+if ThemePrefs.Get("DedicatedCharacterShow") then
+	if HasAnyCharacters(PLAYER_1) or HasAnyCharacters(PLAYER_2) then
+		for player in ivalues(PlayerNumber) do
+			-- Load the Character
+			t[#t+1] = Def.Model {
+					Condition=GAMESTATE:IsPlayerEnabled(player) and GAMESTATE:GetCharacter(player):GetDisplayName() ~= "default",
+					Meshes=GAMESTATE:GetCharacter(player):GetModelPath(),
+					Materials=GAMESTATE:GetCharacter(player):GetModelPath(),
+					Bones=GAMESTATE:GetCharacter(player):GetDanceAnimationPath(),
+					InitCommand=function(self)
+						self:cullmode("CullMode_None")
+						DebugMessages.ModelLoad()
+					-- position time
+					if BothPlayersEnabled() then
+						-- reminder that x position is inverted because we inverted the Y axis
+						-- to make the character face towards the screen.
+						self:x( (player == PLAYER_1 and 8) or -8 )
+					end
+		
+					ModelBeat = GAMESTATE:GetSongBeat();
+					self:queuecommand("UpdateRate")
+					end,
+		
+					-- Update Model animation speed depending on song's BPM.
+					-- To match SM's way of animation speeds.
+					UpdateRateCommand=function(self)
+					if ThemePrefs.Get("DediModelBPM") then
+						if now<=ModelBeat then
+							self:rate(0)
+							if DebugMode and MassiveLog then
+								Trace("Animation Paused!!!")
+							end
+						else
+							self:rate(0.5*GAMESTATE:GetSongBPS())
+							if DebugMode and MassiveLog then
+								Trace("New Model Rate: ".. 0.5*GAMESTATE:GetSongBPS() .." - Current BPS: ".. GAMESTATE:GetSongBPS())
+								Trace( now.. " - ".. ModelBeat )
+								Trace( self:GetDefaultAnimation() )
+							end
 						end
 					else
 						self:rate(0.5*GAMESTATE:GetSongBPS())
 						if DebugMode and MassiveLog then
 							Trace("New Model Rate: ".. 0.5*GAMESTATE:GetSongBPS() .." - Current BPS: ".. GAMESTATE:GetSongBPS())
-							Trace( now.. " - ".. ModelBeat )
 							Trace( self:GetDefaultAnimation() )
 						end
 					end
-				else
-					self:rate(0.5*GAMESTATE:GetSongBPS())
-					if DebugMode and MassiveLog then
-						Trace("New Model Rate: ".. 0.5*GAMESTATE:GetSongBPS() .." - Current BPS: ".. GAMESTATE:GetSongBPS())
-						Trace( self:GetDefaultAnimation() )
-					end
-				end
-				ModelBeat = GAMESTATE:GetSongBeat();
-				self:sleep(Frm)
-				self:queuecommand("UpdateRate")
-				end,
-			};
+					ModelBeat = GAMESTATE:GetSongBeat();
+					self:sleep(Frm)
+					self:queuecommand("UpdateRate")
+					end,
+				};
+		end
 	end
 end
 
 -- Some song info before we start
 t[#t+1] = Def.ActorFrame{
-	Condition=ThemePrefs.Get("DediSongData");
+	Condition=ThemePrefs.Get("DedicatedCharacterShow") and ThemePrefs.Get("DediSongData");
 
 	InitCommand=cmd(z,-5;x,0;y,-10;rotationy,180;diffusealpha,0;sleep,0.3;decelerate,0.2;diffusealpha,1);
 
