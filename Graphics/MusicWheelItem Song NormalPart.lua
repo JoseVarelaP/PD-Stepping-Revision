@@ -79,6 +79,9 @@ local t = Def.ActorFrame {};
 				DiffuseColorForBothPlayers(self)
 			end
 			end,
+			PlayerJoinedMessageCommand=function(self)
+			self:Load( THEME:GetPathG("","SelectMusic/"..InvertSongBase()) )
+			end,
 			};
 	
 			LoadActor("SelectMusic/Star_WheelSong")..{
@@ -98,7 +101,6 @@ local t = Def.ActorFrame {};
 			};
 	
 			LoadFont("renner/20px") ..{
-			Text="This is test";
 			OnCommand=cmd(x,110;y,-14;horizalign,left;shadowlength,1;strokecolor,Color.Black;maxwidth,430);
 			SetMessageCommand=function(self,params)
 				local song = params.Song;
@@ -111,7 +113,6 @@ local t = Def.ActorFrame {};
 			};
 	
 			LoadFont("proto sans 33") ..{
-			Text="This is test";
 			OnCommand=cmd(x,500;y,-30;zoom,0.8;horizalign,right;shadowlength,1;strokecolor,Color.Blue);
 			SetMessageCommand=function(self,params)
 				local song = params.Song;
@@ -128,7 +129,6 @@ local t = Def.ActorFrame {};
 			};
 
 			LoadFont("renner/20px") ..{
-			Text="This is test";
 			OnCommand=cmd(x,530;y,-30;zoom,0.8;shadowlength,1;strokecolor,Color.Blue);
 			SetMessageCommand=function(self,params)
 				local song = params.Song;
@@ -172,7 +172,6 @@ local t = Def.ActorFrame {};
 				};
 	
 				LoadFont("unsteady oversteer") ..{
-				Text="This is test";
 				OnCommand=cmd(x,170;y,6;zoom,1.2;strokecolor,Color.Black);
 				SetMessageCommand=function(self,params)
 				local song = params.Song;
@@ -258,7 +257,7 @@ local t = Def.ActorFrame {};
 
 for player in ivalues(PlayerNumber) do
 t[#t+1] = LoadFont("unsteady oversteer") ..{
-	Text="This is test";
+	Condition=GAMESTATE:IsPlayerEnabled(player);
 	OnCommand=cmd(x,((player == PLAYER_1 and 80) or 528);y,-10;zoom,1.2;strokecolor,Color.Black);
 	SetMessageCommand=function(self,params)
 		local song = params.Song;

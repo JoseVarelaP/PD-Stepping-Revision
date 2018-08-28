@@ -280,7 +280,7 @@ t[#t+1] = Def.ActorFrame{
 			LoadActor( THEME:GetPathG("","SelectMusic/Color_WheelSong"))..{
 			OnCommand=cmd(horizalign,left;zoom,0.5);
 			UpdateStepsMessageCommand=function(self,params)
-			local steps = GAMESTATE:GetCurrentSteps( PLAYER_1 ):GetDifficulty()
+			local steps = GAMESTATE:GetCurrentSteps( GAMESTATE:GetMasterPlayerNumber() ):GetDifficulty()
 			self:diffuse( CustomDifficultyToColor( steps ) )
 			end,
 			};
@@ -288,7 +288,7 @@ t[#t+1] = Def.ActorFrame{
 			LoadActor( THEME:GetPathG("","SelectMusic/Star_WheelSong"))..{
 			OnCommand=cmd(horizalign,left;zoom,0.6;y,-2;x,-15;shadowlengthy,2);
 			UpdateStepsMessageCommand=function(self,params)
-			local steps = GAMESTATE:GetCurrentSteps( PLAYER_1 ):GetDifficulty()
+			local steps = GAMESTATE:GetCurrentSteps( GAMESTATE:GetMasterPlayerNumber() ):GetDifficulty()
 			self:diffuse( CustomDifficultyToColor( steps ) )
 			end,
 			};
@@ -307,13 +307,12 @@ t[#t+1] = Def.ActorFrame{
 			};
 	
 			LoadFont("unsteady oversteer") ..{
-			Text="This is test";
 			OnCommand=cmd(x,80;y,-10;zoom,1.2;strokecolor,Color.Black);
 			UpdateStepsMessageCommand=function(self,params)
 				local song = GAMESTATE:GetCurrentSong();
 				if song then
-					if song:GetOneSteps("StepsType_Dance_Single", GAMESTATE:GetCurrentSteps( PLAYER_1 ):GetDifficulty() ) then
-						self:settext( song:GetOneSteps("StepsType_Dance_Single", GAMESTATE:GetCurrentSteps( PLAYER_1 ):GetDifficulty() ):GetMeter() );
+					if song:GetOneSteps("StepsType_Dance_Single", GAMESTATE:GetCurrentSteps( GAMESTATE:GetMasterPlayerNumber() ):GetDifficulty() ) then
+						self:settext( song:GetOneSteps("StepsType_Dance_Single", GAMESTATE:GetCurrentSteps( GAMESTATE:GetMasterPlayerNumber() ):GetDifficulty() ):GetMeter() );
 					else
 						self:settext( "0" )
 					end
