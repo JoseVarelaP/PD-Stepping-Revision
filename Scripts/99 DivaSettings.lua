@@ -228,18 +228,9 @@ DSet = {
 			self:y( offsetFromCenter*85 )
 			self:x( 10*offsetFromCenter )
 			self:diffusealpha(1)
-			if itemIndex < 8 then
-				self:diffusealpha( 0.5 )
-			end
-			if itemIndex < 7 then
-				self:diffusealpha( 0.25 )
-			end
-			if itemIndex > 13 then
-				self:diffusealpha( 0.55 )
-			end
-			if itemIndex == 8 then
-				self:x(10)
-			end
+			if itemIndex < 7 then self:diffusealpha( 0.25 ) end
+			if itemIndex > 13 then self:diffusealpha( 0.55 ) end
+			if itemIndex == 8 then self:x(10) end
 		end,
 	},
 }

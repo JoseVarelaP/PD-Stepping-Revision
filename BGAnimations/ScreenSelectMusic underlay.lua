@@ -15,7 +15,7 @@ t[#t+1] = Def.Sprite {
 		self:LoadFromCurrentSongBackground()
 		self:scale_or_crop_background()
 		self:linear(0.05)
-		self:diffusealpha(0.8)
+		self:diffusealpha(1)
 	end
 	end,
 	OnCommand=function(self)

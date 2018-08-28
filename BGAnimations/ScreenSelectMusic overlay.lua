@@ -316,7 +316,7 @@ t[#t+1] = LoadActor( THEME:GetPathG("","TopBarText") )..{
 };
 
 t[#t+1] = LoadActor( THEME:GetPathG("","SelectMusic/DiffBase") )..{
-	OnCommand=cmd(vertalign,top;horizalign,right;xy,SCREEN_RIGHT,30;zoom,0.6;);	
+	OnCommand=cmd(vertalign,top;horizalign,right;xy,SCREEN_RIGHT,30;zoom,0.6;shadowlengthy,3);	
 };
 
 t[#t+1] = LoadActor( THEME:GetPathG("","SelectMusic/SortDisplay") )..{
