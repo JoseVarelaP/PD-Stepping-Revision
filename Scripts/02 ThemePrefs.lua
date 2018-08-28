@@ -91,7 +91,7 @@ function MusicFolder_AddChoices(n)
 end
 
 -- Now let's start adding the options
-local Prefs =
+Prefs =
 {
 	AllowMultipleModels =
 	{

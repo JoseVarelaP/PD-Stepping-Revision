@@ -3,17 +3,21 @@ local gc = Var("GameCommand");
 
 	t[#t+1] = Def.ActorFrame{
 
-		LoadActor("MenuScrollers/Base")..{
-		OnCommand=cmd(horizalign,left;zoom,2);
+		LoadActor("SelectMusic/WheelHighlight")..{
+		InitCommand=cmd(horizalign,left;zoom,0.5;shadowlength,3);
 		};
 
-		LoadActor("SelectMusic/ITEM_Folder")..{
-		OnCommand=cmd(horizalign,left;zoom,1.5;x,4;y,0);
+		LoadActor("SelectMusic/Base_WheelSong")..{
+		OnCommand=cmd(horizalign,left;zoom,0.5);
+		};
+
+		LoadActor("SelectMusic/Color_WheelSong")..{
+		OnCommand=cmd(horizalign,left;zoom,0.5);
 		};
 
 		LoadFont("Common Normal") ..{
 		Text="This is test";
-		OnCommand=cmd(x,30;horizalign,left;shadowlength,1);
+		OnCommand=cmd(x,110;y,-14;horizalign,left;shadowlength,1;strokecolor,Color.Black;maxwidth,430);
 		SetMessageCommand=function(self,params)
 			local BannerTitle = params.Text;
 			if BannerTitle then
