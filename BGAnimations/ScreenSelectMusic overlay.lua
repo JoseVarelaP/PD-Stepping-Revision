@@ -380,4 +380,9 @@ t[#t+1] = LoadFont("Common Normal")..{
 	end,
 };
 
+t[#t+1] = Def.Quad{
+	OnCommand=cmd(FullScreen;diffuse,Color.Black;diffusealpha,0);
+	OffCommand=cmd(linear,0.2;diffusealpha,1);
+};
+
 return t;

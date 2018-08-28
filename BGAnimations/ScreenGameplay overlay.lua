@@ -34,7 +34,6 @@ for player in ivalues(PlayerNumber) do
 		InitCommand=cmd(x,SCREEN_LEFT+86;y,SCREEN_BOTTOM-14;horizalign,left;zoomto,SCREEN_WIDTH-118,16;diffusetopedge,color("#ABFFFE");diffusebottomedge,color("#2DE5D1"));
 		OnCommand=function(self)
 		self:ztest(true)
-		if 
 		self:queuecommand("LoopCheck")
 		end,
 		LoopCheckCommand=function(self)
