@@ -8,7 +8,7 @@ DSet = {
 	
 	Shared = {
 		ScrollOn = function(self)
-			(cmd(maxwidth,150;zoom,0.7;addx,-300;decelerate,0.2;addx,300))(self);
+			(cmd(maxwidth,180;zoom,0.7;addx,-300;decelerate,0.2;addx,300))(self);
 		end,
 		ScrollOff = function(self)
 			(cmd(accelerate,0.2;addx,-300;))(self);
@@ -69,7 +69,7 @@ DSet = {
 		end,
 
 		RowTransform = function(self,positionIndex,itemIndex,numItems)
-		self:y( (SCREEN_CENTER_Y-120) + (40*positionIndex) )
+		self:y( (SCREEN_CENTER_Y-140) + (50*positionIndex) )
 		self:x( 0*positionIndex )
 		end,
 

@@ -1,13 +1,32 @@
+local function BothPlayersEnabled()
+	return GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsPlayerEnabled(PLAYER_2)
+end
+
+local function JustASinglePlayer(pn)
+	if pn == PLAYER_1 then return GAMESTATE:IsPlayerEnabled(PLAYER_1) and not GAMESTATE:IsPlayerEnabled(PLAYER_2) end
+	if pn == PLAYER_2 then return GAMESTATE:IsPlayerEnabled(PLAYER_2) and not GAMESTATE:IsPlayerEnabled(PLAYER_1) end
+end
+
+local function DiffuseColorForBothPlayers(self)
+	if BothPlayersEnabled() then
+		if GAMESTATE:GetCurrentSteps(PLAYER_1) then
+			self:diffuseleftedge( CustomDifficultyToColor( GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() ) )
+		end
+		if GAMESTATE:GetCurrentSteps(PLAYER_2) then
+			self:diffuserightedge( CustomDifficultyToColor( GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty() ) )
+		end
+	end
+end
+
+local function InvertSongBase()
+	WhatToLoad = "Color_WheelSong"
+	if BothPlayersEnabled() then WhatToLoad = "2PColor_WheelSong" end
+	return WhatToLoad
+end
+
 local t = Def.ActorFrame {};
 
 	t[#t+1] = Def.ActorFrame{
-		NextSongMessageCommand=cmd(playcommand,"Close");
-		PreviousSongMessageCommand=cmd(playcommand,"Close");
-		StartSelectingStepsMessageCommand=cmd(queuemessage,"FadeWheel");
-		StepsChosenMessageCommand=cmd(playcommand,"Close");
-		PlayerJoinedMessageCommand=cmd(playcommand,"Close");
-		CancelMessageCommand=cmd(playcommand,"Close");
-		CloseCommand=cmd(queuemessage,"ReturnWheel");
 
 		Def.ActorFrame{
 			SetMessageCommand=function(self,params)
@@ -15,14 +34,16 @@ local t = Def.ActorFrame {};
 			local steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber());
 				if song then
 					if steps then
-						if song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then
-							self:stoptweening()
-							self:zoom(1)
-							self:diffuse(1,1,1,1)
-						else
-							self:stoptweening()
-							self:zoom(0.9)
-							self:diffuse(0.6,0.6,0.6,1)
+						if not BothPlayersEnabled() then
+							if song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then
+								self:stoptweening()
+								self:zoom(1)
+								self:diffuse(1,1,1,1)
+							else
+								self:stoptweening()
+								self:zoom(0.9)
+								self:diffuse(0.6,0.6,0.6,1)
+							end
 						end
 					end
 				end
@@ -34,6 +55,7 @@ local t = Def.ActorFrame {};
 			local steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber());
 			if steps then
 				self:diffuse( CustomDifficultyToColor( steps:GetDifficulty() ) )
+				DiffuseColorForBothPlayers(self)
 			end
 			end,
 			};
@@ -42,22 +64,35 @@ local t = Def.ActorFrame {};
 			OnCommand=cmd(horizalign,left;zoom,0.5);
 			};
 	
-			LoadActor("SelectMusic/Color_WheelSong")..{
-			OnCommand=cmd(horizalign,left;zoom,0.5);
+			LoadActor("SelectMusic/"..InvertSongBase())..{
+			InitCommand=cmd(horizalign,left;zoom,0.5);
+			OnCommand=function(self)
+			if JustASinglePlayer(PLAYER_2) then
+				self:zoomx(-0.5):addx(4)
+				self:horizalign(right)
+			end
+			end,
 			SetMessageCommand=function(self,params)
 			local steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber());
 			if steps then
 				self:diffuse( CustomDifficultyToColor( steps:GetDifficulty() ) )
+				DiffuseColorForBothPlayers(self)
 			end
 			end,
 			};
 	
 			LoadActor("SelectMusic/Star_WheelSong")..{
-			OnCommand=cmd(horizalign,left;zoom,0.6;y,-2;x,-15;shadowlengthy,2);
+			InitCommand=cmd(horizalign,left;zoom,0.6;y,-2;x,-15;shadowlengthy,2);
+			OnCommand=function(self)
+			if JustASinglePlayer(PLAYER_2) then
+				self:horizalign(right)
+			end
+			end,
 			SetMessageCommand=function(self,params)
 			local steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber());
 			if steps then
 				self:diffuse( CustomDifficultyToColor( steps:GetDifficulty() ) )
+				DiffuseColorForBothPlayers(self)
 			end
 			end,
 			};
@@ -101,26 +136,6 @@ local t = Def.ActorFrame {};
 					self:settext("NEW!")
 					self:diffuse(Color.Red)
 					self:strokecolor( Color.Orange )
-				else
-					self:settext("")
-				end;
-			end;
-			};
-	
-			LoadFont("unsteady oversteer") ..{
-			Text="This is test";
-			OnCommand=cmd(x,80;y,-10;zoom,1.2;strokecolor,Color.Black);
-			SetMessageCommand=function(self,params)
-				local song = params.Song;
-				local steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber());
-				if song then
-					if steps then
-						if song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then
-							self:settext( song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ):GetMeter() );
-						else
-							self:settext( " " )
-						end
-					end
 				else
 					self:settext("")
 				end;
@@ -240,5 +255,35 @@ local t = Def.ActorFrame {};
 		};
 
 	};
+
+for player in ivalues(PlayerNumber) do
+t[#t+1] = LoadFont("unsteady oversteer") ..{
+	Text="This is test";
+	OnCommand=cmd(x,((player == PLAYER_1 and 80) or 528);y,-10;zoom,1.2;strokecolor,Color.Black);
+	SetMessageCommand=function(self,params)
+		local song = params.Song;
+		local steps = GAMESTATE:GetCurrentSteps(player);
+		if song then
+			if steps then
+				if song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then
+					self:settext( song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ):GetMeter() );
+				else
+					self:settext( " " )
+				end
+			end
+		else
+			self:settext("")
+		end;
+	end;
+	};
+end
+
+t.NextSongMessageCommand=cmd(playcommand,"Close");
+t.PreviousSongMessageCommand=cmd(playcommand,"Close");
+t.StartSelectingStepsMessageCommand=cmd(queuemessage,"FadeWheel");
+t.StepsChosenMessageCommand=cmd(playcommand,"Close");
+t.PlayerJoinedMessageCommand=cmd(playcommand,"Close");
+t.CancelMessageCommand=cmd(playcommand,"Close");
+t.CloseCommand=cmd(queuemessage,"ReturnWheel");
 	
 return t;
