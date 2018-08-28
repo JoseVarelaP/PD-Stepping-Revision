@@ -1,28 +1,37 @@
 local t = Def.ActorFrame{};
 
 t[#t+1] = Def.Quad{
-	OnCommand=cmd(FullScreen;diffuse,Color.Black;diffusealpha,0;sleep,.5;accelerate,0.2;diffusealpha,1);
+	OnCommand=cmd(FullScreen;diffuse,Color.Black;sleep,2);
 }
 
-if ThemePrefs.Get("CurrentStageLocation") ~= "None" then
-	if not WarningShown then
-	
-	t[#t+1] = Def.ActorFrame{
-		InitCommand=cmd(Center);
-		OnCommand=cmd(diffusealpha,0;sleep,.3;decelerate,0.2;diffusealpha,1;sleep,7;accelerate,0.2;zoom,0);
-	
-		LoadActor( THEME:GetPathG("","WideInterpreter"), { File="Global/TextBox", Width=240, Height=70 } )..{
-		};
-	
-		LoadFont("Common Normal")..{
-			Text="If you have any 3D noteskin enabled right now, you might experience a lot of culling problems. I'm trying to fix this issue as much as I can.\n\nI hope you understand.",
-			InitCommand=cmd(zoom,0.5;wrapwidthpixels,500);
-		};
-	
-	}
-	
-	WarningShown = true
+t[#t+1] = Def.Sprite {
+	CurrentSongChangedMessageCommand=function(self)
+	self:stoptweening()
+	self:linear(0.05):diffusealpha(0)
+	self:LoadFromCurrentSongBackground()
+	:queuecommand("UpdateBackground")
+	end,
+	UpdateBackgroundCommand=function(self)
+	if GAMESTATE:GetCurrentSong() then
+		self:LoadFromCurrentSongBackground()
+		self:scale_or_crop_background()
+		self:diffusealpha(0)
+		self:sleep(1)
+		self:decelerate(0.2)
+		self:diffuse(0.7,0.7,0.7,1)
 	end
-end
+	end,
+	OnCommand=function(self)
+		self:scale_or_crop_background()
+		self:diffusealpha(0)
+		self:sleep(1)
+		self:decelerate(0.2)
+		self:diffuse(0.7,0.7,0.7,1)
+	end;
+};
+
+t[#t+1] = Def.Quad{
+	OnCommand=cmd(diffuse,Color.Black;y,SCREEN_BOTTOM-30;horizalign,left;vertalign,bottom;zoomto,500,100;faderight,1);
+}
 
 return t;
