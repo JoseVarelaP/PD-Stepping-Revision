@@ -28,33 +28,40 @@ t[#t+1] = Def.Quad{
 };
 
 
-t[#t+1] = Def.Quad{
-	InitCommand=cmd(x,SCREEN_LEFT+86;y,SCREEN_BOTTOM-14;horizalign,left;zoomto,SCREEN_WIDTH-118,16;diffusetopedge,color("#ABFFFE");diffusebottomedge,color("#2DE5D1"));
-	OnCommand=cmd(ztest,1;queuecommand,"LoopCheck");
-	LoopCheckCommand=function(self)
-	local GPSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1);
-    local ScoreToCalculate = GPSS:GetActualDancePoints()/GPSS:GetPossibleDancePoints()
 
-    if ScoreToCalculate > 0.6 then
-    	self:glowshift()
-    end
+for player in ivalues(PlayerNumber) do
+	t[#t+1] = Def.Quad{
+		InitCommand=cmd(x,SCREEN_LEFT+86;y,SCREEN_BOTTOM-14;horizalign,left;zoomto,SCREEN_WIDTH-118,16;diffusetopedge,color("#ABFFFE");diffusebottomedge,color("#2DE5D1"));
+		OnCommand=function(self)
+		self:ztest(true)
+		if 
+		self:queuecommand("LoopCheck")
+		end,
+		LoopCheckCommand=function(self)
+		local GPSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1);
+    	local ScoreToCalculate = GPSS:GetActualDancePoints()/GPSS:GetPossibleDancePoints()
+	
+    	if ScoreToCalculate > 0.6 then
+    		self:glowshift()
+    	end
+	
+    	self:sleep(1/60)
+    	self:queuecommand("LoopCheck")
+		end,
+	};
 
-    self:sleep(1/60)
-    self:queuecommand("LoopCheck")
-	end,
-};
+	t[#t+1] = Def.Quad{
+		OnCommand=cmd(x,SCREEN_LEFT+86;y,SCREEN_BOTTOM-14;horizalign,left;zoomto,2,16;diffuse,(player == PLAYER_1 and Color.Red) or Color.Orange;queuecommand,"LoopCheck");
+		LoopCheckCommand=function(self)
+		local GPSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(player);
+	    local ScoreToCalculate = GPSS:GetActualDancePoints()/GPSS:GetPossibleDancePoints()	
 
-t[#t+1] = Def.Quad{
-	OnCommand=cmd(x,SCREEN_LEFT+86;y,SCREEN_BOTTOM-14;horizalign,left;zoomto,2,16;diffuse,Color.Red;queuecommand,"LoopCheck");
-	LoopCheckCommand=function(self)
-	local GPSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1);
-    local ScoreToCalculate = GPSS:GetActualDancePoints()/GPSS:GetPossibleDancePoints()
-
-    self:x( (SCREEN_LEFT+86)+(ScoreToCalculate*(SCREEN_WIDTH-118)) )
-    self:sleep(1/60)
-    self:queuecommand("LoopCheck")
-	end,
-};
+	    self:x( (SCREEN_LEFT+86)+(ScoreToCalculate*(SCREEN_WIDTH-118)) )
+	    self:sleep(1/60)
+	    self:queuecommand("LoopCheck")
+		end,
+	};
+end
 
 
 t[#t+1] = LoadFont("Common Normal")..{

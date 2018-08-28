@@ -34,16 +34,14 @@ local t = Def.ActorFrame {};
 			local steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber());
 				if song then
 					if steps then
-						if not BothPlayersEnabled() then
-							if song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then
-								self:stoptweening()
-								self:zoom(1)
-								self:diffuse(1,1,1,1)
-							else
-								self:stoptweening()
-								self:zoom(0.9)
-								self:diffuse(0.6,0.6,0.6,1)
-							end
+						if song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then
+							self:stoptweening()
+							self:zoom(1)
+							self:diffuse(1,1,1,1)
+						else
+							self:stoptweening()
+							self:zoom(0.9)
+							self:diffuse(0.6,0.6,0.6,1)
 						end
 					end
 				end
@@ -103,11 +101,10 @@ local t = Def.ActorFrame {};
 			LoadFont("renner/20px") ..{
 			OnCommand=cmd(x,110;y,-14;horizalign,left;shadowlength,1;strokecolor,Color.Black;maxwidth,430);
 			SetMessageCommand=function(self,params)
-				local song = params.Song;
+			self:settext("")
+			local song = params.Song;
 				if song then
 					self:settext( song:GetDisplayMainTitle() );
-				else
-					self:settext("")
 				end;
 			end;
 			};
@@ -115,15 +112,14 @@ local t = Def.ActorFrame {};
 			LoadFont("proto sans 33") ..{
 			OnCommand=cmd(x,500;y,-30;zoom,0.8;horizalign,right;shadowlength,1;strokecolor,Color.Blue);
 			SetMessageCommand=function(self,params)
-				local song = params.Song;
+			self:settext("")
+			local song = params.Song;
 				if song then
 					if string.len(song:GetGenre()) > 1 then
 						self:settext( song:GetGenre() );
 					else
 						self:settext( "No Genre" );
 					end
-				else
-					self:settext("")
 				end;
 			end;
 			};
