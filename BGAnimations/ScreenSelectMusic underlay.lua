@@ -111,7 +111,7 @@ t[#t+1] = Def.ActorFrame{
 	};
 
 	LoadFont("Common Normal")..{
-		InitCommand=cmd(diffusealpha,1;horizalign,left;x,WideScale(-280,-350);y,40;strokecolor,Color.Black;rotationz,-2);
+		InitCommand=cmd(diffusealpha,1;horizalign,left;x,WideScale(-280,-350);y,40;strokecolor,Color.Black;rotationz,-2;maxwidth,WideScale(260,550));
 		CurrentSongChangedMessageCommand=function(self)
  			self:finishtweening():smooth(0.1):diffusealpha(0):sleep(0.1):queuecommand("UpdateBackground")
  		end,
@@ -139,8 +139,12 @@ t[#t+1] = Def.ActorFrame{
 		UpdateBackgroundCommand=function(self)
 		self:finishtweening()
 		self:settext("")
+		self:y(65)
  		if GAMESTATE:GetCurrentSong() then
 			self:settext( GAMESTATE:GetCurrentSong():GetDisplayArtist() )
+			if GAMESTATE:GetCurrentSong():GetDisplaySubTitle() == "" then
+ 				self:y(60)
+ 			end
  		end
  		self:zoom(0.85)
  		self:smooth(0.1)

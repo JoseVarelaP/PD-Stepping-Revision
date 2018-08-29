@@ -1,9 +1,5 @@
 local t = Def.ActorFrame{};
 
-t[#t+1] = LoadActor( THEME:GetPathG("","Gameplay/TopInfo") )..{
-	OnCommand=cmd(x,SCREEN_LEFT;horizalign,left;zoom,1;vertalign,top);
-};
-
 t[#t+1] = Def.Quad{
 	OnCommand=cmd(x,SCREEN_LEFT+86;y,SCREEN_BOTTOM-14;horizalign,left;zoomto,SCREEN_WIDTH-118,16;diffuse,Color.Black;fadetop,1);	
 };
@@ -81,20 +77,8 @@ t[#t+1] = LoadActor( THEME:GetPathG("","Gameplay/PBar right") )..{
 	OnCommand=cmd(x,SCREEN_RIGHT-4;horizalign,right;vertalign,bottom;y,SCREEN_BOTTOM-5;zoom,1.4);
 };
 
-
--- Need to remake this one!
-
--- t[#t+1] = LoadActor( THEME:GetPathG("","Gameplay/TuneIcon") )..{
--- 	OnCommand=cmd(x,SCREEN_LEFT+10;y,7;horizalign,left;zoom,2;SetTextureFiltering,false;vertalign,top);
--- };
-
-t[#t+1] = LoadFont("Common Normal")..{
-	Text=GAMESTATE:GetCurrentSong():GetDisplayFullTitle();
-	OnCommand=cmd(x,SCREEN_LEFT+90;y,4;horizalign,left;zoom,0.6;SetTextureFiltering,false;vertalign,top);
-};
-
 t[#t+1] = LoadFont("laxero")..{
-	OnCommand=cmd(x,SCREEN_LEFT+40;y,SCREEN_BOTTOM-20;diffusebottomedge,Color.Yellow;diffusetopedge,color("1,1,1,1");horizalign,left;zoom,0.8;strokecolor,Color.Black;queuecommand,"LoopCheck");
+	OnCommand=cmd(x,SCREEN_LEFT+40;y,SCREEN_BOTTOM-20;diffusebottomedge,Color.Yellow;diffusetopedge,color("1,1,1,1");shadowlength,2;horizalign,left;zoom,0.8;strokecolor,Color.Black;queuecommand,"LoopCheck");
 	LoopCheckCommand=function(self)
 	local GPSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1);
     local ScoreToCalculate = GPSS:GetActualDancePoints()/GPSS:GetPossibleDancePoints()
@@ -104,23 +88,6 @@ t[#t+1] = LoadFont("laxero")..{
     self:queuecommand("LoopCheck")
 	end,
 };
-
-
--- t[#t+1] = LoadActor( THEME:GetPathG("","Gameplay/BottomInfo/Base") )..{
--- 	OnCommand=cmd(CenterX;zoomtowidth,SCREEN_WIDTH-126;cropright,0.0755;SetTextureFiltering,false;y,SCREEN_BOTTOM;vertalign,bottom);
--- };
-
--- t[#t+1] = LoadActor( THEME:GetPathG("","Gameplay/BottomInfo/LifeIndicator") )..{
--- 	OnCommand=cmd(x,SCREEN_LEFT;horizalign,left;zoom,1;SetTextureFiltering,false;y,SCREEN_BOTTOM;vertalign,bottom);
--- };
-
--- t[#t+1] = LoadActor( THEME:GetPathG("","Gameplay/BottomInfo/RightBorder") )..{
--- 	OnCommand=cmd(x,SCREEN_RIGHT;horizalign,right;zoom,1;SetTextureFiltering,false;y,SCREEN_BOTTOM;vertalign,bottom);
--- };
-
-t[#t+1] = Def.Quad{
-	OnCommand=cmd(FullScreen;diffuse,Color.Black;linear,1;diffusealpha,0);
-}
 
 t.OnCommand=function(self)
 local ClearBG = self:GetChild("ClearBG");
