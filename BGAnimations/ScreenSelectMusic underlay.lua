@@ -111,7 +111,7 @@ t[#t+1] = Def.ActorFrame{
 	};
 
 	LoadFont("Common Normal")..{
-		InitCommand=cmd(diffusealpha,1;horizalign,left;x,WideScale(-280,-350);y,40;strokecolor,Color.Black;rotationz,-2;maxwidth,WideScale(260,550));
+		InitCommand=cmd(diffusealpha,1;horizalign,left;x,WideScale(-280,-400);y,40;strokecolor,Color.Black;rotationz,-2;maxwidth,WideScale(260,550));
 		CurrentSongChangedMessageCommand=function(self)
  			self:finishtweening():smooth(0.1):diffusealpha(0):sleep(0.1):queuecommand("UpdateBackground")
  		end,
@@ -132,7 +132,7 @@ t[#t+1] = Def.ActorFrame{
 	};
 
 	LoadFont("Common Normal")..{
-		InitCommand=cmd(diffusealpha,1;horizalign,left;x,WideScale(-280,-350);y,65;strokecolor,Color.Black;rotationz,-2;maxwidth,WideScale(340,550));
+		InitCommand=cmd(diffusealpha,1;horizalign,left;x,WideScale(-280,-400);y,65;strokecolor,Color.Black;rotationz,-2;maxwidth,WideScale(340,550));
 		CurrentSongChangedMessageCommand=function(self)
  			self:finishtweening():smooth(0.1):diffusealpha(0):sleep(0.1):queuecommand("UpdateBackground")
  		end,
@@ -157,7 +157,7 @@ t[#t+1] = Def.ActorFrame{
 	};
 
 	LoadFont("Common Normal")..{
-		InitCommand=cmd(diffusealpha,1;horizalign,left;x,WideScale(-280,-350);y,53;strokecolor,Color.Black;rotationz,-2;maxwidth,WideScale(340,550));
+		InitCommand=cmd(diffusealpha,1;horizalign,left;x,WideScale(-280,-400);y,53;strokecolor,Color.Black;rotationz,-2;maxwidth,WideScale(340,550));
 		CurrentSongChangedMessageCommand=function(self)
  			self:finishtweening():smooth(0.1):diffusealpha(0):sleep(0.1):queuecommand("UpdateBackground")
  		end,

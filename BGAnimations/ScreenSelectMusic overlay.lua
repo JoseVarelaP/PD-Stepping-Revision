@@ -252,7 +252,7 @@ t[#t+1] = Def.ActorFrame{
 		CloseCommand=cmd(stoptweening;stopeffect;decelerate,0.03;y,SCREEN_CENTER_Y-100;diffusealpha,0);
 
 			LoadActor( THEME:GetPathG("","SelectMusic/WheelHighlight"))..{
-			InitCommand=cmd(x,303;zoom,0.5;pulse;effectmagnitude,1,1.02,0;effectclock,"bgm";effectperiod,1);
+			InitCommand=cmd(x,303;zoom,0.5;pulse;effectmagnitude,1,1.02,0;effectclock,"bgm";effectperiod,1;effectoffset,0.2);
 			SetMessageCommand=function(self,params)
 				local steps = GAMESTATE:GetCurrentSteps( GAMESTATE:GetMasterPlayerNumber() ):GetDifficulty()
 				self:diffuse( CustomDifficultyToColor( steps ) )

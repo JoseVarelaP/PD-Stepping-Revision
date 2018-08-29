@@ -5,7 +5,7 @@ local t = Def.ActorFrame{
 };
 
 	t[#t+1] = Def.ActorFrame{
-		OnCommand=cmd(x,290;pulse;effectmagnitude,1,1.02,0;effectclock,"bgm";effectperiod,1);
+		OnCommand=cmd(x,290;pulse;effectmagnitude,1,1.02,0;effectclock,"bgm";effectperiod,1;effectoffset,0.2);
 
 		LoadActor("SelectMusic/WheelHighlight")..{
 		InitCommand=cmd(zoom,0.54;zoomy,0.64);
