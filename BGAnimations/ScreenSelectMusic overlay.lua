@@ -1,14 +1,42 @@
 -- hi im jose and welcome to jackass
+local CurrentSong = GAMESTATE:GetCurrentSong();
+
 
 local t = Def.ActorFrame{
 	OnCommand=function(self)
 	DIVA:ResetRandomSong()
 	MESSAGEMAN:Broadcast("HideBackground")
 	end,
-	CurrentStepsP1ChangedMessageCommand=cmd(queuemessage,"UpdateSteps");
-	CurrentStepsP2ChangedMessageCommand=cmd(queuemessage,"UpdateSteps");
+	CurrentStepsP1ChangedMessageCommand=function(self) MESSAGEMAN:Broadcast("UpdateSteps") end;
+	CurrentStepsP2ChangedMessageCommand=function(self) MESSAGEMAN:Broadcast("UpdateSteps") end;
 	CurrentSongChangedMessageCommand=cmd(queuemessage,"UpdateSteps");
 }
+
+local function BothPlayersEnabled()
+	return GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsPlayerEnabled(PLAYER_2)
+end
+
+local function JustASinglePlayer(pn)
+	if pn == PLAYER_1 then return GAMESTATE:IsPlayerEnabled(PLAYER_1) and not GAMESTATE:IsPlayerEnabled(PLAYER_2) end
+	if pn == PLAYER_2 then return GAMESTATE:IsPlayerEnabled(PLAYER_2) and not GAMESTATE:IsPlayerEnabled(PLAYER_1) end
+end
+
+local function DiffuseColorForBothPlayers(self)
+	if BothPlayersEnabled() then
+		if GAMESTATE:GetCurrentSteps(PLAYER_1) then
+			self:diffuseleftedge( CustomDifficultyToColor( GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() ) )
+		end
+		if GAMESTATE:GetCurrentSteps(PLAYER_2) then
+			self:diffuserightedge( CustomDifficultyToColor( GAMESTATE:GetCurrentSteps(PLAYER_2):GetDifficulty() ) )
+		end
+	end
+end
+
+local function InvertSongBase()
+	WhatToLoad = "Color_WheelSong"
+	if BothPlayersEnabled() then WhatToLoad = "2PColor_WheelSong" end
+	return WhatToLoad
+end
 
 local EntireSongTable = SONGMAN:GetAllSongs();
 
@@ -211,6 +239,7 @@ t[#t+1] = Def.ActorFrame {
 -- 	};
 
 -- Message for the new player that joined.
+local InfoPreview = Def.ActorFrame{};
 
 t[#t+1] = Def.ActorFrame{
 		InitCommand=cmd(diffusealpha,0;x,WideScale(SCREEN_LEFT-15,SCREEN_LEFT+46);y,SCREEN_CENTER_Y-100;zoom,0.6);
@@ -234,54 +263,117 @@ t[#t+1] = Def.ActorFrame{
 			OnCommand=cmd(horizalign,left;zoom,0.5);
 			};
 	
-			LoadActor( THEME:GetPathG("","SelectMusic/Color_WheelSong"))..{
-			OnCommand=cmd(horizalign,left;zoom,0.5);
+			LoadActor( THEME:GetPathG("","SelectMusic/"..InvertSongBase()))..{
+			InitCommand=cmd(horizalign,left;zoom,0.5);
+			OnCommand=function(self)
+			if JustASinglePlayer(PLAYER_2) then
+				self:zoomx(-0.5):addx(4)
+				self:horizalign(right)
+			end
+			end,
 			UpdateStepsMessageCommand=function(self,params)
-			local steps = GAMESTATE:GetCurrentSteps( GAMESTATE:GetMasterPlayerNumber() ):GetDifficulty()
-			self:diffuse( CustomDifficultyToColor( steps ) )
+			local steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber());
+			if steps then
+				self:diffuse( CustomDifficultyToColor( steps:GetDifficulty() ) )
+				DiffuseColorForBothPlayers(self)
+			end
+			end,
+			PlayerJoinedMessageCommand=function(self)
+			self:Load( THEME:GetPathG("","SelectMusic/"..InvertSongBase()) )
 			end,
 			};
 	
 			LoadActor( THEME:GetPathG("","SelectMusic/Star_WheelSong"))..{
-			OnCommand=cmd(horizalign,left;zoom,0.6;y,-2;x,-15;shadowlengthy,2);
+			InitCommand=cmd(horizalign,left;zoom,0.6;y,-2;x,-15;shadowlengthy,2);
+			OnCommand=function(self)
+			if JustASinglePlayer(PLAYER_2) then
+				self:horizalign(right)
+			end
+			end,
 			UpdateStepsMessageCommand=function(self,params)
-			local steps = GAMESTATE:GetCurrentSteps( GAMESTATE:GetMasterPlayerNumber() ):GetDifficulty()
-			self:diffuse( CustomDifficultyToColor( steps ) )
+			local steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber());
+			if steps then
+				self:diffuse( CustomDifficultyToColor( steps:GetDifficulty() ) )
+				DiffuseColorForBothPlayers(self)
+			end
 			end,
 			};
-	
-			LoadFont("Common Normal") ..{
+
+			LoadFont("renner/20px") ..{
 			Text="This is test";
 			OnCommand=cmd(x,110;y,-14;horizalign,left;shadowlength,1;strokecolor,Color.Black);
 			UpdateStepsMessageCommand=function(self,params)
-				local song = GAMESTATE:GetCurrentSong();
+			self:settext("")
+			local song = GAMESTATE:GetCurrentSong();
 				if song then
 					self:settext( song:GetDisplayMainTitle() );
-				else
-					self:settext("")
 				end;
 			end;
 			};
 	
 			LoadFont("unsteady oversteer") ..{
+			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1);
 			OnCommand=cmd(x,80;y,-10;zoom,1.2;strokecolor,Color.Black);
 			UpdateStepsMessageCommand=function(self,params)
-				local song = GAMESTATE:GetCurrentSong();
-				if song then
-					if song:GetOneSteps("StepsType_Dance_Single", GAMESTATE:GetCurrentSteps( GAMESTATE:GetMasterPlayerNumber() ):GetDifficulty() ) then
-						self:settext( song:GetOneSteps("StepsType_Dance_Single", GAMESTATE:GetCurrentSteps( GAMESTATE:GetMasterPlayerNumber() ):GetDifficulty() ):GetMeter() );
+			local song = GAMESTATE:GetCurrentSong();
+			local steps = GAMESTATE:GetCurrentSteps(PLAYER_1);
+			if song then
+				if steps then
+					if song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then
+						self:settext( song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ):GetMeter() );
 					else
-						self:settext( "0" )
+						self:settext( " " )
 					end
-				else
-					self:settext("")
-				end;
+				end
+			else
+				self:settext("")
+			end
 			end;
-		};
+			};
+
+			LoadFont("unsteady oversteer") ..{
+			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2);
+			OnCommand=cmd(x,528;y,-10;zoom,1.2;strokecolor,Color.Black);
+			UpdateStepsMessageCommand=function(self,params)
+			local song = GAMESTATE:GetCurrentSong();
+			local steps = GAMESTATE:GetCurrentSteps(PLAYER_2);
+			if song then
+				if steps then
+					if song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then
+						self:settext( song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ):GetMeter() );
+					else
+						self:settext( " " )
+					end
+				end
+			else
+				self:settext("")
+			end
+			end;
+			};
 
 	};
 
-
+for player in ivalues(PlayerNumber) do
+t[#t+1] = LoadFont("unsteady oversteer") ..{
+	Condition=GAMESTATE:IsPlayerEnabled(player);
+	OnCommand=cmd(x,((player == PLAYER_1 and 80) or 528);y,-10;zoom,1.2;strokecolor,Color.Black);
+	SetMessageCommand=function(self,params)
+		local song = params.Song;
+		local steps = GAMESTATE:GetCurrentSteps(player);
+		if song then
+			if steps then
+				if song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then
+					self:settext( song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ):GetMeter() );
+				else
+					self:settext( " " )
+				end
+			end
+		else
+			self:settext("")
+		end;
+	end;
+};
+end
 for player in ivalues(PlayerNumber) do
 
 	local function WhichIsMissing()

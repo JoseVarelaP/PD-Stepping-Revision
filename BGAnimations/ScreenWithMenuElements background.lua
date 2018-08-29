@@ -111,8 +111,8 @@ for i=1,5 do
 t[#t+1] = Def.ActorFrame{
 	OnCommand=cmd(CenterX;y,SCREEN_CENTER_Y-40+(15*i));
 	LoadActor( THEME:GetPathG("","BGElements/SmoothLine") )..{
-		InitCommand=cmd(diffuse,ColorsToUse[i];z,math.random(-30,150);fadetop,1;wag;effectmagnitude,0,0,5;effectperiod,20;effectoffset,5*i);
-		OnCommand=cmd(texcoordvelocity,(0.15/i),0;customtexturerect,0,0,TileXAmm,1;zoom,0.25;zoomx,0.3*TileXAmm;diffusealpha,(300/self:GetZ()));
+		InitCommand=cmd(diffuse,ColorsToUse[i];z,math.random(-30,150);fadetop,1;wag;effectmagnitude,0,0,5;effectperiod,20;effectoffset,7*i);
+		OnCommand=cmd(texcoordvelocity,(0.15/i),0;customtexturerect,0,0,TileXAmm,1;zoom,0.20;zoomx,0.2*TileXAmm;diffusealpha,(300/self:GetZ()));
 	};
 };
 end

@@ -32,8 +32,8 @@ local t = Def.ActorFrame {};
 			SetMessageCommand=function(self,params)
 			local song = params.Song;
 			local steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber());
-				if song then
-					if steps then
+				if song and steps then
+					if not BothPlayersEnabled() then
 						if song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then
 							self:stoptweening()
 							self:zoom(1)
