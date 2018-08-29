@@ -110,6 +110,69 @@ t[#t+1] = Def.ActorFrame{
 		end;
 	};
 
+	LoadFont("Common Normal")..{
+		InitCommand=cmd(diffusealpha,1;horizalign,left;x,WideScale(-280,-350);y,40;strokecolor,Color.Black;rotationz,-2);
+		CurrentSongChangedMessageCommand=function(self)
+ 			self:finishtweening():smooth(0.1):diffusealpha(0):sleep(0.1):queuecommand("UpdateBackground")
+ 		end,
+		UpdateBackgroundCommand=function(self)
+		self:finishtweening()
+		self:settext("")
+ 		if GAMESTATE:GetCurrentSong() then
+			self:settext( GAMESTATE:GetCurrentSong():GetDisplayMainTitle() )
+ 		end
+ 		self:zoom(1.1)
+ 		self:smooth(0.1)
+ 		self:diffusealpha(1)
+ 		self:zoom(1)
+		end,
+		OnCommand=function(self)
+			self:shadowlength(5):diffusealpha(0):linear(0.5):diffusealpha(1)
+		end;
+	};
+
+	LoadFont("Common Normal")..{
+		InitCommand=cmd(diffusealpha,1;horizalign,left;x,WideScale(-280,-350);y,65;strokecolor,Color.Black;rotationz,-2;maxwidth,WideScale(340,550));
+		CurrentSongChangedMessageCommand=function(self)
+ 			self:finishtweening():smooth(0.1):diffusealpha(0):sleep(0.1):queuecommand("UpdateBackground")
+ 		end,
+		UpdateBackgroundCommand=function(self)
+		self:finishtweening()
+		self:settext("")
+ 		if GAMESTATE:GetCurrentSong() then
+			self:settext( GAMESTATE:GetCurrentSong():GetDisplayArtist() )
+ 		end
+ 		self:zoom(0.85)
+ 		self:smooth(0.1)
+ 		self:diffusealpha(1)
+ 		self:zoom(0.8)
+		end,
+		OnCommand=function(self)
+			self:shadowlength(5):diffusealpha(0):linear(0.5):diffusealpha(1)
+		end;
+	};
+
+	LoadFont("Common Normal")..{
+		InitCommand=cmd(diffusealpha,1;horizalign,left;x,WideScale(-280,-350);y,53;strokecolor,Color.Black;rotationz,-2;maxwidth,WideScale(340,550));
+		CurrentSongChangedMessageCommand=function(self)
+ 			self:finishtweening():smooth(0.1):diffusealpha(0):sleep(0.1):queuecommand("UpdateBackground")
+ 		end,
+		UpdateBackgroundCommand=function(self)
+		self:finishtweening()
+		self:settext("")
+ 		if GAMESTATE:GetCurrentSong() then
+			self:settext( GAMESTATE:GetCurrentSong():GetDisplaySubTitle() )
+ 		end
+ 		self:zoom(0.65)
+ 		self:smooth(0.1)
+ 		self:diffusealpha(1)
+ 		self:zoom(0.6)
+		end,
+		OnCommand=function(self)
+			self:shadowlength(5):diffusealpha(0):linear(0.5):diffusealpha(1)
+		end;
+	};
+
 }
 
 return t;
