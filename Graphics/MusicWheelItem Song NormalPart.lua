@@ -253,7 +253,6 @@ local t = Def.ActorFrame {};
 
 for player in ivalues(PlayerNumber) do
 t[#t+1] = LoadFont("unsteady oversteer") ..{
-	Condition=GAMESTATE:IsPlayerEnabled(player);
 	OnCommand=cmd(x,((player == PLAYER_1 and 80) or 528);y,-10;zoom,1.2;strokecolor,Color.Black);
 	SetMessageCommand=function(self,params)
 		local song = params.Song;

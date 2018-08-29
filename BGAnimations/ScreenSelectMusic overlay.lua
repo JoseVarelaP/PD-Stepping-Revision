@@ -312,7 +312,6 @@ t[#t+1] = Def.ActorFrame{
 			};
 	
 			LoadFont("unsteady oversteer") ..{
-			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1);
 			OnCommand=cmd(x,80;y,-10;zoom,1.2;strokecolor,Color.Black);
 			UpdateStepsMessageCommand=function(self,params)
 			local song = GAMESTATE:GetCurrentSong();
@@ -332,7 +331,6 @@ t[#t+1] = Def.ActorFrame{
 			};
 
 			LoadFont("unsteady oversteer") ..{
-			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2);
 			OnCommand=cmd(x,528;y,-10;zoom,1.2;strokecolor,Color.Black);
 			UpdateStepsMessageCommand=function(self,params)
 			local song = GAMESTATE:GetCurrentSong();
@@ -353,27 +351,6 @@ t[#t+1] = Def.ActorFrame{
 
 	};
 
-for player in ivalues(PlayerNumber) do
-t[#t+1] = LoadFont("unsteady oversteer") ..{
-	Condition=GAMESTATE:IsPlayerEnabled(player);
-	OnCommand=cmd(x,((player == PLAYER_1 and 80) or 528);y,-10;zoom,1.2;strokecolor,Color.Black);
-	SetMessageCommand=function(self,params)
-		local song = params.Song;
-		local steps = GAMESTATE:GetCurrentSteps(player);
-		if song then
-			if steps then
-				if song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then
-					self:settext( song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ):GetMeter() );
-				else
-					self:settext( " " )
-				end
-			end
-		else
-			self:settext("")
-		end;
-	end;
-};
-end
 for player in ivalues(PlayerNumber) do
 
 	local function WhichIsMissing()
