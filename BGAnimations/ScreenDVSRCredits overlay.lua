@@ -11,12 +11,12 @@ t[#t+1] = Def.Quad{
 };
 
 t[#t+1] = Def.ActorFrame{
-	InitCommand=cmd(x,SCREEN_CENTER_X-40;CenterY);
+	InitCommand=cmd(x,SCREEN_CENTER_X-20;CenterY);
 	OnCommand=cmd(sleep,25;accelerate,1;diffusealpha,0);
 
 	LoadFont("Common Normal")..{
-		Text="Stepping Revision Project\nVersion ".. PDSRPInfo["Version"],
-		InitCommand=cmd(horizalign,right;y,-40;zoom,0.5;diffusealpha,0;shadowlengthy,2);
+		Text="Version ".. PDSRPInfo["Version"],
+		InitCommand=cmd(horizalign,right;y,35;x,-70;zoom,0.5;diffusealpha,0;shadowlengthy,2;strokecolor,Color.Black);
 		OnCommand=cmd(sleep,1;decelerate,0.2;diffusealpha,1);
 		OffCommand=cmd(accelerate,0.2;diffusealpha,0);
 	};
