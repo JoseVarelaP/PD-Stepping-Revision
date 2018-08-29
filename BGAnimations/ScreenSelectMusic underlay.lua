@@ -55,7 +55,6 @@ t[#t+1] = Def.Sprite {
  		self:fadetop(0)
  		self:cropbottom(0)
  		self:fadebottom(0)
-
  		self:sleep(0.2):smooth(0.4):fadebottom(0.8):cropbottom(1):sleep(0.1)
  	self:queuecommand("BeginProcess")
  	end,
@@ -71,12 +70,13 @@ t[#t+1] = Def.Sprite {
  			self:visible(true)
  			self:LoadBackground(GAMESTATE:GetCurrentSong():GetBackgroundPath())
 			self:scaletocover(0,0,SCREEN_WIDTH,SCREEN_BOTTOM)
- 			self:smooth(0.5)
+ 			self:smooth(0.3)
 			self:fadetop(0)
 			self:croptop(0)
  			self:diffusealpha(1)
  		else
  			self:visible(false)
+ 			self:LoadBackground(THEME:GetPathG("","_blank"))
  		end
  	end,
 };
