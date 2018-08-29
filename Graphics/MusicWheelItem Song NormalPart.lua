@@ -31,17 +31,20 @@ local t = Def.ActorFrame {};
 		Def.ActorFrame{
 			SetMessageCommand=function(self,params)
 			local song = params.Song;
-			local steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber());
-				if song and steps then
-					if not BothPlayersEnabled() then
-						if song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then
-							self:stoptweening()
-							self:zoom(1)
-							self:diffuse(1,1,1,1)
-						else
-							self:stoptweening()
-							self:zoom(0.9)
-							self:diffuse(0.6,0.6,0.6,1)
+			local steps = GAMESTATE:GetCurrentSteps( GAMESTATE:GetMasterPlayerNumber() );
+			local stepsP1 = GAMESTATE:GetCurrentSteps(PLAYER_1);
+			local stepsP2 = GAMESTATE:GetCurrentSteps(PLAYER_2);
+			self:stoptweening()
+			self:zoom(1)
+			self:diffuse(1,1,1,1)
+				if song then
+					if steps then
+						if stepsP1 or stepsP2 then
+							if not song:GetOneSteps(stepsP1:GetStepsType(), stepsP1:GetDifficulty() ) and not song:GetOneSteps(stepsP2:GetStepsType(), stepsP2:GetDifficulty() ) then
+								self:stoptweening()
+								self:zoom(0.9)
+								self:diffuse(0.6,0.6,0.6,1)
+							end
 						end
 					end
 				end

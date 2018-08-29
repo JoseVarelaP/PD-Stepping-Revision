@@ -16,34 +16,26 @@ t[#t+1] = LoadFont("Common Normal")..{
 
 if ThemePrefs.Get("EnableRandomSongPlay") then
 
-	local FadeIn = cmd(sleep,.3;decelerate,0.2;diffusealpha,0.5);
-	local GlobalItems = cmd(horizalign,right;zoom,0.6;shadowlengthy,1);
+	local FadeIn = cmd(sleep,.3;decelerate,0.2;diffuse,0,0,0,1);
+	local GlobalItems = cmd(horizalign,left;diffuse,0,0,0,1;zoom,0.6;shadowlengthy,1);
 
 	t[#t+1] = Def.ActorFrame{
 		InitCommand=cmd(diffusealpha,0);
-		OnCommand=cmd(zoom,0.8;x,SCREEN_RIGHT-100;y,SCREEN_BOTTOM-120;sleep,.3;decelerate,0.2;diffusealpha,0.5);
+		OnCommand=cmd(zoom,0.8;x,SCREEN_LEFT+70;y,SCREEN_BOTTOM-35;sleep,.3;decelerate,0.2;diffusealpha,1);
 		OffCommand=cmd(accelerate,0.2;diffusealpha,0);
 
+		LoadActor( THEME:GetPathG("","MusicNote"))..{
+		OnCommand=cmd(zoom,0.15;x,-15;y,-3);
+		};
+
 		LoadFont("Common Normal")..{
-		Text=DIVA_RandomSong:GetDisplayMainTitle();
+		Text=DIVA_RandomSong:GetDisplayFullTitle() .." - ".. DIVA_RandomSong:GetDisplayArtist();
 		InitCommand=GlobalItems;
 		OnCommand=function(self)
+		self:strokecolor( Color.White )
 		local ToMove = -2
-		if DIVA:HasSubtitles(DIVA_RandomSong) then
-			ToMove = -10
-		end
 		self:y(ToMove)
 		end,
-		};
-		LoadFont("Common Normal")..{
-		Text=DIVA_RandomSong:GetDisplaySubTitle();
-		InitCommand=GlobalItems;
-		OnCommand=cmd(zoom,0.4;y,2);
-		};
-		LoadFont("Common Normal")..{
-		Text=DIVA_RandomSong:GetDisplayArtist();
-		InitCommand=GlobalItems;
-		OnCommand=cmd(y,12);
 		};
 	};
 end
