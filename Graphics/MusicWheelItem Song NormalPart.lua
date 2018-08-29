@@ -39,12 +39,17 @@ local t = Def.ActorFrame {};
 			self:diffuse(1,1,1,1)
 				if song then
 					if steps then
-						if stepsP1 or stepsP2 then
-							if not song:GetOneSteps(stepsP1:GetStepsType(), stepsP1:GetDifficulty() ) and not song:GetOneSteps(stepsP2:GetStepsType(), stepsP2:GetDifficulty() ) then
-								self:stoptweening()
-								self:zoom(0.9)
-								self:diffuse(0.6,0.6,0.6,1)
-							end
+						if not song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then
+							self:stoptweening()
+							self:zoom(0.9)
+							self:diffuse(0.6,0.6,0.6,1)
+						end
+					end
+					if stepsP1 and stepsP2 then
+						if not song:GetOneSteps(stepsP1:GetStepsType(), stepsP1:GetDifficulty() ) and not song:GetOneSteps(stepsP2:GetStepsType(), stepsP2:GetDifficulty() ) then
+							self:stoptweening()
+							self:zoom(0.9)
+							self:diffuse(0.6,0.6,0.6,1)
 						end
 					end
 				end
