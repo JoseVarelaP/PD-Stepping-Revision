@@ -97,16 +97,10 @@ t[#t+1] = LoadActor("MenuScrollers/ChoiceBackLabel")..{
 	CheckForAnythingCommand=function(self)
 	local optrow = self:GetParent():GetParent():GetParent()
 	
-	if GlobalOptions[optrow:GetName()] then
-		if optrow:GetNumChoices() > 1 then
-			self:visible(true)
-		end
+	if optrow:GetNumChoices() > 1 then
+		self:visible(true)
 	end
-	for i=1,#AbleToSwitch do
-		if optrow:GetNumChoices() > 1 and SCREENMAN:GetTopScreen():GetName() == AbleToSwitch[i] then
-			self:visible(true)
-		end
-	end
+	
 	end,
 };
 
