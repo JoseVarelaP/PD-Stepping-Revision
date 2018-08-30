@@ -97,6 +97,24 @@ local DebugMessages = {
 			end
 		end
 	end,
+	TempoCheck = function()
+		if DebugMode then
+			if ThemePrefs.Get("DediModelBPM") then
+				Trace(
+				"Current Beat: "..GAMESTATE:GetSongBeat() ..
+				" - New Model Rate: ".. 0.5*GAMESTATE:GetSongBPS() ..
+				" - Current BPS: ".. GAMESTATE:GetSongBPS()
+				)
+			else
+				Trace(
+				"Current Beat: "..GAMESTATE:GetSongBeat() ..
+				" - New Model Rate: ".. 0.5*GAMESTATE:GetSongBPS() ..
+				" - Current BPS: ".. GAMESTATE:GetSongBPS()
+				)
+				Trace( now.. " - ".. ModelBeat )
+			end
+		end
+	end,
 };
 
 -- timing manager
@@ -204,15 +222,14 @@ if ThemePrefs.Get("DedicatedCharacterShow") then
 						else
 							self:rate(0.5*GAMESTATE:GetSongBPS())
 							if DebugMode and MassiveLog then
-								Trace("New Model Rate: ".. 0.5*GAMESTATE:GetSongBPS() .." - Current BPS: ".. GAMESTATE:GetSongBPS())
-								Trace( now.. " - ".. ModelBeat )
+								DebugMessages.TempoCheck()
 								Trace( self:GetDefaultAnimation() )
 							end
 						end
 					else
 						self:rate(0.5*GAMESTATE:GetSongBPS())
 						if DebugMode and MassiveLog then
-							Trace("New Model Rate: ".. 0.5*GAMESTATE:GetSongBPS() .." - Current BPS: ".. GAMESTATE:GetSongBPS())
+							DebugMessages.TempoCheck()
 							Trace( self:GetDefaultAnimation() )
 						end
 					end
