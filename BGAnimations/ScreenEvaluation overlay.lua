@@ -49,7 +49,7 @@ t[#t+1] = Def.Sprite {
 		self:finishtweening()
  		self:visible(true)
  		self:LoadBackground(GAMESTATE:GetCurrentSong():GetBackgroundPath())
-		self:setsize(400/2,400/2)
+		self:setsize(450/2,400/2)
 		:rotationz(-10):x(SCREEN_LEFT+80):decelerate(0.3):x(SCREEN_LEFT+100):rotationz(-5):diffusealpha(1)
  	else
  		self:visible(false)
@@ -57,7 +57,7 @@ t[#t+1] = Def.Sprite {
 	end,
 	OnCommand=function(self)
 		self:shadowlength(10):diffusealpha(0):linear(0.5):diffusealpha(1)
-		self:setsize(400/2,400/2)
+		self:setsize(450/2,400/2)
 	end;
 };
 
@@ -66,6 +66,10 @@ local Players = GAMESTATE:GetHumanPlayers()
 
 local function NoteScore(pn,n)
 	return STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores(n)
+end
+
+local function NotePercentage(pn,n)
+	return FormatPercentScore(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetPercentageOfTaps(n))
 end
 
 local ValuesToFind = {
@@ -118,6 +122,26 @@ for player in ivalues(Players) do
 		OnCommand=function(self)
 		self:x( (player == PLAYER_1 and SCREEN_CENTER_X+260) or SCREEN_CENTER_X+130 ):y( SCREEN_CENTER_Y-(129-20)+(22.9*NVal) )
 		:horizalign(right):zoom(0.7)
+		end,
+		};
+
+		t[#t+1] = Def.BitmapText{
+		Text=NotePercentage(player,ValuesToFind[NVal]),
+		Font="Dinamight",
+		InitCommand=cmd(strokecolor,color("#2B3D44"));
+		OnCommand=function(self)
+		self:x( (player == PLAYER_1 and SCREEN_CENTER_X+355) or SCREEN_CENTER_X+130 ):y( SCREEN_CENTER_Y-(129-20)+(22.9*NVal) )
+		:horizalign(right):zoom(0.7):cropright(0.6)
+		end,
+		};
+
+		t[#t+1] = Def.BitmapText{
+		Text=string.sub(NotePercentage(player,ValuesToFind[NVal]), 3),
+		Font="Dinamight",
+		InitCommand=cmd(strokecolor,color("#2B3D44"));
+		OnCommand=function(self)
+		self:x( (player == PLAYER_1 and SCREEN_CENTER_X+350) or SCREEN_CENTER_X+130 ):y( SCREEN_CENTER_Y-(129-21)+(22.9*NVal) )
+		:horizalign(right):zoom(0.6)
 		end,
 		};
 

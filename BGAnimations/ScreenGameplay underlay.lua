@@ -157,6 +157,9 @@ t[#t+1] = Def.ActorFrame{
 			Bones=DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
 			OnCommand=function(self)
 				self:cullmode("CullMode_None")
+				if ThemePrefs.Get("CurrentStageLocation") == "CyberWorld" then
+					self:zoom(8)
+				end
 			end,
 		};
 
