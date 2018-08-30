@@ -30,53 +30,6 @@ local function GenerateModel(CharacterToGrab, MaxToGet, zpos, xpos, cullmode, ra
 	return t;
 end
 
-local FuturaToLoad = ( 
-		ThemePrefs.Get("CurrentStageLighting") == "Auto" and 
-			((Hour() < 6 or Hour() > 19) and "Night" or "Day")
-		) or ThemePrefs.Get("CurrentStageLighting")
-
--- t[#t+1] = Def.ActorFrame{
--- 	InitCommand=cmd(Center;rotationy,180;spin;z,WideScale(300,400);addy,10;effectmagnitude,0,10,0);
--- 	OnCommand=cmd(addy,20;addx,100;addz,-40;decelerate,3;addx,-100;addz,40;addy,-20);
-
--- 		Def.ActorFrame{
--- 		OnCommand=cmd(wag;effectmagnitude,0,0,2;effectperiod,5);
-
--- 			Def.ActorFrame{
--- 			OnCommand=cmd(wag;effectmagnitude,2,0,0;effectperiod,3);
-			
--- 				Def.Model {
--- 					-- In case the Locations are killing perfomance, then
--- 					-- disable it completely when going to None.
--- 					Condition=ThemePrefs.Get("CurrentStageLocation") ~= "None";
--- 					Meshes=DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
--- 					Materials=DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/"..FuturaToLoad.."_material.txt");
--- 					Bones=DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
--- 					OnCommand=function(self)
--- 						self:cullmode("CullMode_None")
--- 					end,
--- 				};
-		
--- 				GenerateModel(Sec_CharacterToLoad, 1, 26, 51, "CullMode_None", 0.7);
--- 				GenerateModel(Thr_CharacterToLoad, 2, -25, -81, "CullMode_None", 0.7);
--- 				GenerateModel(Fou_CharacterToLoad, 3, -28, 90, "CullMode_None", 0.7);
--- 				GenerateModel(Fif_CharacterToLoad, 4, 25, -15, "CullMode_None", 0.7);
-				
--- 				Def.Model {
--- 					Condition=ThemePrefs.Get("ShowCharactersOnHome");
--- 					Meshes=CharacterToLoad:GetModelPath(),
--- 					Materials=CharacterToLoad:GetModelPath(),
--- 					Bones=CharacterToLoad:GetWarmUpAnimationPath(),
--- 					OnCommand=function(self)
--- 						self:rate(0.7):cullmode("CullMode_None")
--- 					end,
--- 				};
-
--- 			};
--- 		};
-
--- };
-
 t[#t+1] = LoadActor( THEME:GetPathG("","BGElements/CircleInner") )..{
 	OnCommand=cmd(x,SCREEN_RIGHT;diffusealpha,0.3;spin;effectmagnitude,0,0,24;zoom,1.2);
 };

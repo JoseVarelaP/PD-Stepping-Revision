@@ -1,9 +1,5 @@
 local t = Def.ActorFrame{}
 
-t[#t+1] = LoadActor( THEME:GetPathG("","Light_BottomMenuBar") )..{
-	OnCommand=cmd(x,SCREEN_RIGHT;horizalign,right;zoom,2;SetTextureFiltering,false;y,SCREEN_BOTTOM;vertalign,bottom);
-};
-
 t[#t+1] = Def.Quad{
 	InitCommand=cmd(zwrite,true;blend,"BlendMode_NoEffect";zoomto,350,100;CenterX;y,SCREEN_CENTER_Y;horizalign,left);
 	OnCommand=cmd(sleep,1;queuecommand,"Dissapear");

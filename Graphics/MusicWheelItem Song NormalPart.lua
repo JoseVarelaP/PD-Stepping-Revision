@@ -264,17 +264,20 @@ t[#t+1] = LoadFont("unsteady oversteer") ..{
 	OnCommand=cmd(x,((player == PLAYER_1 and 80) or 528);y,-10;zoom,1.2;strokecolor,Color.Black);
 	SetMessageCommand=function(self,params)
 		local song = params.Song;
+		local enabled = GAMESTATE:IsPlayerEnabled(player);
 		local steps = GAMESTATE:GetCurrentSteps(player);
-		if song then
-			if steps then
-				if song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then
-					self:settext( song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ):GetMeter() );
-				else
-					self:settext( " " )
+		if enabled then
+			if song then
+				if steps then
+					if song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then
+						self:settext( song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ):GetMeter() );
+					else
+						self:settext( " " )
+					end
 				end
+			else
+				self:settext("")
 			end
-		else
-			self:settext("")
 		end;
 	end;
 	};

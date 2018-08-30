@@ -29,45 +29,6 @@ end
 
 local t = Def.ActorFrame{}
 
--- Load the character BEFORE doing anything.
--- This is because calling the command will make a mesh of 
--- loading everything with other characters.
-local CharacterToLoad = CHARMAN:GetRandomCharacter();
-
-t[#t+1] = Def.ActorFrame{
-	OnCommand=cmd(fov,90);
-	Def.Model {
-		Meshes=CharacterToLoad:GetModelPath(),
-		Materials=CharacterToLoad:GetModelPath(),
-		-- For this, we'll change the location to a bone being used,
-		-- by using a function to call it.
-		-- Let's setup the Rest animation for now.
-		Bones=CharacterToLoad:GetRestAnimationPath(),
-		OnCommand=function(self)
-			-- Set their y rotation to our view.
-			-- And also apply a z that will get the model closer to the camera.
-			-- Now that we've setup the rest animation, we'll need to also setup the Y position
-			-- back to a lower one.
-			self:Center():rotationy(200):zoom(20):addy(270):z(200)
-			:x(SCREEN_RIGHT-330)
-			-- lets pause the animation
-			:rate(0.35):cullmode("CullMode_None")
-		end,
-	};
-};
-
-t[#t+1] = LoadActor( THEME:GetPathG("","Light_BottomMenuBar") )..{
-	OnCommand=cmd(x,SCREEN_RIGHT;horizalign,right;zoom,2;SetTextureFiltering,false;;y,SCREEN_BOTTOM;vertalign,bottom);
-};
-
-t[#t+1] = LoadActor( THEME:GetPathG("","Light_TopMenuBar") )..{
-	OnCommand=cmd(x,SCREEN_LEFT;horizalign,left;zoom,2;SetTextureFiltering,false;vertalign,top);
-};
-
-t[#t+1] = LoadActor( THEME:GetPathG("","Gameplay/TuneIcon") )..{
-	OnCommand=cmd(x,SCREEN_LEFT+10;y,10;horizalign,left;zoom,2;SetTextureFiltering,false;vertalign,top);
-};
-
 t[#t+1] = Def.ActorFrame{
 	OnCommand=cmd(x,SCREEN_RIGHT-30;y,SCREEN_BOTTOM-100);
 	LoadActor( THEME:GetPathG("","Evaluation/BGStatus") )..{

@@ -1,29 +1,5 @@
 local t = Def.ActorFrame{}
 
-t[#t+1] = LoadActor( THEME:GetPathG("","Light_BottomMenuBar") )..{
-	OnCommand=cmd(x,SCREEN_RIGHT;horizalign,right;zoom,2;SetTextureFiltering,false;;y,SCREEN_BOTTOM;vertalign,bottom);
-};
-
--- t[#t+1] = Def.Sprite {
--- 	CurrentSongChangedMessageCommand=function(self)
--- 	self:stoptweening()
--- 	self:linear(0.05):diffusealpha(0)
--- 	:queuecommand("UpdateBackground")
--- 	end,
--- 	UpdateBackgroundCommand=function(self)
--- 	if GAMESTATE:GetCurrentSong() and GAMESTATE:GetCurrentSong():GetBackgroundPath() then
--- 		self:finishtweening()
--- 		self:LoadFromCurrentSongBackground()
--- 		self:scale_or_crop_background()
--- 		self:linear(0.05)
--- 		self:diffusealpha(1)
--- 	end
--- 	end,
--- 	OnCommand=function(self)
--- 		self:scale_or_crop_background()
--- 	end;
--- };
-
 OldSong = GAMESTATE:GetCurrentSong();
 
 t[#t+1] = Def.Sprite {
