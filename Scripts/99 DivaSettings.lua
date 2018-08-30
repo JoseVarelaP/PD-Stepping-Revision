@@ -8,18 +8,21 @@ DSet = {
 	
 	Shared = {
 		ScrollOn = function(self)
-			(cmd(maxwidth,180;zoom,WideScale(0.5,0.7);addx,-300;decelerate,0.2;addx,300))(self);
+			self:maxwidth(180):zoom( WideScale(0.5,0.7) )
+			:addx(-300):decelerate(0.2):addx(300)
 		end,
 		ScrollOff = function(self)
-			(cmd(accelerate,0.2;addx,-300;))(self);
+			self:accelerate(0.2):addx(-300)
 		end,
 
 		ExpX = function() return SCREEN_RIGHT-310 end,
 		ExpY = function() return SCREEN_CENTER_Y-50 end,
 		ExpOn = function(self)
-		(cmd(wrapwidthpixels,370;horizalign,left;zoom,0.6;vertalign,top;diffusealpha,0;sleep,0.1;linear,0.1;diffusealpha,1))(self);
+		self:wrapwidthpixels(370):horizalign(left):zoom(0.6)
+		:vertalign(top):diffusealpha(0):sleep(1)
+		:linear(0.1):diffusealpha(1)
 		end,
-		ExpOff = function(self) (cmd(accelerate,0.2;diffusealpha,0))(self); end,
+		ExpOff = function(self) self:accelerate(0.2):diffusealpha(0) end,
 	},
 	TitleMenu = {
 		ScrollerTransform = function(self,offset,itemIndex,numItems)
@@ -42,10 +45,10 @@ DSet = {
 		return "applydefaultoptions;screen,ScreenSelectMusic;style,single;text,QuickPlay"
 		end,
 		ScrollOn = function(self)
-			(cmd(zoom,0.7;addx,-300;decelerate,0.2;addx,300))(self);
+			self:zoom(0.7):addx(-300):decelerate(0.3):addx(300)
 		end,
 		ScrollOff = function(self)
-			(cmd(accelerate,0.2;addx,-300;))(self);
+			self:accelerate(0.2):addx(-300)
 		end,
 	},
 	ScreenOptionsService = {
@@ -172,13 +175,13 @@ DSet = {
 
 	Gameplay = {
 	LyricDisplay = function(self)
- 	(cmd(x,SCREEN_LEFT+80;y,SCREEN_BOTTOM-12;zoom,0.6;horizalign,left;draworder,101;))(self);
+ 	self:xy(SCREEN_LEFT+80, SCREEN_BOTTOM-12):zoom(0.6):horizalign(left):draworder(101)
 	end,
 	},
 
 	ScreenPrompt = {
-		AnswerShow = function(self) (cmd(maxwidth,100;zoom,0.5;draworder,101;))(self); end,
-		AnswerHide = function(self) (cmd(sleep,0.3;accelerate,0.2;diffusealpha,0))(self); end,
+		AnswerShow = function(self) self:maxwidth(100):zoom(0.5):draworder(101) end,
+		AnswerHide = function(self) self:sleep(0.3):accelerate(0.2):diffusealpha(0) end,
 		AnswerY = function() return SCREEN_CENTER_Y+20 end,
 	},
 
