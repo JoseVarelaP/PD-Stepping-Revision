@@ -19,6 +19,10 @@ function DIVA:GetPathLocation(filepart1,filepart2)
 	return "/"..THEME:GetCurrentThemeDirectory().."/Locations/"..filepart1 .. filepart2
 end
 
+function DIVA:GetMenuIcon(filepart1,filepart2)
+	return "/"..THEME:GetCurrentThemeDirectory().."/MenuIcons/"..filepart1 .. filepart2
+end
+
 function DIVA:ResetRandomSong()
 	if DIVA_RandomSong and ThemePrefs.Get("EnableRandomSongPlay") then
 		if ThemePrefs.Get("FolderToPlayRandomMusic") ~= "All" then

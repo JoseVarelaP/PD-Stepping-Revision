@@ -91,7 +91,7 @@ function MusicFolder_AddChoices(n)
 end
 
 -- Now let's start adding the options
-local Prefs =
+Prefs =
 {
 	AllowMultipleModels =
 	{
@@ -117,8 +117,8 @@ local Prefs =
 	CurrentStageLocation =
 	{
 		Default = "None",
-		Choices = { OptionNameString("None"), "Rooftop", "Japonica (+P)" },
-		Values = { "None", "Rooftop", "Japonica" },
+		Choices = { OptionNameString("None"), "Rooftop", "Japonica (+P)", "Cyber World" },
+		Values = { "None", "Rooftop", "Japonica", "CyberWorld" },
 	},
 
 	DedicatedCharacterShow =

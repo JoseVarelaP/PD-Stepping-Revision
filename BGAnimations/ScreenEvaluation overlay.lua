@@ -29,93 +29,47 @@ end
 
 local t = Def.ActorFrame{}
 
--- Load the character BEFORE doing anything.
--- This is because calling the command will make a mesh of 
--- loading everything with other characters.
-local CharacterToLoad = CHARMAN:GetRandomCharacter();
+t[#t+1] = LoadActor( THEME:GetPathG("","Evaluation/Header") )..{
+	OnCommand=cmd(shadowlengthy,3;horizalign,left;vertalign,top;zoom,1.2;x,SCREEN_LEFT-300;y,12);
+	};
 
 t[#t+1] = Def.ActorFrame{
-	OnCommand=cmd(fov,90);
-	Def.Model {
-		Meshes=CharacterToLoad:GetModelPath(),
-		Materials=CharacterToLoad:GetModelPath(),
-		-- For this, we'll change the location to a bone being used,
-		-- by using a function to call it.
-		-- Let's setup the Rest animation for now.
-		Bones=CharacterToLoad:GetRestAnimationPath(),
-		OnCommand=function(self)
-			-- Set their y rotation to our view.
-			-- And also apply a z that will get the model closer to the camera.
-			-- Now that we've setup the rest animation, we'll need to also setup the Y position
-			-- back to a lower one.
-			self:Center():rotationy(200):zoom(20):addy(270):z(200)
-			:x(SCREEN_RIGHT-330)
-			-- lets pause the animation
-			:rate(0.35):cullmode("CullMode_None")
-		end,
+	OnCommand=cmd(CenterX;y,SCREEN_CENTER_Y-145);
+	LoadActor( THEME:GetPathG("","Evaluation/StatusBG") )..{
+	OnCommand=cmd(shadowlengthy,3;zoom,1.2);
 	};
 };
 
-t[#t+1] = LoadActor( THEME:GetPathG("","Light_BottomMenuBar") )..{
-	OnCommand=cmd(x,SCREEN_RIGHT;horizalign,right;zoom,2;SetTextureFiltering,false;;y,SCREEN_BOTTOM;vertalign,bottom);
-};
-
-t[#t+1] = LoadActor( THEME:GetPathG("","Light_TopMenuBar") )..{
-	OnCommand=cmd(x,SCREEN_LEFT;horizalign,left;zoom,2;SetTextureFiltering,false;vertalign,top);
-};
-
-t[#t+1] = LoadActor( THEME:GetPathG("","Gameplay/TuneIcon") )..{
-	OnCommand=cmd(x,SCREEN_LEFT+10;y,10;horizalign,left;zoom,2;SetTextureFiltering,false;vertalign,top);
-};
-
-t[#t+1] = Def.ActorFrame{
-	OnCommand=cmd(x,SCREEN_RIGHT-30;y,SCREEN_BOTTOM-100);
-	LoadActor( THEME:GetPathG("","Evaluation/BGStatus") )..{
-	OnCommand=cmd(horizalign,right;zoom,2);
-	};
-	LoadActor( THEME:GetPathG("","Evaluation/Status") )..{
-	InitCommand=cmd(horizalign,right;zoom,2;y,5;pause);
-	OnCommand=function(self)
-		self:setstate(Stats_FrameState)
+t[#t+1] = Def.Sprite {
+	InitCommand=cmd(diffusealpha,1;horizalign,left;x,SCREEN_LEFT+100;y,SCREEN_CENTER_Y+20;diffusealpha,0);
+	BeginCommand=cmd(queuecommand,"UpdateBackground");
+	UpdateBackgroundCommand=function(self)
+	self:finishtweening()
+ 	if GAMESTATE:GetCurrentSong() and GAMESTATE:GetCurrentSong():GetBackgroundPath() then
+		self:finishtweening()
+ 		self:visible(true)
+ 		self:LoadBackground(GAMESTATE:GetCurrentSong():GetBackgroundPath())
+		self:setsize(450/2,400/2)
+		:rotationz(-10):x(SCREEN_LEFT+80):decelerate(0.3):x(SCREEN_LEFT+100):rotationz(-5):diffusealpha(1)
+ 	else
+ 		self:visible(false)
+ 	end
 	end,
-	};
+	OnCommand=function(self)
+		self:shadowlength(10):diffusealpha(0):linear(0.5):diffusealpha(1)
+		self:setsize(450/2,400/2)
+	end;
 };
-
--- Info start
-	t[#t+1] = LoadFont("Common Normal")..{
-	InitCommand=cmd(strokecolor,Color.Black);
-	OnCommand=cmd(zoom,0.7;horizalign,left;x,SCREEN_CENTER_X+90;y,23;playcommand,"Update");
-	UpdateCommand=function(self) self:settext( (GAMESTATE:GetCurrentSong() and GAMESTATE:GetCurrentSong():GetDisplayMainTitle()) or "" ) end,
-	};
-
-t[#t+1] = LoadFont("Common Normal")..{
-	Text="Track Results";
-	InitCommand=cmd(strokecolor,Color.Black);
-	OnCommand=cmd(zoom,1;horizalign,left;x,SCREEN_LEFT+40;y,21);
-	};
-
-t[#t+1] = Def.ActorFrame{
-	LoadActor( THEME:GetPathG("","WideInterpreter"), { File="Evaluation/InfoBarBG", Width=300, Height=15 } )..{
-		OnCommand=cmd(x,SCREEN_LEFT+250;y,SCREEN_CENTER_Y-160);
-	};
-	LoadActor( THEME:GetPathG("","WideInterpreter"), { File="Evaluation/InfoBarBG", Width=300, Height=15 } )..{
-		OnCommand=cmd(x,SCREEN_LEFT+250;y,SCREEN_CENTER_Y-113);
-	};
-
-	LoadActor( THEME:GetPathG("","WideInterpreter"), { File="Evaluation/InfoBarBG", Width=300, Height=160 } )..{
-		OnCommand=cmd(x,SCREEN_LEFT+250;y,SCREEN_CENTER_Y+5);
-	};
-
-	LoadActor( THEME:GetPathG("","WideInterpreter"), { File="Evaluation/InfoBarBG", Width=300, Height=20 } )..{
-		OnCommand=cmd(x,SCREEN_LEFT+250;y,SCREEN_CENTER_Y+128);
-	};
-}
 
 
 local Players = GAMESTATE:GetHumanPlayers()
 
 local function NoteScore(pn,n)
 	return STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetTapNoteScores(n)
+end
+
+local function NotePercentage(pn,n)
+	return FormatPercentScore(STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetPercentageOfTaps(n))
 end
 
 local ValuesToFind = {
@@ -130,58 +84,81 @@ local ValuesToFind = {
 local spacing = {1,2,3,4,5,6}
 
 for player in ivalues(Players) do
-	-- t[#t+1] = Def.BitmapText{
-	-- 	Text=string.format("% 4d", STATSMAN:GetCurStageStats():GetPlayerStageStats(player):MaxCombo() ),
-	-- 	Font="Common Normal",
-	-- 	OnCommand=function(self)
-	-- 	self:x( (player == PLAYER_1 and SCREEN_CENTER_X-160) or SCREEN_CENTER_X+160 ):y( SCREEN_CENTER_Y+105 )
-	-- 	:diffuse(Color.Black):zoom(0.6)
-	-- 	end,
-	-- };
+	t[#t+1] = Def.ActorFrame{
+	OnCommand=function(self)
+	self:x( SCREEN_RIGHT-50 )
+	:y( SCREEN_CENTER_Y+20 )
+	end;
 
-	t[#t+1] = Def.BitmapText{
-		Text=string.format("% 4d", STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetScore() ),
-		Font="Common Normal",
-		OnCommand=function(self)
-		self:horizalign(right)
-		self:x( (player == PLAYER_1 and SCREEN_CENTER_X-50) or SCREEN_CENTER_X+160 ):y( SCREEN_CENTER_Y+128 )
-		:zoom(1.2)
-		end,
-	};
+		LoadActor( THEME:GetPathG("","Evaluation/ScoreInfoBG") )..{
+			InitCommand=cmd(horizalign,right;zoom,1.3;shadowlengthy,3);
+		};
 
-	t[#t+1] = Def.BitmapText{
-		Text="SCORE",
-		Font="Common Normal",
-		OnCommand=function(self)
-		self:horizalign(left)
-		self:x( (player == PLAYER_1 and SCREEN_CENTER_X-320) or SCREEN_CENTER_X+160 ):y( SCREEN_CENTER_Y+128 )
-		:zoom(1.2)
-		end,
+		Def.BitmapText{
+			Text=string.format("% 4d", STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetScore() ),
+			Font="Dinamight",
+			InitCommand=cmd(strokecolor,color("#2B3D44"));
+			OnCommand=function(self)
+			self:horizalign(right):x( -30 ):y( 105 ):zoom(0.9)
+			end,
+		};
+	
+		Def.BitmapText{
+			Text="SCORE",
+			Font="Dinamight",
+			InitCommand=cmd(strokecolor,color("#2B3D44"));
+			OnCommand=function(self)
+			self:horizalign(left):x( -370 ):y( 105 ):zoom(0.9)
+			end,
+		};
+
 	};
 
 	for NVal in ivalues(spacing) do
 		t[#t+1] = Def.BitmapText{
-		Text=string.format("% 4d", NoteScore(player,ValuesToFind[NVal]) ),
-		Font="Common Normal",
+		Text=string.format("% 4d", NoteScore(player,ValuesToFind[NVal]) ).." /",
+		Font="Dinamight",
+		InitCommand=cmd(strokecolor,color("#2B3D44"));
 		OnCommand=function(self)
-		self:x( (player == PLAYER_1 and SCREEN_CENTER_X-60) or SCREEN_CENTER_X+130 ):y( SCREEN_CENTER_Y-100+(30*NVal) )
-		:horizalign(right):zoom(1)
+		self:x( (player == PLAYER_1 and SCREEN_CENTER_X+260) or SCREEN_CENTER_X+130 ):y( SCREEN_CENTER_Y-(129-20)+(22.9*NVal) )
+		:horizalign(right):zoom(0.7)
+		end,
+		};
+
+		t[#t+1] = Def.BitmapText{
+		Text=NotePercentage(player,ValuesToFind[NVal]),
+		Font="Dinamight",
+		InitCommand=cmd(strokecolor,color("#2B3D44"));
+		OnCommand=function(self)
+		self:x( (player == PLAYER_1 and SCREEN_CENTER_X+355) or SCREEN_CENTER_X+130 ):y( SCREEN_CENTER_Y-(129-20)+(22.9*NVal) )
+		:horizalign(right):zoom(0.7):cropright(0.6)
+		end,
+		};
+
+		t[#t+1] = Def.BitmapText{
+		Text=string.sub(NotePercentage(player,ValuesToFind[NVal]), 3),
+		Font="Dinamight",
+		InitCommand=cmd(strokecolor,color("#2B3D44"));
+		OnCommand=function(self)
+		self:x( (player == PLAYER_1 and SCREEN_CENTER_X+350) or SCREEN_CENTER_X+130 ):y( SCREEN_CENTER_Y-(129-21)+(22.9*NVal) )
+		:horizalign(right):zoom(0.6)
 		end,
 		};
 
 		t[#t+1] = Def.BitmapText{
 		Text=":",
-		Font="Common Normal",
+		Font="Dinamight",
+		InitCommand=cmd(strokecolor,color("#2B3D44"));
 		OnCommand=function(self)
-		self:x( (player == PLAYER_1 and SCREEN_CENTER_X-180) or SCREEN_CENTER_X+130 ):y( SCREEN_CENTER_Y-100-2+(30*NVal) )
-		:horizalign(right):zoom(1)
+		self:x( (player == PLAYER_1 and SCREEN_CENTER_X+160) or SCREEN_CENTER_X+130 ):y( SCREEN_CENTER_Y-(129-20)+(22.9*NVal) )
+		:horizalign(right):zoom(.7)
 		end,
 		};
 
 		t[#t+1] = LoadActor( THEME:GetPathG("","Evaluation/SideJudgment") )..{
 		OnCommand=function(self)
 		self:pause():horizalign(left):setstate(spacing[NVal]-1)
-		:x( (player == PLAYER_1 and SCREEN_CENTER_X-240) or SCREEN_CENTER_X+130 ):y( SCREEN_CENTER_Y-100+(30*NVal) )
+		:x( (player == PLAYER_1 and SCREEN_CENTER_X+80) or SCREEN_CENTER_X+130 ):y( SCREEN_CENTER_Y-(129-20)+(22.9*NVal) )
 		:horizalign(right):zoom(1)
 		end,
 		};

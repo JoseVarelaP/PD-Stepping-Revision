@@ -10,45 +10,24 @@ local t = Def.ActorFrame{
 end
 }
 
-t[#t+1] = LoadActor( THEME:GetPathG("","Light_BottomMenuBar") )..{
-	OnCommand=cmd(x,SCREEN_RIGHT;horizalign,right;zoom,2;SetTextureFiltering,false;y,SCREEN_BOTTOM;vertalign,bottom);
-};
-
-t[#t+1] = Def.Quad{
-	OnCommand=cmd(FullScreen;diffuse,Color.Black;linear,2;diffusealpha,0.6;sleep,2.5;accelerate,0.2;diffusealpha,0);
-}
-
-t[#t+1] = Def.ActorFrame{
-	InitCommand=cmd(x,SCREEN_RIGHT-80;y,SCREEN_BOTTOM-100);
-	OnCommand=cmd(sleep,4.2;accelerate,0.5;diffusealpha,0);
-
-	LoadFont("Common Normal")..{
-		Text="Stepping Revision Project\nVersion ".. PDSRPInfo["Version"],
-		InitCommand=cmd(horizalign,right;y,-40;zoom,0.5;diffusealpha,0;shadowlengthy,2);
-		OnCommand=cmd(sleep,1;decelerate,0.2;diffusealpha,1);
-		OffCommand=cmd(accelerate,0.2;diffusealpha,0);
-	};
-
-	LoadActor( THEME:GetPathG("","White_ThemeLogo") )..{
-		InitCommand=cmd(horizalign,right;zoom,0.4;diffusealpha,0;addx,300;shadowlengthy,2);
-		OnCommand=cmd(sleep,.3;decelerate,0.8;diffusealpha,1;addx,-300);
-		OffCommand=cmd(accelerate,0.2;glow,0,0,0,0;diffusealpha,0);
-	};
-
-};
-
 t[#t+1] = Def.ActorFrame{
 	InitCommand=cmd(Center);
-	OnCommand=cmd(diffusealpha,0;sleep,.3;decelerate,0.2;diffusealpha,1;sleep,4;accelerate,0.2;zoom,0);
+	BeginCommand=cmd(diffusealpha,0;sleep,.3;decelerate,0.2;diffusealpha,1);
+	OnCommand=cmd(sleep,3;accelerate,0.2;diffusealpha,0);
 
-	LoadActor( THEME:GetPathG("","WideInterpreter"), { File="Global/TextBox", Width=240, Height=70 } )..{
+	LoadActor( THEME:GetPathG("","ThemeLogo") )..{
+		InitCommand=cmd(shadowlengthy,2;zoom,0.7);
+	};	
+
+	LoadFont("Common Normal")..{
+		Text="Version ".. PDSRPInfo["Version"],
+		InitCommand=cmd(shadowlengthy,2;x,200;horizalign,right;y,60;zoom,0.8;strokecolor,Color.Black);
 	};
 
 	LoadFont("Common Normal")..{
 		Text=Screen.String("Message"),
-		InitCommand=cmd(zoom,0.5;wrapwidthpixels,500);
+		InitCommand=cmd(zoom,0.5;y,150;wrapwidthpixels,900;diffuse,Color.Black;strokecolor,Color.White);
 	};
-
-}
+};
 
 return t;

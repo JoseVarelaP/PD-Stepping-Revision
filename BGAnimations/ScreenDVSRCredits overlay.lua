@@ -1,9 +1,5 @@
 local t = Def.ActorFrame{}
 
-t[#t+1] = LoadActor( THEME:GetPathG("","Light_BottomMenuBar") )..{
-	OnCommand=cmd(x,SCREEN_RIGHT;horizalign,right;zoom,2;SetTextureFiltering,false;y,SCREEN_BOTTOM;vertalign,bottom);
-};
-
 t[#t+1] = Def.Quad{
 	InitCommand=cmd(zwrite,true;blend,"BlendMode_NoEffect";zoomto,350,100;CenterX;y,SCREEN_CENTER_Y;horizalign,left);
 	OnCommand=cmd(sleep,1;queuecommand,"Dissapear");
@@ -11,12 +7,12 @@ t[#t+1] = Def.Quad{
 };
 
 t[#t+1] = Def.ActorFrame{
-	InitCommand=cmd(x,SCREEN_CENTER_X-40;CenterY);
+	InitCommand=cmd(x,SCREEN_CENTER_X-20;CenterY);
 	OnCommand=cmd(sleep,25;accelerate,1;diffusealpha,0);
 
 	LoadFont("Common Normal")..{
-		Text="Stepping Revision Project\nVersion ".. PDSRPInfo["Version"],
-		InitCommand=cmd(horizalign,right;y,-40;zoom,0.5;diffusealpha,0;shadowlengthy,2);
+		Text="Version ".. PDSRPInfo["Version"],
+		InitCommand=cmd(horizalign,right;y,35;x,-70;zoom,0.5;diffusealpha,0;shadowlengthy,2;strokecolor,Color.Black);
 		OnCommand=cmd(sleep,1;decelerate,0.2;diffusealpha,1);
 		OffCommand=cmd(accelerate,0.2;diffusealpha,0);
 	};

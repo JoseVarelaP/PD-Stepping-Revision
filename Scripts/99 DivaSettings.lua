@@ -8,7 +8,7 @@ DSet = {
 	
 	Shared = {
 		ScrollOn = function(self)
-			(cmd(zoom,0.7;addx,-300;sleep,0.2;decelerate,0.2;addx,300))(self);
+			(cmd(maxwidth,180;zoom,WideScale(0.5,0.7);addx,-300;decelerate,0.2;addx,300))(self);
 		end,
 		ScrollOff = function(self)
 			(cmd(accelerate,0.2;addx,-300;))(self);
@@ -23,7 +23,8 @@ DSet = {
 	},
 	TitleMenu = {
 		ScrollerTransform = function(self,offset,itemIndex,numItems)
-			self:y((42)*(itemIndex-(numItems-1)/2))
+			self:y((70)*(itemIndex-(numItems-1)/2))
+			self:x(10*offset)
 		end,
 		LineNames = function()
 		local Result = ''
@@ -40,6 +41,12 @@ DSet = {
 		ChoiceQuickPlay = function()
 		return "applydefaultoptions;screen,ScreenSelectMusic;style,single;text,QuickPlay"
 		end,
+		ScrollOn = function(self)
+			(cmd(zoom,0.7;addx,-300;decelerate,0.2;addx,300))(self);
+		end,
+		ScrollOff = function(self)
+			(cmd(accelerate,0.2;addx,-300;))(self);
+		end,
 	},
 	ScreenOptionsService = {
 		NumRowsShown = function() return 7 end,
@@ -49,11 +56,9 @@ DSet = {
 		Result = Result .. "GameType," -- Select Game
 		Result = Result .. "GraphicSound," -- Graphics/Sound Options
 		Result = Result .. "KeyConfig," -- Key Configuration
-		Result = Result .. "Arcade," -- Arcade Options
 		Result = Result .. "InputOptions," -- Input
 		Result = Result .. "SoundGraphics," -- Display Options
 		Result = Result .. "Profiles," -- obvs
-		Result = Result .. "Network," -- obvs
 		Result = Result .. "Advanced," -- advanced shit yo
 		Result = Result .. "Theme," -- The Project Diva: Stepping Revision Settings
 		Result = Result .. "Reload," -- Reload Songs
@@ -64,7 +69,8 @@ DSet = {
 		end,
 
 		RowTransform = function(self,positionIndex,itemIndex,numItems)
-		self:y( (SCREEN_CENTER_Y-70) + (28*positionIndex) )
+		self:y( (SCREEN_CENTER_Y-WideScale(110,140)) + (WideScale(45,50)*positionIndex) )
+		self:x( 0*positionIndex )
 		end,
 
 		LineSRCredits = function()
@@ -72,6 +78,32 @@ DSet = {
 		end,
 		LineTheme = function()
 		return "gamecommand;screen,ScreenOptionsTheme;name,Theme Options"
+		end,
+	},
+
+	AdvancedOptions = {
+		LineNames = function()
+			Result = ""
+
+			Result = Result .. "3,"
+			Result = Result .. "4,"
+			Result = Result .. "8,"
+			-- Result = Result .. "SI,"
+			-- Result = Result .. "SM,"
+			-- Result = Result .. "HN,"
+			Result = Result .. "11,"
+			Result = Result .. "13,"
+			Result = Result .. "14,"
+			Result = Result .. "15,"
+			Result = Result .. "16,"
+			Result = Result .. "28,"
+			Result = Result .. "29,"
+			Result = Result .. "30,"
+			Result = Result .. "31,"
+			Result = Result .. "32,"
+			-- Result = Result .. "ECPT,"
+
+			return Result
 		end,
 	},
 
@@ -121,7 +153,8 @@ DSet = {
 		return "gamecommand;screen,ScreenDediCharsSettings;name,Dedicated Character Settings"
 		end,
 		RowTransform = function(self,positionIndex,itemIndex,numItems)
-		self:y( (SCREEN_CENTER_Y-120) + (28*positionIndex) )
+		self:y( (SCREEN_CENTER_Y-120) + (40*positionIndex) )
+		self:x( 0*positionIndex )
 		end,
 	},
 
@@ -192,7 +225,12 @@ DSet = {
 
 	MusicWheel = {
 		WheelTransform = function(self,offsetFromCenter,itemIndex,numItems)
-			self:y( offsetFromCenter*42 )
+			self:y( offsetFromCenter*85 )
+			self:x( 10*offsetFromCenter )
+			self:diffusealpha(1)
+			if itemIndex < 7 then self:diffusealpha( 0.25 ) end
+			if itemIndex > 13 then self:diffusealpha( 0.55 ) end
+			if itemIndex == 8 then self:x(10) end
 		end,
 	},
 }

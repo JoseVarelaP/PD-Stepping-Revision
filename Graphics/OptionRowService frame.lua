@@ -28,28 +28,45 @@ local UnlockableOptions = {
 	"FolderToPlayRandomMusic",
 	"ShowRandomSongBackground",
 	"CurrentStageLighting",
-}
+};
+
+local AbleToSwitch = {
+	"ScreenOptionsTheme",
+	"ScreenDediCharsSettings",
+};
+
+local LabelsToShrink = {
+	"FolderToPlayRandomMusic",
+	"Theme",
+	"DefaultNoteSkin",
+	"ShowDancingCharacters",
+	"BackgroundFitMode",
+};
+
+local CanChangeIcon = {
+	"CurrentStageLocation",
+	"DedicatedCharacterShow",
+	"EnableRandomSongPlay",
+	"FolderToPlayRandomMusic",
+};
+
+if THEME:GetCurLanguage() == "es" then
+	table.insert(LabelsToShrink, "ShowRandomSongBackground")
+end
 
 local gc = Var("GameCommand");
 
-t[#t+1] = LoadActor("MenuScrollers/Base")..{
-	OnCommand=cmd(horizalign,left;zoom,2);
+t[#t+1] = LoadActor("MenuScrollers/SettingBase")..{
+	OnCommand=cmd(horizalign,left;zoom,0.4;shadowlengthy,2);
 };
 
-t[#t+1] = LoadActor("MenuScrollers/Dim")..{
-	OnCommand=cmd(horizalign,left;zoom,2;faderight,0.1);
-	GainFocusCommand=cmd(stoptweening;diffusealpha,1);
-	LoseFocusCommand=cmd(stoptweening;linear,0.1;diffusealpha,0);
-};
-
-t[#t+1] = LoadActor("MenuScrollers/Bright")..{
-	OnCommand=cmd(horizalign,left;zoom,2);
+t[#t+1] = LoadActor("MenuScrollers/SettingHighlight")..{
+	OnCommand=cmd(horizalign,left;zoom,0.4);
 	GainFocusCommand=function(self)
 	local optrow = self:GetParent():GetParent():GetParent()
 	self:stoptweening():diffuseshift():diffusealpha(1):effectcolor1(1,1,1,1):effectcolor2(0.8,0.8,0.8,0.5)
 	for i=1,#ItemsToTweenColor do
 		if optrow:GetName() == ItemsToTweenColor[i][1] then
-			self:Load(THEME:GetPathG("","MenuScrollers/DiffuseBright"))
 			self:stoptweening():diffuseshift():diffusealpha(1):effectcolor1(ItemsToTweenColor[i][2]):effectcolor2(ItemsToTweenColor[i][3])
 		end
 	end
@@ -59,30 +76,55 @@ t[#t+1] = LoadActor("MenuScrollers/Bright")..{
 
 t[#t+1] = LoadFont("Common Normal")..{
 	OnCommand=function(self)
-	(cmd(horizalign,left;x,42;addx,-300;decelerate,0.2;addx,300;strokecolor,Color.Black))(self);
+	(cmd(horizalign,left;x,40;maxwidth,220;y,-2;shadowlengthy,3;shadowcolor,color("0,0,0,0.3");diffuse,0,0,0,1))(self);
 	local optrow = self:GetParent():GetParent():GetParent()
 
 	self:settext(THEME:GetString("OptionTitles",optrow:GetName()) ):horizalign(left)
 
-	for i=1,#UnlockableOptions do
-		if optrow:GetName() == UnlockableOptions[i] then
-			self:addx(15):zoom(0.9)
-		end
-	end
+
+	
 
 	end,
-	GainFocusCommand=cmd(diffuse,1,1,1,1);
-	LoseFocusCommand=cmd(stoptweening;linear,0.1;diffuse,0.5,0.5,0.5,1);
 };
 
+
+t[#t+1] = LoadActor("MenuScrollers/ChoiceBackLabel")..{
+	InitCommand=cmd(horizalign,left;zoom,0.4);
+	OnCommand=function(self)
+	self:visible(false)
+	self:queuecommand("CheckForAnything")
+	end,
+	CheckForAnythingCommand=function(self)
+	local optrow = self:GetParent():GetParent():GetParent()
+	
+	if GlobalOptions[optrow:GetName()] then
+		if optrow:GetNumChoices() > 1 then
+			self:visible(true)
+		end
+	end
+	for i=1,#AbleToSwitch do
+		if optrow:GetNumChoices() > 1 and SCREENMAN:GetTopScreen():GetName() == AbleToSwitch[i] then
+			self:visible(true)
+		end
+	end
+	end,
+};
+
+
+
 if DebugMode then
-	t[#t+1] = LoadFont("Common Normal")..{
+t[#t+1] = LoadFont("Common Normal")..{
 	OnCommand=function(self)
 	local optrow = self:GetParent():GetParent():GetParent()
 	self:settext(optrow:GetName() .." - ".. THEME:GetString("OptionTitles",optrow:GetName()) ):horizalign(left)
-	:zoom(0.6):x(42):y(16)
+	:zoom(0.6):x(102):y(16):diffuse(Color.Black)
 	end,
 };
 end
+
+t.GainFocusCommand=function(self)
+end;
+t.LoseFocusCommand=function(self)
+end;
 
 return t;

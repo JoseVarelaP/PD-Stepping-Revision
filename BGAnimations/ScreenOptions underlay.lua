@@ -6,12 +6,8 @@ local t = Def.ActorFrame{
 	end,
 }
 
-t[#t+1] = LoadActor( THEME:GetPathG("","Light_BottomMenuBar") )..{
-	OnCommand=cmd(x,SCREEN_RIGHT;horizalign,right;zoom,2;SetTextureFiltering,false;;y,SCREEN_BOTTOM;vertalign,bottom);
-};
-
 t[#t+1] = Def.ActorFrame{
-	OnCommand=cmd(x,SCREEN_RIGHT-70;CenterY;diffusealpha,0;sleep,0.3;decelerate,0.2;diffusealpha,1);
+	OnCommand=cmd(x,SCREEN_RIGHT-70;y,SCREEN_BOTTOM-150;diffusealpha,0;sleep,0.3;decelerate,0.2;diffusealpha,1);
 	OffCommand=cmd(accelerate,0.2;diffusealpha,0);
 
 		LoadActor( THEME:GetPathG("","Title_Explanation") )..{
@@ -21,6 +17,28 @@ t[#t+1] = Def.ActorFrame{
 		};
 
 	};
+
+t[#t+1] = Def.ActorFrame{
+	InitCommand=cmd(x,SCREEN_RIGHT-WideScale(170,240);y,100);
+	OnCommand=function(self)
+	self:zoom( WideScale(0.5,0.7) )
+	if not DIVA_LogoAlreadyShown then
+	self:diffusealpha(0)
+	self:sleep(.3):decelerate(0.2):diffusealpha(1)
+	DIVA_LogoAlreadyShown = true
+	end
+	end,
+	OffCommand=cmd(sleep,1;accelerate,0.2;diffusealpha,0);
+
+	LoadActor( THEME:GetPathG("","ThemeLogo") )..{
+		InitCommand=cmd(shadowlengthy,2;zoom,0.7);
+	};	
+
+	LoadFont("Common Normal")..{
+		Text="Version ".. PDSRPInfo["Version"],
+		InitCommand=cmd(shadowlengthy,2;x,200;horizalign,right;y,60;zoom,0.8;strokecolor,Color.Black);
+	};
+};
 
 t[#t+1] = Def.ActorFrame{
 	OnCommand=cmd(x,SCREEN_LEFT+20;y,20;decelerate,0.2;diffusealpha,1);

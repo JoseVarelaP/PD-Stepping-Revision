@@ -1,28 +1,49 @@
 local t = Def.ActorFrame{};
 
-t[#t+1] = Def.Quad{
-	OnCommand=cmd(FullScreen;diffuse,Color.Black;diffusealpha,0;sleep,.5;accelerate,0.2;diffusealpha,1);
-}
-
-if ThemePrefs.Get("CurrentStageLocation") ~= "None" then
-	if not WarningShown then
-	
-	t[#t+1] = Def.ActorFrame{
-		InitCommand=cmd(Center);
-		OnCommand=cmd(diffusealpha,0;sleep,.3;decelerate,0.2;diffusealpha,1;sleep,7;accelerate,0.2;zoom,0);
-	
-		LoadActor( THEME:GetPathG("","WideInterpreter"), { File="Global/TextBox", Width=240, Height=70 } )..{
+t[#t+1] = Def.ActorFrame{
+	OnCommand=cmd(diffusealpha,0;addx,-30;decelerate,0.2;diffusealpha,1;addx,30;sleep,5);
+	OffCommand=cmd(decelerate,0.2;diffusealpha,0;addx,-30);
+		Def.Quad{
+			OnCommand=cmd(diffuse,Color.Black;y,SCREEN_BOTTOM-30;horizalign,left;vertalign,bottom;zoomto,500,70;faderight,1);
 		};
-	
+		
+		Def.Quad{
+			InitCommand=cmd(diffuse,Color.Black;y,SCREEN_BOTTOM-70;horizalign,left;vertalign,bottom;x,SCREEN_LEFT+110;zoomto,350,25;faderight,1;fadeleft,0.1);
+			OnCommand=cmd(diffusealpha,0.6);
+		};
+		
+		Def.Sprite {
+			InitCommand=cmd(diffusealpha,1;horizalign,left;vertalign,bottom;x,SCREEN_LEFT+50;y,SCREEN_BOTTOM-38);
+			CurrentSongChangedMessageCommand=function(self)
+			self:stoptweening()
+			self:linear(0.05):diffusealpha(0)
+			:queuecommand("UpdateBackground")
+			end,
+			UpdateBackgroundCommand=function(self)
+			if GAMESTATE:GetCurrentSong() then
+				self:LoadFromCurrentSongBackground():diffusealpha(1)
+				self:setsize(110/2,110/2)
+			end
+			end,
+			OnCommand=function(self)
+				self:diffusealpha(0):sleep(1):linear(1):diffusealpha(1)
+				self:setsize(110/2,110/2)
+			end;
+		};
+		
 		LoadFont("Common Normal")..{
-			Text="If you have any 3D noteskin enabled right now, you might experience a lot of culling problems. I'm trying to fix this issue as much as I can.\n\nI hope you understand.",
-			InitCommand=cmd(zoom,0.5;wrapwidthpixels,500);
-		};
-	
-	}
-	
-	WarningShown = true
-	end
-end
+				Text=GAMESTATE:GetCurrentSong():GetDisplayMainTitle();
+				InitCommand=cmd(zoom,0.7;horizalign,left;x,SCREEN_LEFT+110;y,SCREEN_BOTTOM-83);
+				OnCommand=function(self)
+					self:diffusealpha(0):linear(0.5):diffusealpha(1)
+				end;
+			};
+
+};
+
+t[#t+1] = Def.Quad{
+	OnCommand=cmd(FullScreen;diffusealpha,0;sleep,5.2);
+	OffCommand=cmd(linear,0.5;diffusealpha,1);
+};
 
 return t;

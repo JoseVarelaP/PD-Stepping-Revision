@@ -55,7 +55,7 @@ local Frm = 1/60
 local DebugMode = true
 
 -- In case you want frame-by-frame info on specific stuff.
-local MassiveLog = false
+local MassiveLog = true
 local function CameraRandom()
 	return math.random(1,5)
 end
@@ -157,6 +157,9 @@ t[#t+1] = Def.ActorFrame{
 			Bones=DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
 			OnCommand=function(self)
 				self:cullmode("CullMode_None")
+				if ThemePrefs.Get("CurrentStageLocation") == "CyberWorld" then
+					self:zoom(8)
+				end
 			end,
 		};
 
