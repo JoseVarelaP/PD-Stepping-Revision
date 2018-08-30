@@ -25,7 +25,7 @@ if ThemePrefs.Get("EnableRandomSongPlay") then
 		OnCommand=cmd(zoom,0.8;x,SCREEN_LEFT+70;y,SCREEN_BOTTOM-35;sleep,.3;decelerate,0.2;diffusealpha,1);
 		OffCommand=cmd(accelerate,0.2;diffusealpha,0);
 
-		LoadActor( THEME:GetPathG("","MusicNote"))..{
+		LoadActor( THEME:GetPathG("","TitleMenu/MusicNote"))..{
 		OnCommand=cmd(zoom,0.15;x,-15;y,-3);
 		};
 
