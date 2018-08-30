@@ -75,14 +75,14 @@ t[#t+1] = Def.ActorFrame{
 			self:finishtweening()
  			self:visible(true)
  			self:LoadBackground(GAMESTATE:GetCurrentSong():GetBackgroundPath())
-			self:setsize(400/2,400/2):rotationz(-10):x(-270):decelerate(0.3):x(-250):rotationz(-5):diffusealpha(1)
+			self:setsize(450/2,400/2):rotationz(-10):x(-270):decelerate(0.3):x(-250):rotationz(-5):diffusealpha(1)
  		else
  			self:visible(false)
  		end
 		end,
 		OnCommand=function(self)
 			self:shadowlength(10):diffusealpha(0):linear(0.5):diffusealpha(1)
-			self:setsize(400/2,400/2)
+			self:setsize(450/2,400/2)
 		end;
 	};
 

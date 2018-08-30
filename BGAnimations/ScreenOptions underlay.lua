@@ -20,8 +20,15 @@ t[#t+1] = Def.ActorFrame{
 
 t[#t+1] = Def.ActorFrame{
 	InitCommand=cmd(x,SCREEN_RIGHT-WideScale(170,240);y,100);
-	OnCommand=cmd(diffusealpha,0;sleep,.3;zoom,WideScale(0.5,0.7);decelerate,0.2;diffusealpha,1);
-	OffCommand=cmd(sleep,3;accelerate,0.2;diffusealpha,0);
+	OnCommand=function(self)
+	self:zoom( WideScale(0.5,0.7) )
+	if not DIVA_LogoAlreadyShown then
+	self:diffusealpha(0)
+	self:sleep(.3):decelerate(0.2):diffusealpha(1)
+	DIVA_LogoAlreadyShown = true
+	end
+	end,
+	OffCommand=cmd(sleep,1;accelerate,0.2;diffusealpha,0);
 
 	LoadActor( THEME:GetPathG("","ThemeLogo") )..{
 		InitCommand=cmd(shadowlengthy,2;zoom,0.7);

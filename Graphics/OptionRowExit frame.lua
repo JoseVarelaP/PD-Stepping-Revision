@@ -4,20 +4,6 @@ t[#t+1] = LoadActor("MenuScrollers/Base")..{
 	OnCommand=cmd(horizalign,left;zoom,0.4);
 };
 
-t[#t+1] = LoadActor("MenuScrollers/Ring_ItemBase")..{
-	OnCommand=cmd(zoom,0.4;x,60;queuecommand,"Loop");
-	LoopCommand=function(self)
-	self:finishtweening()
-	self:zoom(0.4):diffusealpha(1):linear(1):zoom(0.6):diffusealpha(0):sleep(0.2)
-	self:queuecommand("Loop")
-	end,
-};
-
-t[#t+1] = LoadActor("MenuScrollers/Fallback_ItemBase")..{
-	OnCommand=cmd(zoom,0.4;x,60);
-};
-
-
 t[#t+1] = LoadActor("MenuScrollers/Bright")..{
 	OnCommand=cmd(horizalign,left;zoom,0.4);
 	GainFocusCommand=function(self)

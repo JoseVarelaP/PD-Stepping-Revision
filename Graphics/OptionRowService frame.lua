@@ -60,14 +60,13 @@ t[#t+1] = LoadActor("MenuScrollers/SettingBase")..{
 	OnCommand=cmd(horizalign,left;zoom,0.4;shadowlengthy,2);
 };
 
-t[#t+1] = LoadActor("MenuScrollers/Bright")..{
+t[#t+1] = LoadActor("MenuScrollers/SettingHighlight")..{
 	OnCommand=cmd(horizalign,left;zoom,0.4);
 	GainFocusCommand=function(self)
 	local optrow = self:GetParent():GetParent():GetParent()
 	self:stoptweening():diffuseshift():diffusealpha(1):effectcolor1(1,1,1,1):effectcolor2(0.8,0.8,0.8,0.5)
 	for i=1,#ItemsToTweenColor do
 		if optrow:GetName() == ItemsToTweenColor[i][1] then
-			self:Load(THEME:GetPathG("","MenuScrollers/DiffuseBright"))
 			self:stoptweening():diffuseshift():diffusealpha(1):effectcolor1(ItemsToTweenColor[i][2]):effectcolor2(ItemsToTweenColor[i][3])
 		end
 	end

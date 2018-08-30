@@ -1,5 +1,5 @@
 PDSRPInfo = {
-	Version = "0.4.7-a",
+	Version = "0.4.8-m",
 	Author = "Jose_Varela",
 	Graphics = {
 		"Jose_Varela",
