@@ -50,7 +50,7 @@ t[#t+1] = LoadActor( THEME:GetPathG("","BGElements/DotCircle") )..{
 	OnCommand=cmd(x,SCREEN_RIGHT;y,SCREEN_BOTTOM;diffusealpha,0.5;spin;effectmagnitude,0,0,10);
 };
 
-local TileXAmm = 3
+local TileXAmm = 4
 
 local ColorsToUse = {
 	color("#FFFFFF"),
