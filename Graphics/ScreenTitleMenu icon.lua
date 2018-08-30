@@ -5,7 +5,7 @@ local gc = Var("GameCommand");
 	OnCommand=cmd(x,SCREEN_RIGHT-WideScale(10,70);y,SCREEN_BOTTOM-100;diffusealpha,0;sleep,0.3;decelerate,0.2;diffusealpha,1);
 	OffCommand=cmd(accelerate,0.2;diffusealpha,0);
 
-		LoadActor("TitleMenu/MainGame")..{
+		LoadActor("TitleMenu/"..gc:GetText())..{
 		InitCommand=cmd(horizalign,right;x,500;y,-100;zoom,1;decelerate,0.2);
 		--OnCommand=cmd(x,300);
 		GainFocusCommand=cmd(stoptweening;decelerate,0.2;x,300;diffusealpha,1);

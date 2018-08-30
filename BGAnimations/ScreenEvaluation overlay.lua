@@ -96,7 +96,7 @@ for player in ivalues(Players) do
 
 		Def.BitmapText{
 			Text=string.format("% 4d", STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetScore() ),
-			Font="Dinamight",
+			Font="Dinamight/20px",
 			InitCommand=cmd(strokecolor,color("#2B3D44"));
 			OnCommand=function(self)
 			self:horizalign(right):x( -30 ):y( 105 ):zoom(0.9)
@@ -105,7 +105,7 @@ for player in ivalues(Players) do
 	
 		Def.BitmapText{
 			Text="SCORE",
-			Font="Dinamight",
+			Font="Dinamight/20px",
 			InitCommand=cmd(strokecolor,color("#2B3D44"));
 			OnCommand=function(self)
 			self:horizalign(left):x( -370 ):y( 105 ):zoom(0.9)
@@ -117,7 +117,7 @@ for player in ivalues(Players) do
 	for NVal in ivalues(spacing) do
 		t[#t+1] = Def.BitmapText{
 		Text=string.format("% 4d", NoteScore(player,ValuesToFind[NVal]) ).." /",
-		Font="Dinamight",
+		Font="Dinamight/20px",
 		InitCommand=cmd(strokecolor,color("#2B3D44"));
 		OnCommand=function(self)
 		self:x( (player == PLAYER_1 and SCREEN_CENTER_X+260) or SCREEN_CENTER_X+130 ):y( SCREEN_CENTER_Y-(129-20)+(22.9*NVal) )
@@ -127,7 +127,7 @@ for player in ivalues(Players) do
 
 		t[#t+1] = Def.BitmapText{
 		Text=NotePercentage(player,ValuesToFind[NVal]),
-		Font="Dinamight",
+		Font="Dinamight/20px",
 		InitCommand=cmd(strokecolor,color("#2B3D44"));
 		OnCommand=function(self)
 		self:x( (player == PLAYER_1 and SCREEN_CENTER_X+355) or SCREEN_CENTER_X+130 ):y( SCREEN_CENTER_Y-(129-20)+(22.9*NVal) )
@@ -137,7 +137,7 @@ for player in ivalues(Players) do
 
 		t[#t+1] = Def.BitmapText{
 		Text=string.sub(NotePercentage(player,ValuesToFind[NVal]), 3),
-		Font="Dinamight",
+		Font="Dinamight/20px",
 		InitCommand=cmd(strokecolor,color("#2B3D44"));
 		OnCommand=function(self)
 		self:x( (player == PLAYER_1 and SCREEN_CENTER_X+350) or SCREEN_CENTER_X+130 ):y( SCREEN_CENTER_Y-(129-21)+(22.9*NVal) )
@@ -147,7 +147,7 @@ for player in ivalues(Players) do
 
 		t[#t+1] = Def.BitmapText{
 		Text=":",
-		Font="Dinamight",
+		Font="Dinamight/20px",
 		InitCommand=cmd(strokecolor,color("#2B3D44"));
 		OnCommand=function(self)
 		self:x( (player == PLAYER_1 and SCREEN_CENTER_X+160) or SCREEN_CENTER_X+130 ):y( SCREEN_CENTER_Y-(129-20)+(22.9*NVal) )

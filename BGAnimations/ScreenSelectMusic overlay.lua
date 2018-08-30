@@ -311,7 +311,7 @@ t[#t+1] = Def.ActorFrame{
 			end;
 			};
 	
-			LoadFont("unsteady oversteer") ..{
+			LoadFont("unsteady oversteer/20px") ..{
 			OnCommand=cmd(x,80;y,-10;zoom,1.2;strokecolor,Color.Black);
 			UpdateStepsMessageCommand=function(self,params)
 			local song = GAMESTATE:GetCurrentSong();
@@ -330,7 +330,7 @@ t[#t+1] = Def.ActorFrame{
 			end;
 			};
 
-			LoadFont("unsteady oversteer") ..{
+			LoadFont("unsteady oversteer/20px") ..{
 			OnCommand=cmd(x,528;y,-10;zoom,1.2;strokecolor,Color.Black);
 			UpdateStepsMessageCommand=function(self,params)
 			local song = GAMESTATE:GetCurrentSong();

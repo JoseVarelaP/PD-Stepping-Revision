@@ -117,7 +117,7 @@ local t = Def.ActorFrame {};
 			end;
 			};
 	
-			LoadFont("proto sans 33") ..{
+			LoadFont("proto sans/20px") ..{
 			OnCommand=cmd(x,500;y,-30;zoom,0.8;horizalign,right;shadowlength,1;strokecolor,Color.Blue);
 			SetMessageCommand=function(self,params)
 			self:settext("")
@@ -175,7 +175,7 @@ local t = Def.ActorFrame {};
 				end,
 				};
 	
-				LoadFont("unsteady oversteer") ..{
+				LoadFont("unsteady oversteer/20px") ..{
 				OnCommand=cmd(x,170;y,6;zoom,1.2;strokecolor,Color.Black);
 				SetMessageCommand=function(self,params)
 				local song = params.Song;
@@ -238,7 +238,7 @@ local t = Def.ActorFrame {};
 				};
 
 				Def.BitmapText{
-				Font="unsteady oversteer",
+				Font="unsteady oversteer/20px",
 				OnCommand=cmd(zoom,0.6;strokecolor,color("0,0,0,1");wrapwidthpixels,500;x,128;vertspacing,-8;y,12);
 				SetMessageCommand=function(self,params)
 					local song = params.Song;
@@ -260,7 +260,7 @@ local t = Def.ActorFrame {};
 	};
 
 for player in ivalues(PlayerNumber) do
-t[#t+1] = LoadFont("unsteady oversteer") ..{
+t[#t+1] = LoadFont("unsteady oversteer/20px") ..{
 	OnCommand=cmd(x,((player == PLAYER_1 and 80) or 528);y,-10;zoom,1.2;strokecolor,Color.Black);
 	SetMessageCommand=function(self,params)
 		local song = params.Song;

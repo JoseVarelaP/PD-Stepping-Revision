@@ -77,7 +77,7 @@ t[#t+1] = LoadActor( THEME:GetPathG("","Gameplay/PBar right") )..{
 	OnCommand=cmd(x,SCREEN_RIGHT-4;horizalign,right;vertalign,bottom;y,SCREEN_BOTTOM-5;zoom,1.4);
 };
 
-t[#t+1] = LoadFont("laxero")..{
+t[#t+1] = LoadFont("laxero/20px")..{
 	OnCommand=cmd(x,SCREEN_LEFT+40;y,SCREEN_BOTTOM-20;diffusebottomedge,Color.Yellow;diffusetopedge,color("1,1,1,1");shadowlength,2;horizalign,left;zoom,0.8;strokecolor,Color.Black;queuecommand,"LoopCheck");
 	LoopCheckCommand=function(self)
 	local GPSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1);
