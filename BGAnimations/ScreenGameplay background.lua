@@ -16,7 +16,12 @@ local function HasAnyCharacters(pn)
 end
 
 local t = Def.ActorFrame{
-	OnCommand=cmd(Center;fov,90;rotationy,180;z,WideScale(300,400);addy,10);
+	InitCommand=cmd(Center;fov,90;rotationy,180;z,WideScale(300,400);addy,10);
+	OnCommand=function(self)
+	if ThemePrefs.Get("DedicatedCharacterShow") and SCREENMAN:GetTopScreen():GetChild("SongBackground") then
+		SCREENMAN:GetTopScreen():GetChild("SongBackground"):visible(false)
+	end
+	end,
 };
 
 t[#t+1] = Def.Quad{
