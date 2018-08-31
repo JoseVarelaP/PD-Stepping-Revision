@@ -13,3 +13,5 @@ Alongside this theme, I'm also porting some of the Project Diva models so they c
 
 ## Background models
 This is still being decided about, as I have converted some models from Mirai to see how much it would affect perfomance in StepMania, and some of them do affect it a lot. Like seriously. So eventually, only a selected list of stages will be available.
+
+More information about some of the features are available on the wiki, which is regularly updated when new stuff is added.
