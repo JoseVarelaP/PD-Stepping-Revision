@@ -60,7 +60,7 @@ t[#t+1] = Def.ActorFrame {
 		StepsChosenMessageCommand=cmd(playcommand,"Close");
 		PlayerJoinedMessageCommand=cmd(playcommand,"Close");
 		CancelMessageCommand=cmd(playcommand,"Close");
-		CloseCommand=cmd(stoptweening;accelerate,0.2;diffusealpha,0;zoom,0.5);
+		CloseCommand=cmd(stoptweening;queuemessage,"ReturnWheel";accelerate,0.2;diffusealpha,0;zoom,0.5);
 
 		LoadActor( THEME:GetPathG("","SelectMusic/SummarySelection") )..{
 		OnCommand=cmd(y,35;zoom,1.2);
