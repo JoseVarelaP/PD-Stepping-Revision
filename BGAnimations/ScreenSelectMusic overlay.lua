@@ -38,8 +38,6 @@ local function InvertSongBase()
 	return WhatToLoad
 end
 
-local EntireSongTable = SONGMAN:GetAllSongs();
-
 ------ ------ ------ ------ ------ ------ ------
 ------ ------ ------ ------ ------ ------ ------
 ------ End functionland begin actual mess ------
@@ -181,48 +179,6 @@ t[#t+1] = Def.ActorFrame {
 	};
 };
 
--- -- Score Display
--- for player in ivalues(PlayerNumber) do
--- 	t[#t+1] = Def.ActorFrame{
--- 		OnCommand=cmd(Center;diffusealpha,0;zoom,0.6);
--- 		NextSongMessageCommand=cmd(playcommand,"Close");
--- 		PreviousSongMessageCommand=cmd(playcommand,"Close");
--- 		StartSelectingStepsMessageCommand=cmd(decelerate,0.2;zoom,0.78;diffusealpha,1);
--- 		StepsChosenMessageCommand=cmd(playcommand,"Close");
--- 		PlayerJoinedMessageCommand=cmd(playcommand,"Close");
--- 		CancelMessageCommand=cmd(playcommand,"Close");
--- 		CloseCommand=cmd(stoptweening;decelerate,0.2;zoom,0.6;diffusealpha,0);
-
--- 			LoadFont("Common Normal")..{
--- 				InitCommand=cmd(zoom,0.6;maxwidth,400;horizalign,(player == PLAYER_1 and left) or right;vertalign,top;x,(player == PLAYER_1 and -310) or 310;y,-240+86;shadowlengthy,1);
--- 				CurrentStepsP1ChangedMessageCommand=cmd(queuecommand,"Update");
--- 				UpdateCommand=function(self)
--- 				if GAMESTATE:IsPlayerEnabled(player) then
--- 					self:settextf( THEME:GetString("ScreenSelectMusic","PlayerScore"), PROFILEMAN:GetProfile(player):GetDisplayName() )
--- 				end
--- 				end,
--- 			};
-	
--- 			LoadFont("Score_handel gothic")..{
--- 				InitCommand=cmd(zoom,0.8;skewx,-0.2;horizalign,(player == PLAYER_1 and left) or right;vertalign,top;x,(player == PLAYER_1 and -310) or 310;y,-240+100;shadowlengthy,1);
--- 				CurrentStepsP1ChangedMessageCommand=cmd(queuecommand,"Update");
--- 				UpdateCommand=function(self)
--- 				local TP = SCREENMAN:GetTopScreen()
--- 				self:settext( (player == PLAYER_1 and TP:GetChild("ScoreP1"):GetText()) or TP:GetChild("ScoreP2"):GetText() )
--- 				end,
--- 			};
-	
--- 			LoadFont("Common Normal")..{
--- 				InitCommand=cmd(zoom,0.8;skewx,-0.2;horizalign,(player == PLAYER_1 and left) or right;vertalign,top;x,(player == PLAYER_1 and -310) or 310;y,-240+120;shadowlengthy,1);
--- 				CurrentStepsP1ChangedMessageCommand=cmd(queuecommand,"Update");
--- 				UpdateCommand=function(self)
--- 				self:settext( PercentScore(player) )
--- 				end,
--- 			};
--- 	};
--- end
-
-
 -- -- Button Help
 -- t[#t+1] = Def.ActorFrame {
 -- 		OnCommand=cmd(Center;diffusealpha,0;zoom,0);
@@ -239,7 +195,6 @@ t[#t+1] = Def.ActorFrame {
 -- 	};
 
 -- Message for the new player that joined.
-local InfoPreview = Def.ActorFrame{};
 
 t[#t+1] = Def.ActorFrame{
 		InitCommand=cmd(diffusealpha,0;x,WideScale(SCREEN_LEFT-15,SCREEN_LEFT+46);y,SCREEN_CENTER_Y-100;zoom,0.6);
