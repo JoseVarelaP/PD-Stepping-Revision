@@ -17,11 +17,6 @@ end
 
 local t = Def.ActorFrame{
 	InitCommand=cmd(Center;fov,90;rotationy,180;z,WideScale(300,400);addy,10);
-	OnCommand=function(self)
-	if ThemePrefs.Get("DedicatedCharacterShow") and SCREENMAN:GetTopScreen():GetChild("SongBackground") and (HasAnyCharacters(PLAYER_1) or HasAnyCharacters(PLAYER_2)) then
-		SCREENMAN:GetTopScreen():GetChild("SongBackground"):visible(false)
-	end
-	end,
 };
 
 t[#t+1] = Def.Quad{
@@ -37,12 +32,8 @@ local FuturaToLoad = (
 			((Hour() < 6 or Hour() > 19) and "Night" or "Day")
 		) or ThemePrefs.Get("CurrentStageLighting")
 
---[[
-	Settings & Shortcuts
-	Make this a setting that the player can change.
 
-	TODO: Get Stages to test properly!
-]]
+--Settings & Shortcuts
 local BeatsBeforeNextSegment = 8*ThemePrefs.Get("DediMeasureCamera")
 
 -- Set the time to wait
@@ -60,7 +51,7 @@ local Frm = 1/60
 local DebugMode = true
 
 -- In case you want frame-by-frame info on specific stuff.
-local MassiveLog = false
+local MassiveLog = true
 local function CameraRandom()
 	return math.random(1,5)
 end
@@ -106,13 +97,13 @@ local DebugMessages = {
 		if DebugMode and MassiveLog then
 			if ThemePrefs.Get("DediModelBPM") then
 				print(
-				"Current Beat: "..GAMESTATE:GetSongBeat() ..
+				"CharacterDisplay: Current Beat: "..GAMESTATE:GetSongBeat() ..
 				" - New Model Rate: ".. 0.5*GAMESTATE:GetSongBPS() ..
 				" - Current BPS: ".. GAMESTATE:GetSongBPS()
 				)
 			else
 				print(
-				"Current Beat: "..GAMESTATE:GetSongBeat() ..
+				"CharacterDisplay: Current Beat: "..GAMESTATE:GetSongBeat() ..
 				" - New Model Rate: ".. 0.5*GAMESTATE:GetSongBPS() ..
 				" - Current BPS: ".. GAMESTATE:GetSongBPS()
 				)
@@ -153,14 +144,16 @@ t[#t+1] = Def.Quad{
 	now = GAMESTATE:GetSongBeat();
 
 	self:sleep(Frm)
-	if now < NextSegment then
-		DebugMessages.TimeBeforeNextCamera()
-		self:queuecommand("TrackTime")
-	else
-		self:queuemessage("Camera"..CameraRandom())
-		NextSegment = now + BeatsBeforeNextSegment
-		DebugMessages.CameraLoaded()
-		self:queuecommand("TrackTime")
+	if (HasAnyCharacters(PLAYER_1) or HasAnyCharacters(PLAYER_2) then
+		if now < NextSegment then
+			DebugMessages.TimeBeforeNextCamera()
+			self:queuecommand("TrackTime")
+		else
+			self:queuemessage("Camera"..CameraRandom())
+			NextSegment = now + BeatsBeforeNextSegment
+			DebugMessages.CameraLoaded()
+			self:queuecommand("TrackTime")
+		end
 	end
 	end,
 }

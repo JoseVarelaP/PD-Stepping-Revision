@@ -57,6 +57,8 @@ if ThemePrefs.Get("ShowRandomSongBackground") then
 			self:Load( DIVA_RandomSong:GetBackgroundPath() )
 			self:scale_or_crop_background()
 			self:diffusealpha(0)
+			self:linear(0.2)
+			self:diffusealpha(0.4)
 		end
 		end,
 		HideBackgroundMessageCommand=cmd(linear,0.2;diffusealpha,0);
