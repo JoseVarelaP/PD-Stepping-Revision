@@ -16,11 +16,9 @@ end
 
 -- Miku's birthday
 if IsMikuBirthday() then
-	for i=1,5 do
 	t[#t+1] = Def.Quad{
-		OnCommand=cmd(FullScreen;diffuse,color("#00F6EA");fadebottom,1);
+		OnCommand=cmd(FullScreen;diffuse,color("#00F6EA");fadetop,1);
 	};
-	end
 end
 
 t[#t+1] = LoadActor( THEME:GetPathG("","BGElements/DotTileBG") )..{
