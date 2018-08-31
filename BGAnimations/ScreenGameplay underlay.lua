@@ -169,18 +169,18 @@ t[#t+1] = Def.ActorFrame{
 
 
 		-- Load the Stage
-		Def.Model {
-			Condition=ThemePrefs.Get("CurrentStageLocation") ~= "None";
-			Meshes=DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
-			Materials=DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/"..FuturaToLoad.."_material.txt");
-			Bones=DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
-			OnCommand=function(self)
-				self:cullmode("CullMode_None")
-				if ThemePrefs.Get("CurrentStageLocation") == "CyberWorld" then
-					self:zoom(8)
-				end
-			end,
-		};
+		-- Def.Model {
+		-- 	Condition=ThemePrefs.Get("CurrentStageLocation") ~= "None";
+		-- 	Meshes=DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
+		-- 	Materials=DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/"..FuturaToLoad.."_material.txt");
+		-- 	Bones=DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
+		-- 	OnCommand=function(self)
+		-- 		self:cullmode("CullMode_None")
+		-- 		if ThemePrefs.Get("CurrentStageLocation") == "CyberWorld" then
+		-- 			--self:zoom(8)
+		-- 		end
+		-- 	end,
+		-- };
 
 };
 
@@ -191,6 +191,44 @@ end
 if ThemePrefs.Get("DedicatedCharacterShow") then
 	if HasAnyCharacters(PLAYER_1) or HasAnyCharacters(PLAYER_2) then
 		for player in ivalues(PlayerNumber) do
+
+			-- This will be the warmup model.
+			t[#t+1] = Def.Model {
+					Condition=GAMESTATE:IsPlayerEnabled(player) and GAMESTATE:GetCharacter(player):GetDisplayName() ~= "default",
+					Meshes=GAMESTATE:GetCharacter(player):GetModelPath(),
+					Materials=GAMESTATE:GetCharacter(player):GetModelPath(),
+					Bones=GAMESTATE:GetCharacter(player):GetWarmUpAnimationPath(),
+					InitCommand=function(self)
+						self:cullmode("CullMode_None")
+					if BothPlayersEnabled() then
+						self:x( (player == PLAYER_1 and 8) or -8 )
+					end
+					self:queuecommand("UpdateRate")
+					end,
+		
+					-- Update Model animation speed depending on song's BPM.
+					-- To match SM's way of animation speeds.
+					UpdateRateCommand=function(self)
+					if ThemePrefs.Get("DediModelBPM") then
+						if now<=ModelBeat then
+							self:rate(0)
+						else
+							self:rate(0.5*GAMESTATE:GetSongBPS())
+						end
+					else
+						self:rate(0.5*GAMESTATE:GetSongBPS())
+					end
+					ModelBeat = GAMESTATE:GetSongBeat();
+					self:sleep(Frm)
+					if now<start then
+						self:queuecommand("UpdateRate")
+					else
+						self:visible(false)
+					end
+					end,
+			};
+
+
 			-- Load the Character
 			t[#t+1] = Def.Model {
 					Condition=GAMESTATE:IsPlayerEnabled(player) and GAMESTATE:GetCharacter(player):GetDisplayName() ~= "default",
@@ -228,9 +266,14 @@ if ThemePrefs.Get("DedicatedCharacterShow") then
 					end
 					ModelBeat = GAMESTATE:GetSongBeat();
 					self:sleep(Frm)
+					if now<start then
+						self:visible(false)
+					else
+						self:visible(true)
+					end
 					self:queuecommand("UpdateRate")
 					end,
-				};
+			};
 		end
 	end
 end

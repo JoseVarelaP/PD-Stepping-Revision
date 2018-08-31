@@ -46,10 +46,8 @@ function range(start, stop, step)
 	return t
 end
 
--- So this is my attempt at loading the characters for a specific selection.
--- However, the ThemePrefs function doesn't like it, and I'm already pulling my hair
--- off trying to figure out why the fuck is it not working
-
+-- Perserved for future work
+--[[
 local function ReturnCharacterNames()
 	local CharacterNamesTable = {}
 
@@ -69,6 +67,7 @@ local function ReturnCharacterIDs()
 
 	return TableToReturn
 end
+--]]
 
 function MusicFolder_AddChoices(n)
 	local TableToReturn = {}
