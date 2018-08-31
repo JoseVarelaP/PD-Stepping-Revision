@@ -316,7 +316,8 @@ t[#t+1] = Def.ActorFrame{
 			UpdateStepsMessageCommand=function(self,params)
 			local song = GAMESTATE:GetCurrentSong();
 			local steps = GAMESTATE:GetCurrentSteps(PLAYER_1);
-			if song then
+			local enabled = GAMESTATE:GetCurrentSteps(PLAYER_1);
+			if song and enabled then
 				if steps then
 					if song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then
 						self:settext( song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ):GetMeter() );
@@ -335,7 +336,8 @@ t[#t+1] = Def.ActorFrame{
 			UpdateStepsMessageCommand=function(self,params)
 			local song = GAMESTATE:GetCurrentSong();
 			local steps = GAMESTATE:GetCurrentSteps(PLAYER_2);
-			if song then
+			local enabled = GAMESTATE:GetCurrentSteps(PLAYER_2);
+			if song and enabled then
 				if steps then
 					if song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then
 						self:settext( song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ):GetMeter() );

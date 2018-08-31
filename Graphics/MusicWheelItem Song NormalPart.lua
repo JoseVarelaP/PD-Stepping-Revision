@@ -29,31 +29,6 @@ local t = Def.ActorFrame {};
 	t[#t+1] = Def.ActorFrame{
 
 		Def.ActorFrame{
-			SetMessageCommand=function(self,params)
-			local song = params.Song;
-			local steps = GAMESTATE:GetCurrentSteps( GAMESTATE:GetMasterPlayerNumber() );
-			local stepsP1 = GAMESTATE:GetCurrentSteps(PLAYER_1);
-			local stepsP2 = GAMESTATE:GetCurrentSteps(PLAYER_2);
-			self:stoptweening()
-			self:zoom(1)
-			self:diffuse(1,1,1,1)
-				if song then
-					if steps then
-						if not song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then
-							self:stoptweening()
-							self:zoom(0.9)
-							self:diffuse(0.6,0.6,0.6,1)
-						end
-					end
-					if stepsP1 and stepsP2 then
-						if not song:GetOneSteps(stepsP1:GetStepsType(), stepsP1:GetDifficulty() ) and not song:GetOneSteps(stepsP2:GetStepsType(), stepsP2:GetDifficulty() ) then
-							self:stoptweening()
-							self:zoom(0.9)
-							self:diffuse(0.6,0.6,0.6,1)
-						end
-					end
-				end
-			end;
 		
 			LoadActor("SelectMusic/WheelHighlight")..{
 			InitCommand=cmd(horizalign,left;zoom,0.5;shadowlength,3);
@@ -290,5 +265,34 @@ t.StepsChosenMessageCommand=cmd(playcommand,"Close");
 t.PlayerJoinedMessageCommand=cmd(playcommand,"Close");
 t.CancelMessageCommand=cmd(playcommand,"Close");
 t.CloseCommand=cmd(queuemessage,"ReturnWheel");
+t.SetMessageCommand=function(self,params)
+local song = params.Song;
+local steps = GAMESTATE:GetCurrentSteps( GAMESTATE:GetMasterPlayerNumber() );
+local bothenabled = GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsPlayerEnabled(PLAYER_2)
+local stepsP1 = GAMESTATE:GetCurrentSteps(PLAYER_1);
+local stepsP2 = GAMESTATE:GetCurrentSteps(PLAYER_2);
+self:stoptweening()
+self:zoom(1)
+self:diffuse(1,1,1,1)
+	if song then
+		if bothenabled then
+			if stepsP1 and stepsP2 then
+				if not song:GetOneSteps(stepsP1:GetStepsType(), stepsP1:GetDifficulty() ) and not song:GetOneSteps(stepsP2:GetStepsType(), stepsP2:GetDifficulty() ) then
+					self:stoptweening()
+					self:zoom(0.9)
+					self:diffuse(0.6,0.6,0.6,1)
+				end
+			end
+		else
+			if steps then
+				if not song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then
+					self:stoptweening()
+					self:zoom(0.9)
+					self:diffuse(0.6,0.6,0.6,1)
+				end
+			end
+		end
+	end
+end;
 	
 return t;
