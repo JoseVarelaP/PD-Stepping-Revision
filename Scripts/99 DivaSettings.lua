@@ -88,23 +88,7 @@ DSet = {
 		LineNames = function()
 			Result = ""
 
-			Result = Result .. "3,"
-			Result = Result .. "4,"
-			Result = Result .. "8,"
-			-- Result = Result .. "SI,"
-			-- Result = Result .. "SM,"
-			-- Result = Result .. "HN,"
-			Result = Result .. "11,"
-			Result = Result .. "13,"
-			Result = Result .. "14,"
-			Result = Result .. "15,"
-			Result = Result .. "16,"
-			Result = Result .. "28,"
-			Result = Result .. "29,"
-			Result = Result .. "30,"
-			Result = Result .. "31,"
-			Result = Result .. "32,"
-			-- Result = Result .. "ECPT,"
+			Result = Result .. "3,4,8,11,13,14,15,16,28,29,30,31,32"
 
 			return Result
 		end,
@@ -114,10 +98,6 @@ DSet = {
 		LineNames = function()
 			Result = ""
 		
-		
-			-- Currently this is still being tested. (ok not really)
-			-- It has been already tested, it works flawlessly.
-			-- Only issue right now will be to find appropiate locations.
 			Result = Result .. "CurrentStageLocation,"
 			
 			if ThemePrefs.Get("CurrentStageLocation") and ThemePrefs.Get("CurrentStageLocation") ~= "None" then
@@ -130,8 +110,6 @@ DSet = {
 				Result = Result .. "DediCharsSettings,"
 			end
 
-			Result = Result .. "ShowCharactersOnHome,"
-
 			Result = Result .. "EnableRandomSongPlay,"
 
 			if ThemePrefs.Get("EnableRandomSongPlay") then
@@ -140,15 +118,12 @@ DSet = {
 			end
 
 			if ThemePrefs.Get("ShowCharactersOnHome") then
-				Result = Result .. "MainCharacterOnHome,"
-			end
-
-			if ThemePrefs.Get("ShowCharactersOnHome") then
 				Result = Result .. "AllowMultipleModels,"
 			end
 			if ThemePrefs.Get("ShowCharactersOnHome") and ThemePrefs.Get("AllowMultipleModels") then
 				Result = Result .. "ModelsInRoom,"
 			end
+
 			return Result;
 		end,
 
@@ -188,7 +163,7 @@ DSet = {
 	SelectMusic = {
 		DescriptionSet = function(self,param)
 			if param.Steps then
-				if string.len( param.Steps:GetDescription() ) > 1 then
+				if param.Steps and string.len( param.Steps:GetDescription() ) > 1 then
 					self:settext( 
 							ToEnumShortString(param.Steps:GetDifficulty())..
 							"\n"

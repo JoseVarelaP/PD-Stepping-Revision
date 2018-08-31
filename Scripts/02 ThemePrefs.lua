@@ -128,20 +128,6 @@ Prefs =
 		Values = { false,true },
 	},
 
-	ShowCharactersOnHome =
-	{
-		Default = false,
-		Choices = { OptionNameString("Off"), OptionNameString("On") },
-		Values = { false,true },
-	},
-
-	MainCharacterOnHome =
-	{
-		Default = ReturnCharacterNames()[1],
-		Choices = ReturnCharacterNames(),
-		Values = ReturnCharacterIDs(),
-	},
-
 	-- Dedicated character settings
 	DediModelBPM =
 	{
