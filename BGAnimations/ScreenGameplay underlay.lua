@@ -217,10 +217,10 @@ end
 if ThemePrefs.Get("DedicatedCharacterShow") then
 	if HasAnyCharacters(PLAYER_1) or HasAnyCharacters(PLAYER_2) then
 		for player in ivalues(PlayerNumber) do
-			if IsSafeToLoad(player) then
+			if GAMESTATE:IsPlayerEnabled(player) and IsSafeToLoad(player) then
 			-- This will be the warmup model.
 			t[#t+1] = Def.Model {
-					Condition=GAMESTATE:IsPlayerEnabled(player) and GAMESTATE:GetCharacter(player):GetDisplayName() ~= "default",
+					Condition=GAMESTATE:GetCharacter(player):GetDisplayName() ~= "default",
 					Meshes=GAMESTATE:GetCharacter(player):GetModelPath(),
 					Materials=GAMESTATE:GetCharacter(player):GetModelPath(),
 					Bones=GAMESTATE:GetCharacter(player):GetWarmUpAnimationPath(),
@@ -242,7 +242,7 @@ if ThemePrefs.Get("DedicatedCharacterShow") then
 			};
 			-- Load the Character
 			t[#t+1] = Def.Model {
-					Condition=GAMESTATE:IsPlayerEnabled(player) and GAMESTATE:GetCharacter(player):GetDisplayName() ~= "default",
+					Condition=GAMESTATE:GetCharacter(player):GetDisplayName() ~= "default",
 					Meshes=GAMESTATE:GetCharacter(player):GetModelPath(),
 					Materials=GAMESTATE:GetCharacter(player):GetModelPath(),
 					Bones=GAMESTATE:GetCharacter(player):GetDanceAnimationPath(),

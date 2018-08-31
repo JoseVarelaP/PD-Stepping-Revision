@@ -32,7 +32,7 @@ t[#t+1] = LoadActor("Base")..{ OnCommand=cmd(shadowlengthy,3); };
 t[#t+1] = LoadFont("Common Normal")..{ Text="Character", OnCommand=cmd(diffuse,color("#54918D");y,-50;x,40;zoom,0.8); };
 
 for player in ivalues(PlayerNumber) do
-	if IsSafeToLoad(player) then
+	if GAMESTATE:IsPlayerEnabled(player) and IsSafeToLoad(player) then
 		t[#t+1] = LoadCharacterFromPlayer(player)..{
 			OnCommand=function(self)
 			if BothPlayersEnabled() then
