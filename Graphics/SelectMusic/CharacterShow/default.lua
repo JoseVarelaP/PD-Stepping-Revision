@@ -22,13 +22,19 @@ t[#t+1] = LoadActor("Base")..{ OnCommand=cmd(shadowlengthy,3); };
 t[#t+1] = LoadFont("Common Normal")..{ Text="Character", OnCommand=cmd(diffuse,color("#54918D");y,-50;x,40;zoom,0.8); };
 
 for player in ivalues(PlayerNumber) do
-	t[#t+1] = LoadCharacterFromPlayer(player)..{
-		OnCommand=function(self)
-		if BothPlayersEnabled() then
-			self:x( (player == PLAYER_1 and -50) or 30 )
-		end
-		end,
-	};
+	if GAMESTATE:GetCharacter(player):GetModelPath() == "" then
+		lua.ReportScriptError(
+			"Model for "..player.." ("..GAMESTATE:GetCharacter(player):GetDisplayName()..") Has a invalid model. Please check if the model.txt is correctly named and formatted."
+		)
+	else
+		t[#t+1] = LoadCharacterFromPlayer(player)..{
+			OnCommand=function(self)
+			if BothPlayersEnabled() then
+				self:x( (player == PLAYER_1 and -50) or 30 )
+			end
+			end,
+		};
+	end
 end
 
 return t;
