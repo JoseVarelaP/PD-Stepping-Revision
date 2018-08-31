@@ -95,23 +95,19 @@ local t = Def.ActorFrame {};
 			LoadFont("proto sans/20px") ..{
 			OnCommand=cmd(x,500;y,-30;zoom,0.8;horizalign,right;shadowlength,1;strokecolor,Color.Blue);
 			SetMessageCommand=function(self,params)
-			self:settext("")
+			self:settext("No Genre")
 			local song = params.Song;
-				if song then
-					if string.len(song:GetGenre()) > 1 then
-						self:settext( song:GetGenre() );
-					else
-						self:settext( "No Genre" );
-					end
-				end;
+				if song and string.len(song:GetGenre()) > 1 then
+					self:settext( song:GetGenre() );
+				end
 			end;
 			};
 
 			LoadFont("renner/20px") ..{
 			OnCommand=cmd(x,530;y,-30;zoom,0.8;shadowlength,1;strokecolor,Color.Blue);
 			SetMessageCommand=function(self,params)
-				local song = params.Song;
-				if song and PROFILEMAN:IsSongNew(params.Song) then
+			local song = params.Song;
+				if song and PROFILEMAN:IsSongNew(song) then
 					self:settext("NEW!")
 					self:diffuse(Color.Red)
 					self:strokecolor( Color.Orange )
@@ -125,13 +121,8 @@ local t = Def.ActorFrame {};
 			SetMessageCommand=function(self,params)
 			local song = params.Song;
 			self:visible(false)
-			if song then
-				if song:IsLong() then
-					self:visible(true)
-				end
-				if song:IsMarathon() then
-					self:visible(true)
-				end
+			if song and song:IsLong() or song and song:IsMarathon() then
+				self:visible(true)
 			end
 			end;
 
@@ -139,13 +130,11 @@ local t = Def.ActorFrame {};
 				OnCommand=cmd(horizalign,left;zoom,1;y,16;x,150;shadowlengthy,2);
 				SetMessageCommand=function(self,params)
 				local song = params.Song;
-				if song then
-					if song:IsLong() then
-						self:diffuse(Color.Orange)
-					end
-					if song:IsMarathon() then
-						self:diffuse(Color.Red)
-					end
+				if song and song:IsLong() then
+					self:diffuse(Color.Orange)
+				end
+				if song and song:IsMarathon() then
+					self:diffuse(Color.Red)
 				end
 				end,
 				};
@@ -154,15 +143,13 @@ local t = Def.ActorFrame {};
 				OnCommand=cmd(x,170;y,6;zoom,1.2;strokecolor,Color.Black);
 				SetMessageCommand=function(self,params)
 				local song = params.Song;
-				if song then
-					if song:IsLong() then
-						self:strokecolor( ColorDarkTone(Color.Orange) )
-						self:settext( "2" )
-					end
-					if song:IsMarathon() then
-						self:strokecolor( ColorDarkTone(Color.Red) )
-						self:settext( "3" )
-					end
+				if song and song:IsLong() then
+					self:strokecolor( ColorDarkTone(Color.Orange) )
+					self:settext( "2" )
+				end
+				if song and song:IsMarathon() then
+					self:strokecolor( ColorDarkTone(Color.Red) )
+					self:settext( "3" )
 				end
 				end,
 				};
@@ -172,14 +159,8 @@ local t = Def.ActorFrame {};
 				OnCommand=cmd(x,210;y,18;zoom,0.8;strokecolor,Color.Black);
 				SetMessageCommand=function(self,params)
 				local song = params.Song;
-				if song then
-					if song:IsLong() then
-						self:strokecolor( ColorDarkTone(Color.Orange) )
-					end
-					if song:IsMarathon() then
-						self:strokecolor( ColorDarkTone(Color.Red) )
-					end
-				end
+				if song and song:IsLong() then self:strokecolor( ColorDarkTone(Color.Orange) )end
+				if song and song:IsMarathon() then self:strokecolor( ColorDarkTone(Color.Red) )end
 				end,
 				};
 
@@ -201,14 +182,8 @@ local t = Def.ActorFrame {};
 				OnCommand=cmd(horizalign,left;zoom,1;y,16;x,105;shadowlengthy,2);
 				SetMessageCommand=function(self,params)
 				local song = params.Song;
-				if song then
-					if song:IsLong() then
-						self:diffuse(Color.Orange)
-					end
-					if song:IsMarathon() then
-						self:diffuse(Color.Red)
-					end
-				end
+				if song and song:IsLong() then self:diffuse(Color.Orange) end
+				if song and song:IsMarathon() then self:diffuse(Color.Red) end
 				end,
 				};
 
@@ -216,13 +191,11 @@ local t = Def.ActorFrame {};
 				Font="unsteady oversteer/20px",
 				OnCommand=cmd(zoom,0.6;strokecolor,color("0,0,0,1");wrapwidthpixels,500;x,128;vertspacing,-8;y,12);
 				SetMessageCommand=function(self,params)
-					local song = params.Song;
-					local val
+				local song = params.Song;
+				val = " "
 					if song then
 						local bpms = song:GetDisplayBpms()
 						val = string.format("%i \n %i",bpms[1],bpms[2])
-					else
-						val = " "
 					end
 					self:settext(val)
 				end;
@@ -238,24 +211,17 @@ for player in ivalues(PlayerNumber) do
 t[#t+1] = LoadFont("unsteady oversteer/20px") ..{
 	OnCommand=cmd(x,((player == PLAYER_1 and 80) or 528);y,-10;zoom,1.2;strokecolor,Color.Black);
 	SetMessageCommand=function(self,params)
-		local song = params.Song;
-		local enabled = GAMESTATE:IsPlayerEnabled(player);
-		local steps = GAMESTATE:GetCurrentSteps(player);
-		if enabled then
-			if song then
-				if steps then
-					if song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then
-						self:settext( song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ):GetMeter() );
-					else
-						self:settext( " " )
-					end
-				end
-			else
-				self:settext("")
+	local song = params.Song;
+	local enabled = GAMESTATE:IsPlayerEnabled(player);
+	local steps = GAMESTATE:GetCurrentSteps(player);
+	self:settext("")
+		if enabled and song and steps then
+			if song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then
+				self:settext( song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ):GetMeter() );
 			end
-		end;
+		end
 	end;
-	};
+};
 end
 
 t.NextSongMessageCommand=cmd(playcommand,"Close");
