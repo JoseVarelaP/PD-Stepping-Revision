@@ -71,18 +71,24 @@ t[#t+1] = Def.ActorFrame{
  		end,
 		UpdateBackgroundCommand=function(self)
 		self:finishtweening()
- 		if GAMESTATE:GetCurrentSong() and GAMESTATE:GetCurrentSong():GetBackgroundPath() then
+ 		if GAMESTATE:GetCurrentSong() then
 			self:finishtweening()
  			self:visible(true)
- 			self:LoadBackground(GAMESTATE:GetCurrentSong():GetBackgroundPath())
-			self:setsize(450/2,400/2):rotationz(-10):x(-270):decelerate(0.3):x(-250):rotationz(-5):diffusealpha(1)
+ 			if GAMESTATE:GetCurrentSong():GetJacketPath() then
+ 				self:LoadBackground(GAMESTATE:GetCurrentSong():GetJacketPath())
+ 				self:setsize(400/2,400/2)
+ 			else
+ 				self:LoadBackground(GAMESTATE:GetCurrentSong():GetBackgroundPath())
+ 				self:setsize(450/2,450/2)
+ 			end
+			self:rotationz(-10):x(-270):decelerate(0.3):x(-250):rotationz(-5):diffusealpha(1)
  		else
  			self:visible(false)
  		end
 		end,
 		OnCommand=function(self)
 			self:shadowlength(10):diffusealpha(0):linear(0.5):diffusealpha(1)
-			self:setsize(450/2,400/2)
+			self:setsize(400/2,400/2)
 		end;
 	};
 
@@ -94,7 +100,7 @@ t[#t+1] = Def.ActorFrame{
 		UpdateBackgroundCommand=function(self)
 		self:finishtweening()
 		self:settext("")
- 		if GAMESTATE:GetCurrentSong() then
+ 		if GAMESTATE:GetCurrentSong() and not GAMESTATE:GetCurrentSong():GetCDImagePath() then
 			self:settext( GAMESTATE:GetCurrentSong():GetDisplayMainTitle() )
  		end
  		self:zoom(1.1)
@@ -116,7 +122,7 @@ t[#t+1] = Def.ActorFrame{
 		self:finishtweening()
 		self:settext("")
 		self:y(65)
- 		if GAMESTATE:GetCurrentSong() then
+ 		if GAMESTATE:GetCurrentSong() and not GAMESTATE:GetCurrentSong():GetCDImagePath() then
 			self:settext( GAMESTATE:GetCurrentSong():GetDisplayArtist() )
 			if GAMESTATE:GetCurrentSong():GetDisplaySubTitle() == "" then
  				self:y(60)
@@ -140,7 +146,7 @@ t[#t+1] = Def.ActorFrame{
 		UpdateBackgroundCommand=function(self)
 		self:finishtweening()
 		self:settext("")
- 		if GAMESTATE:GetCurrentSong() then
+ 		if GAMESTATE:GetCurrentSong() and not GAMESTATE:GetCurrentSong():GetCDImagePath() then
 			self:settext( GAMESTATE:GetCurrentSong():GetDisplaySubTitle() )
  		end
  		self:zoom(0.65)
@@ -150,6 +156,39 @@ t[#t+1] = Def.ActorFrame{
 		end,
 		OnCommand=function(self)
 			self:shadowlength(5):diffusealpha(0):linear(0.5):diffusealpha(1)
+		end;
+	};
+
+	--[[
+		Special cases where the song transparent logo banner is available
+		These are hosted on the CDImagePath string found in the .ssc.
+
+		Recommended size is 512x256. If you preffer a higher quality variant,
+		Use 1024x512, and make the texture handle doubleres by adding this to the file name.
+
+		MyTextBanner (doubleres).png
+	--]]
+	Def.Sprite {
+		InitCommand=cmd(diffusealpha,1;x,-300;y,50);
+		BeginCommand=cmd(LoadFromCurrentSongBackground);
+		CurrentSongChangedMessageCommand=function(self)
+ 			self:finishtweening():smooth(0.1):diffusealpha(0):sleep(0.1):queuecommand("UpdateBackground")
+ 		end,
+		UpdateBackgroundCommand=function(self)
+		self:finishtweening()
+ 		if GAMESTATE:GetCurrentSong() and GAMESTATE:GetCurrentSong():GetCDImagePath() then
+			self:finishtweening()
+ 			self:visible(true)
+ 			self:LoadBackground(GAMESTATE:GetCurrentSong():GetCDImagePath())
+ 			self:zoom(0.7)
+			self:decelerate(0.2):diffusealpha(1)
+			self:zoom(0.6)
+ 		else
+ 			self:visible(false)
+ 		end
+		end,
+		OnCommand=function(self)
+			self:shadowlength(4):diffusealpha(0):zoom(0.7):linear(0.5):diffusealpha(1):zoom(0.6)
 		end;
 	};
 
