@@ -144,7 +144,7 @@ t[#t+1] = Def.Quad{
 	now = GAMESTATE:GetSongBeat();
 
 	self:sleep(Frm)
-	if (HasAnyCharacters(PLAYER_1) or HasAnyCharacters(PLAYER_2) then
+	if (HasAnyCharacters(PLAYER_1) or HasAnyCharacters(PLAYER_2)) then
 		if now < NextSegment then
 			DebugMessages.TimeBeforeNextCamera()
 			self:queuecommand("TrackTime")
