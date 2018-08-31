@@ -19,10 +19,6 @@ function DIVA:GetPathLocation(filepart1,filepart2)
 	return "/"..THEME:GetCurrentThemeDirectory().."/Locations/"..filepart1 .. filepart2
 end
 
-function DIVA:GetMenuIcon(filepart1,filepart2)
-	return "/"..THEME:GetCurrentThemeDirectory().."/MenuIcons/"..filepart1 .. filepart2
-end
-
 function DIVA:ResetRandomSong()
 	if DIVA_RandomSong and ThemePrefs.Get("EnableRandomSongPlay") then
 		if ThemePrefs.Get("FolderToPlayRandomMusic") ~= "All" then
@@ -43,4 +39,18 @@ end
 
 function DIVA:HasSubtitles(WhatToLoad)
 	return string.len( WhatToLoad:GetDisplaySubTitle() ) > 1
+end
+
+function DIVA:IsSafeToLoad(pn)
+	if GAMESTATE:GetCharacter(pn):GetModelPath() ~= "" then return true
+	else
+		lua.ReportScriptError(
+			string.format( THEME:GetString("Common","ModelLoadError"), ToEnumShortString(pn), GAMESTATE:GetCharacter(pn):GetDisplayName() )
+		)
+		return false
+	end
+end
+
+function DIVA:BothPlayersEnabled()
+	return GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsPlayerEnabled(PLAYER_2)
 end

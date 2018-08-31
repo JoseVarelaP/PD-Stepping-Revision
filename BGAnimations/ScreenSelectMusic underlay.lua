@@ -1,6 +1,4 @@
-local t = Def.ActorFrame{}
-
-OldSong = GAMESTATE:GetCurrentSong();
+local t = Def.ActorFrame{};
 
 t[#t+1] = Def.Sprite {
 	CurrentSongChangedMessageCommand=function(self)
@@ -14,10 +12,9 @@ t[#t+1] = Def.Sprite {
  	UpdateBackgroundCommand=function(self)
 		self:finishtweening()
  		if GAMESTATE:GetCurrentSong() and GAMESTATE:GetCurrentSong():GetBackgroundPath() then
- 			self:visible(true)
- 			self:LoadBackground(GAMESTATE:GetCurrentSong():GetBackgroundPath())
+ 			self:visible(true):LoadBackground(GAMESTATE:GetCurrentSong():GetBackgroundPath())
 			self:scaletocover(0,0,SCREEN_WIDTH,SCREEN_BOTTOM)
- 			self:diffusealpha(1)
+ 			:diffusealpha(1)
  		else
  			self:visible(false)
  		end
@@ -26,13 +23,10 @@ t[#t+1] = Def.Sprite {
 
 t[#t+1] = Def.Sprite {
 	CurrentSongChangedMessageCommand=function(self)
- 		self:finishtweening()
- 		self:croptop(0)
- 		self:fadetop(0)
- 		self:cropbottom(0)
- 		self:fadebottom(0)
- 		self:sleep(0.2):smooth(0.4):fadebottom(0.8):cropbottom(1):sleep(0.1)
- 	self:queuecommand("BeginProcess")
+ 	self:finishtweening()
+ 	:croptop(0):fadetop(0):cropbottom(0):fadebottom(0)
+ 	:sleep(0.2):smooth(0.4):fadebottom(0.8):cropbottom(1):sleep(0.1)
+ 	:queuecommand("BeginProcess")
  	end,
  	BeginProcessCommand=function(self)
  	self:queuecommand("UpdateBackground")
@@ -41,21 +35,33 @@ t[#t+1] = Def.Sprite {
 		self:finishtweening()
  		if GAMESTATE:GetCurrentSong() and GAMESTATE:GetCurrentSong():GetBackgroundPath() then
 			self:finishtweening()
-			self:fadetop(0.8)
-			self:croptop(1)
- 			self:visible(true)
- 			self:LoadBackground(GAMESTATE:GetCurrentSong():GetBackgroundPath())
+			:fadetop(0.8)
+			:croptop(1)
+ 			:visible(true)
+ 			:LoadBackground(GAMESTATE:GetCurrentSong():GetBackgroundPath())
 			self:scaletocover(0,0,SCREEN_WIDTH,SCREEN_BOTTOM)
- 			self:smooth(0.3)
-			self:fadetop(0)
-			self:croptop(0)
- 			self:diffusealpha(1)
+ 			:smooth(0.3)
+			:fadetop(0)
+			:croptop(0)
+ 			:diffusealpha(1)
  		else
  			self:visible(false)
  			self:LoadBackground(THEME:GetPathG("","_blank"))
  		end
  	end,
 };
+
+local function LoadImageForTile(self)
+	if GAMESTATE:GetCurrentSong():GetJacketPath() then
+ 		self:LoadBackground(GAMESTATE:GetCurrentSong():GetJacketPath())
+ 		self:setsize(400/2,400/2)
+ 	elseif GAMESTATE:GetCurrentSong():GetBackgroundPath() then
+ 		self:LoadBackground(GAMESTATE:GetCurrentSong():GetBackgroundPath())
+ 		self:setsize(450/2,450/2)
+ 	else
+ 		self:LoadBackground( THEME:GetPathG("","_blank") )
+ 	end
+end
 
 t[#t+1] = Def.ActorFrame{
 	OnCommand=cmd(x,WideScale(SCREEN_RIGHT,SCREEN_RIGHT);y,SCREEN_CENTER_Y;diffusealpha,0;zoom,0.8;sleep,0.3;decelerate,0.2;zoom,1;diffusealpha,1);
@@ -74,13 +80,7 @@ t[#t+1] = Def.ActorFrame{
  		if GAMESTATE:GetCurrentSong() then
 			self:finishtweening()
  			self:visible(true)
- 			if GAMESTATE:GetCurrentSong():GetJacketPath() then
- 				self:LoadBackground(GAMESTATE:GetCurrentSong():GetJacketPath())
- 				self:setsize(400/2,400/2)
- 			else
- 				self:LoadBackground(GAMESTATE:GetCurrentSong():GetBackgroundPath())
- 				self:setsize(450/2,450/2)
- 			end
+ 			LoadImageForTile(self)
 			self:rotationz(-10):x(-270):decelerate(0.3):x(-250):rotationz(-5):diffusealpha(1)
  		else
  			self:visible(false)

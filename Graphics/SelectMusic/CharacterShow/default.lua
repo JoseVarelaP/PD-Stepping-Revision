@@ -16,23 +16,13 @@ local function BothPlayersEnabled()
 	return GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsPlayerEnabled(PLAYER_2)
 end
 
-local function IsSafeToLoad(pn)
-	if GAMESTATE:GetCharacter(pn):GetModelPath() ~= "" then return true
-	else 
-		lua.ReportScriptError(
-			"Model for "..pn.." ("..GAMESTATE:GetCharacter(pn):GetDisplayName()..") Has a invalid model. Please check if the model.txt is correctly named and formatted."
-		)
-		return false
-	end
-end
-
 local t = Def.ActorFrame{};
 
 t[#t+1] = LoadActor("Base")..{ OnCommand=cmd(shadowlengthy,3); };
 t[#t+1] = LoadFont("Common Normal")..{ Text="Character", OnCommand=cmd(diffuse,color("#54918D");y,-50;x,40;zoom,0.8); };
 
 for player in ivalues(PlayerNumber) do
-	if GAMESTATE:IsPlayerEnabled(player) and IsSafeToLoad(player) then
+	if GAMESTATE:IsPlayerEnabled(player) and DIVA:IsSafeToLoad(player) then
 		t[#t+1] = LoadCharacterFromPlayer(player)..{
 			OnCommand=function(self)
 			if BothPlayersEnabled() then

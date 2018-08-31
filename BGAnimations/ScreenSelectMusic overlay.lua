@@ -1,6 +1,4 @@
 -- hi im jose and welcome to jackass
-local CurrentSong = GAMESTATE:GetCurrentSong();
-
 
 local t = Def.ActorFrame{
 	OnCommand=function(self)
@@ -12,17 +10,13 @@ local t = Def.ActorFrame{
 	CurrentSongChangedMessageCommand=cmd(queuemessage,"UpdateSteps");
 }
 
-local function BothPlayersEnabled()
-	return GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsPlayerEnabled(PLAYER_2)
-end
-
 local function JustASinglePlayer(pn)
 	if pn == PLAYER_1 then return GAMESTATE:IsPlayerEnabled(PLAYER_1) and not GAMESTATE:IsPlayerEnabled(PLAYER_2) end
 	if pn == PLAYER_2 then return GAMESTATE:IsPlayerEnabled(PLAYER_2) and not GAMESTATE:IsPlayerEnabled(PLAYER_1) end
 end
 
 local function DiffuseColorForBothPlayers(self)
-	if BothPlayersEnabled() then
+	if DIVA:BothPlayersEnabled() then
 		if GAMESTATE:GetCurrentSteps(PLAYER_1) then
 			self:diffuseleftedge( CustomDifficultyToColor( GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() ) )
 		end
@@ -34,7 +28,7 @@ end
 
 local function InvertSongBase()
 	WhatToLoad = "Color_WheelSong"
-	if BothPlayersEnabled() then WhatToLoad = "2PColor_WheelSong" end
+	if DIVA:BothPlayersEnabled() then WhatToLoad = "2PColor_WheelSong" end
 	return WhatToLoad
 end
 
@@ -208,7 +202,7 @@ t[#t+1] = Def.ActorFrame{
 
 			LoadActor( THEME:GetPathG("","SelectMusic/WheelHighlight"))..{
 			InitCommand=cmd(x,303;zoom,0.5;pulse;effectmagnitude,1,1.02,0;effectclock,"bgm";effectperiod,1;effectoffset,0.2);
-			SetMessageCommand=function(self,params)
+			SetMessageCommand=function(self)
 				local steps = GAMESTATE:GetCurrentSteps( GAMESTATE:GetMasterPlayerNumber() ):GetDifficulty()
 				self:diffuse( CustomDifficultyToColor( steps ) )
 			end,
@@ -226,7 +220,7 @@ t[#t+1] = Def.ActorFrame{
 				self:horizalign(right)
 			end
 			end,
-			UpdateStepsMessageCommand=function(self,params)
+			UpdateStepsMessageCommand=function(self)
 			local steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber());
 			if steps then
 				self:diffuse( CustomDifficultyToColor( steps:GetDifficulty() ) )
@@ -245,7 +239,7 @@ t[#t+1] = Def.ActorFrame{
 				self:horizalign(right)
 			end
 			end,
-			UpdateStepsMessageCommand=function(self,params)
+			UpdateStepsMessageCommand=function(self)
 			local steps = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber());
 			if steps then
 				self:diffuse( CustomDifficultyToColor( steps:GetDifficulty() ) )
@@ -257,7 +251,7 @@ t[#t+1] = Def.ActorFrame{
 			LoadFont("renner/20px") ..{
 			Text="This is test";
 			OnCommand=cmd(x,110;y,-14;horizalign,left;shadowlength,1;strokecolor,Color.Black);
-			UpdateStepsMessageCommand=function(self,params)
+			UpdateStepsMessageCommand=function(self)
 			self:settext("")
 			local song = GAMESTATE:GetCurrentSong();
 				if song then
@@ -268,10 +262,10 @@ t[#t+1] = Def.ActorFrame{
 	
 			LoadFont("unsteady oversteer/20px") ..{
 			OnCommand=cmd(x,80;y,-10;zoom,1.2;strokecolor,Color.Black);
-			UpdateStepsMessageCommand=function(self,params)
+			UpdateStepsMessageCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong();
 			local steps = GAMESTATE:GetCurrentSteps(PLAYER_1);
-			local enabled = GAMESTATE:GetCurrentSteps(PLAYER_1);
+			local enabled = GAMESTATE:IsPlayerEnabled(PLAYER_1);
 			if song and enabled then
 				if steps then
 					if song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then
@@ -288,10 +282,10 @@ t[#t+1] = Def.ActorFrame{
 
 			LoadFont("unsteady oversteer/20px") ..{
 			OnCommand=cmd(x,528;y,-10;zoom,1.2;strokecolor,Color.Black);
-			UpdateStepsMessageCommand=function(self,params)
+			UpdateStepsMessageCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong();
 			local steps = GAMESTATE:GetCurrentSteps(PLAYER_2);
-			local enabled = GAMESTATE:GetCurrentSteps(PLAYER_2);
+			local enabled = GAMESTATE:IsPlayerEnabled(PLAYER_2);
 			if song and enabled then
 				if steps then
 					if song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then

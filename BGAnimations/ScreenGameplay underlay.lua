@@ -55,7 +55,7 @@ local Frm = 1/60
 local DebugMode = true
 
 -- In case you want frame-by-frame info on specific stuff.
-local MassiveLog = true
+local MassiveLog = false
 local function CameraRandom()
 	return math.random(1,5)
 end
@@ -66,7 +66,7 @@ local DebugMessages = {
 		if DebugMode then
 			for player in ivalues(PlayerNumber) do
 				if GAMESTATE:IsPlayerEnabled(player) then
-					Trace(
+					print(
 					"-------------------------------------------\n"..
 					"CharacterDisplay: Character Loaded. ("..player..")"..
 					"\nCharacterName: "..GAMESTATE:GetCharacter(player):GetDisplayName()
@@ -79,15 +79,15 @@ local DebugMessages = {
 		end
 	end,
 	TimeBeforeNextCamera = function()
-		if DebugMode then
-			Trace("CharacterDisplay: Neccesary time before next Camera: ".. NextSegment - now)
+		if DebugMode and MassiveLog then
+			print("CharacterDisplay: Neccesary time before next Camera: ".. NextSegment - now)
 		end
 	end,
 	CameraLoaded = function()
 		if DebugMode then
 			for player in ivalues(PlayerNumber) do
-				if GAMESTATE:IsPlayerEnabled(player) then
-					Trace(
+				if GAMESTATE:IsPlayerEnabled(player) and HasAnyCharacters(player) then
+					print(
 					"\n-------------------------------------------\n"..
 					"Next Camera Loaded (".. CameraRandom() .."), returning to command.\n"..
 					"\nCurrentAnimation: "..GAMESTATE:GetCharacter(player):GetDanceAnimationPath()..
@@ -100,18 +100,18 @@ local DebugMessages = {
 	TempoCheck = function()
 		if DebugMode and MassiveLog then
 			if ThemePrefs.Get("DediModelBPM") then
-				Trace(
+				print(
 				"Current Beat: "..GAMESTATE:GetSongBeat() ..
 				" - New Model Rate: ".. 0.5*GAMESTATE:GetSongBPS() ..
 				" - Current BPS: ".. GAMESTATE:GetSongBPS()
 				)
 			else
-				Trace(
+				print(
 				"Current Beat: "..GAMESTATE:GetSongBeat() ..
 				" - New Model Rate: ".. 0.5*GAMESTATE:GetSongBPS() ..
 				" - Current BPS: ".. GAMESTATE:GetSongBPS()
 				)
-				Trace( now.. " - ".. ModelBeat )
+				print( now.. " - ".. ModelBeat )
 			end
 		end
 	end,
@@ -188,16 +188,6 @@ local function BothPlayersEnabled()
 	return GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsPlayerEnabled(PLAYER_2)
 end
 
-local function IsSafeToLoad(pn)
-	if GAMESTATE:GetCharacter(pn):GetModelPath() ~= "" then return true
-	else 
-		lua.ReportScriptError(
-			"Model for "..pn.." ("..GAMESTATE:GetCharacter(pn):GetDisplayName()..") Has a invalid model. Please check if the model.txt is correctly named and formatted."
-		)
-		return false
-	end
-end
-
 local function UpdateModelRate(self)
 	if ThemePrefs.Get("DediModelBPM") then
 		if now<=ModelBeat then
@@ -217,14 +207,14 @@ end
 if ThemePrefs.Get("DedicatedCharacterShow") then
 	if HasAnyCharacters(PLAYER_1) or HasAnyCharacters(PLAYER_2) then
 		for player in ivalues(PlayerNumber) do
-			if GAMESTATE:IsPlayerEnabled(player) and IsSafeToLoad(player) then
+			if GAMESTATE:IsPlayerEnabled(player) and DIVA:IsSafeToLoad(player) then
 			-- This will be the warmup model.
 			t[#t+1] = Def.Model {
 					Condition=GAMESTATE:GetCharacter(player):GetDisplayName() ~= "default",
 					Meshes=GAMESTATE:GetCharacter(player):GetModelPath(),
 					Materials=GAMESTATE:GetCharacter(player):GetModelPath(),
 					Bones=GAMESTATE:GetCharacter(player):GetWarmUpAnimationPath(),
-					InitCommand=function(self)
+					OnCommand=function(self)
 					self:cullmode("CullMode_None")
 					if BothPlayersEnabled() then self:x( (player == PLAYER_1 and 8) or -8 ) end
 					self:queuecommand("UpdateRate")
@@ -246,7 +236,7 @@ if ThemePrefs.Get("DedicatedCharacterShow") then
 					Meshes=GAMESTATE:GetCharacter(player):GetModelPath(),
 					Materials=GAMESTATE:GetCharacter(player):GetModelPath(),
 					Bones=GAMESTATE:GetCharacter(player):GetDanceAnimationPath(),
-					InitCommand=function(self)
+					OnCommand=function(self)
 						self:cullmode("CullMode_None")
 						DebugMessages.ModelLoad()
 					-- position time

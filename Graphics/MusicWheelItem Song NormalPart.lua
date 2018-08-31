@@ -1,14 +1,10 @@
-local function BothPlayersEnabled()
-	return GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsPlayerEnabled(PLAYER_2)
-end
-
 local function JustASinglePlayer(pn)
 	if pn == PLAYER_1 then return GAMESTATE:IsPlayerEnabled(PLAYER_1) and not GAMESTATE:IsPlayerEnabled(PLAYER_2) end
 	if pn == PLAYER_2 then return GAMESTATE:IsPlayerEnabled(PLAYER_2) and not GAMESTATE:IsPlayerEnabled(PLAYER_1) end
 end
 
 local function DiffuseColorForBothPlayers(self)
-	if BothPlayersEnabled() then
+	if DIVA:BothPlayersEnabled() then
 		if GAMESTATE:GetCurrentSteps(PLAYER_1) then
 			self:diffuseleftedge( CustomDifficultyToColor( GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty() ) )
 		end
@@ -20,7 +16,7 @@ end
 
 local function InvertSongBase()
 	WhatToLoad = "Color_WheelSong"
-	if BothPlayersEnabled() then WhatToLoad = "2PColor_WheelSong" end
+	if DIVA:BothPlayersEnabled() then WhatToLoad = "2PColor_WheelSong" end
 	return WhatToLoad
 end
 
