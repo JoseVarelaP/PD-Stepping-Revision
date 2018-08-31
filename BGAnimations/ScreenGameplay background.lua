@@ -18,7 +18,7 @@ end
 local t = Def.ActorFrame{
 	InitCommand=cmd(Center;fov,90;rotationy,180;z,WideScale(300,400);addy,10);
 	OnCommand=function(self)
-	if ThemePrefs.Get("DedicatedCharacterShow") and SCREENMAN:GetTopScreen():GetChild("SongBackground") then
+	if ThemePrefs.Get("DedicatedCharacterShow") and SCREENMAN:GetTopScreen():GetChild("SongBackground") and (HasAnyCharacters(PLAYER_1) or HasAnyCharacters(PLAYER_2)) then
 		SCREENMAN:GetTopScreen():GetChild("SongBackground"):visible(false)
 	end
 	end,
