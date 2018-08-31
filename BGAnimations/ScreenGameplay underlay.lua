@@ -98,7 +98,7 @@ local DebugMessages = {
 		end
 	end,
 	TempoCheck = function()
-		if DebugMode then
+		if DebugMode and MassiveLog then
 			if ThemePrefs.Get("DediModelBPM") then
 				Trace(
 				"Current Beat: "..GAMESTATE:GetSongBeat() ..
@@ -149,6 +149,7 @@ t[#t+1] = Def.Quad{
 
 	self:sleep(Frm)
 	if now < NextSegment then
+		DebugMessages.TimeBeforeNextCamera()
 		self:queuecommand("TrackTime")
 	else
 		self:queuemessage("Camera"..CameraRandom())
@@ -216,22 +217,14 @@ if ThemePrefs.Get("DedicatedCharacterShow") then
 					if ThemePrefs.Get("DediModelBPM") then
 						if now<=ModelBeat then
 							self:rate(0)
-							if DebugMode and MassiveLog then
-								Trace("Animation Paused!!!")
-							end
+							DebugMessages.TempoCheck()
 						else
 							self:rate(0.5*GAMESTATE:GetSongBPS())
-							if DebugMode and MassiveLog then
-								DebugMessages.TempoCheck()
-								Trace( self:GetDefaultAnimation() )
-							end
+							DebugMessages.TempoCheck()
 						end
 					else
 						self:rate(0.5*GAMESTATE:GetSongBPS())
-						if DebugMode and MassiveLog then
-							DebugMessages.TempoCheck()
-							Trace( self:GetDefaultAnimation() )
-						end
+						DebugMessages.TempoCheck()
 					end
 					ModelBeat = GAMESTATE:GetSongBeat();
 					self:sleep(Frm)
