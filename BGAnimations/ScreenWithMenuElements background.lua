@@ -10,6 +10,19 @@ t[#t+1] = Def.Quad{
 	OnCommand=cmd(FullScreen;diffuse,color("#00B6EA");fadebottom,1);
 };
 
+local function IsMikuBirthday()
+	return DayOfYear() == 242
+end
+
+-- Miku's birthday
+if IsMikuBirthday() then
+	for i=1,5 do
+	t[#t+1] = Def.Quad{
+		OnCommand=cmd(FullScreen;diffuse,color("#00F6EA");fadebottom,1);
+	};
+	end
+end
+
 t[#t+1] = LoadActor( THEME:GetPathG("","BGElements/DotTileBG") )..{
 	OnCommand=cmd(x,SCREEN_RIGHT+100;horizalign,right;vertalign,top;diffusealpha,0.2;zoom,2;cropleft,0.05;rotationz,5;fadeleft,1);
 };
