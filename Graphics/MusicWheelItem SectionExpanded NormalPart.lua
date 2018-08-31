@@ -1,4 +1,4 @@
-local t = Def.ActorFrame {};
+local t = Def.ActorFrame{};
 local gc = Var("GameCommand");
 
 	t[#t+1] = Def.ActorFrame{
@@ -31,11 +31,10 @@ local gc = Var("GameCommand");
 		Text="This is test";
 		OnCommand=cmd(x,110;y,-14;horizalign,left;shadowlength,1;strokecolor,Color.Black;maxwidth,430);
 		SetMessageCommand=function(self,params)
-			local BannerTitle = params.Text;
+		self:settext("")
+		local BannerTitle = params.Text;
 			if BannerTitle then
 				self:settext( BannerTitle );
-			else
-				self:settext("")
 			end;
 		end;
 	};
