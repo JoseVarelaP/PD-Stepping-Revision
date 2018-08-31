@@ -12,7 +12,7 @@
 ]]
 
 local function HasAnyCharacters(pn)
-	return GAMESTATE:IsPlayerEnabled(pn) and GAMESTATE:GetCharacter(pn):GetDisplayName() ~= "default"
+	return GAMESTATE:IsPlayerEnabled(pn) and GAMESTATE:GetCharacter(pn):GetDisplayName() ~= "default" and DIVA:IsSafeToLoad(pn)
 end
 
 local t = Def.ActorFrame{
