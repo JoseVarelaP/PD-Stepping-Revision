@@ -85,7 +85,7 @@ t[#t+1] = Def.ActorFrame {
 				self:diffuse( 
 						(song:IsLong() and Color.Orange) or
 						(song:IsMarathon() and Color.Red) or
-						color("0,0.3,0,1")
+						color("0,0,0,1")
 					)
 			end,
 			InitCommand=cmd(zoom,0.8;wrapwidthpixels,500;horizalign,right;x,260;vertspacing,8;vertalign,top;y,-50);
@@ -93,7 +93,7 @@ t[#t+1] = Def.ActorFrame {
 
 		Def.BitmapText{
 			Font="Common Bold",
-			InitCommand=cmd(diffuse,0,0.3,0,1);
+			InitCommand=cmd(diffuse,0,0,0,1);
 			OnCommand=cmd(zoom,0.8;wrapwidthpixels,500;horizalign,right;x,260;vertspacing,8;vertalign,top;y,-70);
 			StartSelectingStepsMessageCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong()
@@ -114,7 +114,7 @@ t[#t+1] = Def.ActorFrame {
 
 		LoadFont("Common Bold")..{
 			Text="I will update",
-			OnCommand=cmd(diffuse,0,0.3,0,1);
+			OnCommand=cmd(diffuse,0,0,0,1);
 			StartSelectingStepsMessageCommand=function(self)
 				self:settext( GAMESTATE:GetCurrentSong():GetDisplayArtist() )
 				self:y(-50)
