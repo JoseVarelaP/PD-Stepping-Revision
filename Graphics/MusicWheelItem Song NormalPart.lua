@@ -20,6 +20,62 @@ local function InvertSongBase()
 	return WhatToLoad
 end
 
+-- The same version as the scores in ScreenSelectMusic overlay, but for each of these.
+local function CalculatePlayerScore(self,pn,params)
+	local SongOrCourse, StepsOrTrail;
+		if GAMESTATE:IsCourseMode() then
+			SongOrCourse = params.Course;
+			StepsOrTrail = GAMESTATE:GetCurrentTrail(pn);
+		else
+			SongOrCourse = params.Song;
+			StepsOrTrail = GAMESTATE:GetCurrentSteps(pn);
+		end;
+		local profile, scorelist;
+		local text = "";
+		if SongOrCourse and StepsOrTrail then
+			local st = StepsOrTrail:GetStepsType();
+			local diff = StepsOrTrail:GetDifficulty();
+			local courseType = GAMESTATE:IsCourseMode() and SongOrCourse:GetCourseType() or nil;
+			local cd = GetCustomDifficulty(st, diff, courseType);
+			if PROFILEMAN:IsPersistentProfile(pn) then
+				-- player profile
+				profile = PROFILEMAN:GetProfile(pn);
+			else
+				-- machine profile
+				profile = PROFILEMAN:GetMachineProfile();
+			end;
+
+			local DoesStepExist = SongOrCourse:GetOneSteps( st, diff )
+			scorelist = profile:GetHighScoreList(SongOrCourse,StepsOrTrail);
+			assert(scorelist)
+			local scores = scorelist:GetHighScores();
+			local topscore = scores[1];
+			if DoesStepExist then
+				if topscore then
+					text = string.format("%.2f%%", topscore:GetPercentDP()*100.0);
+					self:diffuse(1,1,1,1)
+					-- 100% hack
+					if text == "100.00%" then
+						text = "100%";
+					end;
+					if DIVA:BothPlayersEnabled() then
+						self:diffuse( (pn == PLAYER_1 and CustomDifficultyToColor( diff ) ) or CustomDifficultyToColor( diff ) )
+					end
+				else
+					text = "-.--%";
+					self:diffuse(1,1,1,0.5)
+				end;
+			else
+				self:diffuse(1,1,1,0)
+			end;
+		else
+			text = "";
+			self:diffuse(1,1,1,0)
+		end;
+
+	return text;
+end
+
 local t = Def.ActorFrame {};
 
 	t[#t+1] = Def.ActorFrame{
@@ -216,6 +272,28 @@ t[#t+1] = LoadFont("unsteady oversteer/20px") ..{
 				self:settext( song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ):GetMeter() );
 			end
 		end
+	end;
+};
+
+t[#t+1] = LoadFont("unsteady oversteer/20px") ..{
+	InitCommand=function(self)
+	self:x(490)
+	if DIVA:BothPlayersEnabled() then
+		self:x( (player == PLAYER_1 and 380) or 490 )
+	end
+	end,
+	OnCommand=cmd(y,7;zoom,1;strokecolor,Color.Black;horizalign,right);
+	SetMessageCommand=function(self,params)
+	local song = params.Song;
+	local enabled = GAMESTATE:IsPlayerEnabled(player);
+	local steps = GAMESTATE:GetCurrentSteps(player);
+	self:settext("")
+	if enabled and song and steps then
+		self:settext( CalculatePlayerScore(self,player,params) );
+		if DIVA:BothPlayersEnabled() then
+			self:x( (player == PLAYER_1 and 380) or 490 )
+		end
+	end
 	end;
 };
 end
