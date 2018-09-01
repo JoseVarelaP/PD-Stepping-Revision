@@ -22,32 +22,12 @@ local ItemsToTweenColor = {
 	{"Theme Options", Color.HoloDarkPurple, Color.HoloPurple},
 };
 
-local UnlockableOptions = {
-	"Dedicated Character Settings",
-	"ModelsInRoom",
-	"FolderToPlayRandomMusic",
-	"ShowRandomSongBackground",
-	"CurrentStageLighting",
-};
-
-local AbleToSwitch = {
-	"ScreenOptionsTheme",
-	"ScreenDediCharsSettings",
-};
-
 local LabelsToShrink = {
 	"FolderToPlayRandomMusic",
 	"Theme",
 	"DefaultNoteSkin",
 	"ShowDancingCharacters",
 	"BackgroundFitMode",
-};
-
-local CanChangeIcon = {
-	"CurrentStageLocation",
-	"DedicatedCharacterShow",
-	"EnableRandomSongPlay",
-	"FolderToPlayRandomMusic",
 };
 
 if THEME:GetCurLanguage() == "es" then
@@ -78,12 +58,7 @@ t[#t+1] = LoadFont("Common Normal")..{
 	OnCommand=function(self)
 	(cmd(horizalign,left;x,40;maxwidth,220;y,-2;shadowlengthy,3;shadowcolor,color("0,0,0,0.3");diffuse,0,0,0,1))(self);
 	local optrow = self:GetParent():GetParent():GetParent()
-
 	self:settext(THEME:GetString("OptionTitles",optrow:GetName()) ):horizalign(left)
-
-
-	
-
 	end,
 };
 
@@ -115,10 +90,5 @@ t[#t+1] = LoadFont("Common Normal")..{
 	end,
 };
 end
-
-t.GainFocusCommand=function(self)
-end;
-t.LoseFocusCommand=function(self)
-end;
 
 return t;

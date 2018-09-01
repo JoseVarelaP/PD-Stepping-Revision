@@ -4,7 +4,7 @@ t[#t+1] = Def.Quad{
 	OnCommand=cmd(FullScreen;diffuse,0,0,0,0;decelerate,0.4;diffusealpha,0.8);
 	OffCommand=cmd(sleep,.8;accelerate,0.2;diffusealpha,0);
 	CancelMessageCommand=cmd(sleep,.1;accelerate,0.2;diffusealpha,0);
-}
+};
 
 t[#t+1] = Def.ActorFrame{
 	InitCommand=cmd(Center;zoom,0;decelerate,0.2;zoom,1);

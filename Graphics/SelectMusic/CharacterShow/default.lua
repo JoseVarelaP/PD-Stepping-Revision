@@ -12,10 +12,6 @@ local function LoadCharacterFromPlayer(pn)
 	return t;
 end
 
-local function BothPlayersEnabled()
-	return GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsPlayerEnabled(PLAYER_2)
-end
-
 local t = Def.ActorFrame{};
 
 t[#t+1] = LoadActor("Base")..{ OnCommand=cmd(shadowlengthy,3); };
@@ -25,7 +21,7 @@ for player in ivalues(PlayerNumber) do
 	if GAMESTATE:IsPlayerEnabled(player) and DIVA:IsSafeToLoad(player) then
 		t[#t+1] = LoadCharacterFromPlayer(player)..{
 			OnCommand=function(self)
-			if BothPlayersEnabled() then
+			if DIVA:BothPlayersEnabled() then
 				self:x( (player == PLAYER_1 and -50) or 30 )
 			end
 			end,

@@ -11,16 +11,12 @@
 	the z field changes on the current Aspect Ratio, so correct that.
 ]]
 
-local function HasAnyCharacters(pn)
-	return GAMESTATE:IsPlayerEnabled(pn) and GAMESTATE:GetCharacter(pn):GetDisplayName() ~= "default" and DIVA:IsSafeToLoad(pn)
-end
-
 local t = Def.ActorFrame{
 	InitCommand=cmd(Center;fov,90;rotationy,180;z,WideScale(300,400);addy,10);
 };
 
 t[#t+1] = Def.Quad{
-	Condition=ThemePrefs.Get("DedicatedCharacterShow") and (ThemePrefs.Get("CurrentStageLocation") ~= "None" and (HasAnyCharacters(PLAYER_1) or HasAnyCharacters(PLAYER_2)));
+	Condition=ThemePrefs.Get("DedicatedCharacterShow") and (ThemePrefs.Get("CurrentStageLocation") ~= "None" and (DIVA:HasAnyCharacters(PLAYER_1) or DIVA:HasAnyCharacters(PLAYER_2)));
 	OnCommand=cmd(zoomto,1000,1000;diffuse,Color.Black);
 };
 
@@ -48,10 +44,10 @@ local Frm = 1/60
 	Just ensure this is on.
 	ShowLogOutput=1
 ]]
-local DebugMode = true
+local DebugMode = false
 
 -- In case you want frame-by-frame info on specific stuff.
-local MassiveLog = true
+local MassiveLog = false
 local function CameraRandom()
 	return math.random(1,5)
 end
@@ -82,7 +78,7 @@ local DebugMessages = {
 	CameraLoaded = function()
 		if DebugMode then
 			for player in ivalues(PlayerNumber) do
-				if GAMESTATE:IsPlayerEnabled(player) and HasAnyCharacters(player) then
+				if GAMESTATE:IsPlayerEnabled(player) and DIVA:HasAnyCharacters(player) then
 					print(
 					"\n-------------------------------------------\n"..
 					"Next Camera Loaded (".. CameraRandom() .."), returning to command.\n"..
@@ -144,7 +140,7 @@ t[#t+1] = Def.Quad{
 	now = GAMESTATE:GetSongBeat();
 
 	self:sleep(Frm)
-	if (HasAnyCharacters(PLAYER_1) or HasAnyCharacters(PLAYER_2)) then
+	if (DIVA:HasAnyCharacters(PLAYER_1) or DIVA:HasAnyCharacters(PLAYER_2)) then
 		if now < NextSegment then
 			DebugMessages.TimeBeforeNextCamera()
 			self:queuecommand("TrackTime")
@@ -161,7 +157,7 @@ t[#t+1] = Def.Quad{
 
 -- Stage Enviroment
 t[#t+1] = Def.ActorFrame{
-	Condition=ThemePrefs.Get("DedicatedCharacterShow") and (HasAnyCharacters(PLAYER_1) or HasAnyCharacters(PLAYER_2));
+	Condition=ThemePrefs.Get("DedicatedCharacterShow") and (DIVA:HasAnyCharacters(PLAYER_1) or DIVA:HasAnyCharacters(PLAYER_2));
 	InitCommand=cmd(queuecommand,"BeginCamera");
 	BeginCameraCommand=cmd();
 
@@ -203,7 +199,7 @@ local function UpdateModelRate(self)
 end
 
 if ThemePrefs.Get("DedicatedCharacterShow") then
-	if HasAnyCharacters(PLAYER_1) or HasAnyCharacters(PLAYER_2) then
+	if DIVA:HasAnyCharacters(PLAYER_1) or DIVA:HasAnyCharacters(PLAYER_2) then
 		for player in ivalues(PlayerNumber) do
 			if GAMESTATE:IsPlayerEnabled(player) and DIVA:IsSafeToLoad(player) then
 			-- This will be the warmup model.

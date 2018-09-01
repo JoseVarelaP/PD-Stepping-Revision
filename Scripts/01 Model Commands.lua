@@ -51,6 +51,10 @@ function DIVA:IsSafeToLoad(pn)
 	end
 end
 
+function DIVA:HasAnyCharacters(pn)
+	return GAMESTATE:IsPlayerEnabled(pn) and GAMESTATE:GetCharacter(pn):GetDisplayName() ~= "default" and DIVA:IsSafeToLoad(pn)
+end
+
 function DIVA:BothPlayersEnabled()
 	return GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsPlayerEnabled(PLAYER_2)
 end
