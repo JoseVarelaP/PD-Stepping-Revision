@@ -59,19 +59,16 @@ t[#t+1] = Def.ActorFrame {
 		};
 
 		LoadFont("Common Bold")..{
-			Text="I will update",
 			OnCommand=cmd(diffuse,0,0,0,1);
 			StartSelectingStepsMessageCommand=function(self) self:settext( GAMESTATE:GetCurrentSong():GetDisplayMainTitle() ) end,
 			InitCommand=cmd(maxwidth,300;zoom,1.2;wrapwidthpixels,500;horizalign,left;x,-260;vertspacing,8;vertalign,top;y,-75);
 		};
 		LoadFont("Common Bold")..{
-			Text="I will update",
 			OnCommand=cmd(diffuse,0,0,0,1);
 			StartSelectingStepsMessageCommand=function(self) self:settext( GAMESTATE:GetCurrentSong():GetDisplaySubTitle() ) end,
 			InitCommand=cmd(maxwidth,300;zoom,0.8;wrapwidthpixels,500;horizalign,left;x,-260;vertspacing,8;vertalign,top;y,-50);
 		};
 		LoadFont("Common Bold")..{
-			Text="I will update",
 			OnCommand=cmd(diffuse,0,0,0,1);
 			StartSelectingStepsMessageCommand=function(self) 
 			local song = GAMESTATE:GetCurrentSong()
@@ -251,16 +248,11 @@ t[#t+1] = Def.ActorFrame{
 			local song = GAMESTATE:GetCurrentSong();
 			local steps = GAMESTATE:GetCurrentSteps(PLAYER_1);
 			local enabled = GAMESTATE:IsPlayerEnabled(PLAYER_1);
-			if song and enabled then
-				if steps then
-					if song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then
-						self:settext( song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ):GetMeter() );
-					else
-						self:settext( " " )
-					end
+			self:settext("")
+			if song and enabled and steps then
+				if song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then
+					self:settext( song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ):GetMeter() );
 				end
-			else
-				self:settext("")
 			end
 			end;
 			};
@@ -271,16 +263,11 @@ t[#t+1] = Def.ActorFrame{
 			local song = GAMESTATE:GetCurrentSong();
 			local steps = GAMESTATE:GetCurrentSteps(PLAYER_2);
 			local enabled = GAMESTATE:IsPlayerEnabled(PLAYER_2);
-			if song and enabled then
-				if steps then
-					if song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then
-						self:settext( song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ):GetMeter() );
-					else
-						self:settext( " " )
-					end
+			self:settext("")
+			if song and enabled and steps then
+				if song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ) then
+					self:settext( song:GetOneSteps(steps:GetStepsType(), steps:GetDifficulty() ):GetMeter() );
 				end
-			else
-				self:settext("")
 			end
 			end;
 			};
@@ -303,11 +290,6 @@ t[#t+1] = Def.ActorFrame {
 };
 
 for player in ivalues(PlayerNumber) do
-
-	local function WhichIsMissing()
-		if not GAMESTATE:IsPlayerEnabled(PLAYER_1) then return PLAYER_1 end
-		if not GAMESTATE:IsPlayerEnabled(PLAYER_2) then return PLAYER_2 end
-	end
 
 	t[#t+1] = Def.ActorFrame{
 		InitCommand=cmd(Center;diffusealpha,0;zoom,0);
