@@ -63,7 +63,7 @@ local function CalculatePlayerScore(self,pn,params)
 					end
 				else
 					text = "-.--%";
-					self:diffuse(1,1,1,0.5)
+					self:diffuse(1,1,1,1)
 				end;
 			else
 				self:diffuse(1,1,1,0)
