@@ -110,8 +110,6 @@ DSet = {
 				Result = Result .. "DediCharsSettings,"
 			end
 
-			Result = Result .. "ShowPlayedSongsInFolder,"
-
 			if #SONGMAN:GetAllSongs() > 0 then
 				Result = Result .. "EnableRandomSongPlay,"
 	

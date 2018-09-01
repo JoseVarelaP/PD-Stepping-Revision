@@ -18,6 +18,51 @@ DIVA = {
 	end,
 }
 
+--[[
+	Here's the song table that will contain all the songs.
+	The reason why this is a global, is for perfomance concerns.
+
+	Earlier versions of the Played/Total display updated every time an action
+	was done in ScreenSelectMusic. (Picking a song, changing difficulty/sort, etc.)
+	This resulted on a stutter everytime something happened, which would definetly
+	affect the gameplay experience.
+
+	The way it is now, is by making it a global table, which will update every time
+	ScreenSelectMusic is opened, and ONLY then.
+	This means, that MusicWheelItems don't have to go with the trouble of recalculating
+	everything on each update, they already have values to work which come from this table.
+--]]
+SongGroups = {}
+
+--[[
+	What we're going to do, is grab all the song groups, and then
+	grab the songs inside of those groups, and check which songs haven't been
+	played and which are, to create the Played/Total display.
+]]
+function DIVA:UpdateSongGroupListing()
+	for groupname in ivalues(SONGMAN:GetSongGroupNames()) do
+    	local songs = SONGMAN:GetSongsInGroup(groupname) 
+    	local NumTotalNew = 0
+	    
+    	for song in ivalues(songs) do
+	        
+        	if not PROFILEMAN:IsSongNew(song) then
+            	NumTotalNew = NumTotalNew + 1
+        	end
+	
+    	end
+	
+    	SongGroups[groupname] = { NumTotalNew, #songs }
+	end
+end
+
+-- This is here in case someone update the theme's scripts.
+DIVA:UpdateSongGroupListing()
+
+function DIVA:GroupCompleted(params)
+	return SongGroups[params][1].."/"..SongGroups[params][2].." ("..FormatPercentScore( DIVA:CalculatePercentageSongs(params) )..")"
+end
+
 function DIVA:GetPathLocation(filepart1,filepart2)
 	return "/"..THEME:GetCurrentThemeDirectory().."/Locations/"..filepart1 .. filepart2
 end
