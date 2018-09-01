@@ -51,7 +51,7 @@ local t = Def.ActorFrame{
 	-- Video examples
 	-- FOLDER EXAMPLE
 	LoadActor( THEME:GetPathG("","InstallSongs_Tutorial/folder_example") )..{
-		InitCommand=cmd(shadowlengthy,3;zoom,WideScale(0.2,0.3);x,SCREEN_RIGHT-30;horizalign,right;vertalign,bottom;y,SCREEN_BOTTOM-50);
+		InitCommand=cmd(shadowlengthy,3;zoom,0.2;x,SCREEN_RIGHT-30;horizalign,right;vertalign,bottom;y,SCREEN_BOTTOM-50);
 		OnCommand=cmd(diffusealpha,0;addx,100;decelerate,0.2;diffusealpha,1;addx,-100);
 	};
 
@@ -61,7 +61,7 @@ local t = Def.ActorFrame{
 	};
 
 	Def.Quad{
-		InitCommand=cmd(shadowlengthy,3;rotationz,45;zoom,20;x,SCREEN_RIGHT-100;;horizalign,right;vertalign,bottom;y,SCREEN_CENTER_Y-35);
+		InitCommand=cmd(shadowlengthy,3;rotationz,45;zoom,20;x,SCREEN_RIGHT-100;horizalign,right;vertalign,bottom;y,SCREEN_CENTER_Y-35);
 		OnCommand=cmd(diffusealpha,0;addx,100;decelerate,0.2;diffusealpha,1;addx,-100;bob;effectmagnitude,0,5,0);
 	};
 
@@ -77,23 +77,23 @@ local t = Def.ActorFrame{
 
 	-- SMZIP EXAMPLE
 	LoadActor( THEME:GetPathG("","InstallSongs_Tutorial/SMIcon") )..{
-		InitCommand=cmd(shadowlengthy,3;zoom,0.25;x,WideScale(SCREEN_RIGHT-220,SCREEN_RIGHT-250);horizalign,right;vertalign,bottom;y,SCREEN_CENTER_Y+10);
+		InitCommand=cmd(shadowlengthy,3;zoom,0.25;x,WideScale(SCREEN_RIGHT-220,SCREEN_RIGHT-240);horizalign,right;vertalign,bottom;y,SCREEN_CENTER_Y+10);
 		OnCommand=cmd(diffusealpha,0;addx,100;decelerate,0.2;diffusealpha,1;addx,-100);
 	};
 
 	LoadFont("Common Normal")..{
 		Text=".SMZIP";
-		InitCommand=cmd(shadowlengthy,3;zoom,0.85;x,WideScale(SCREEN_RIGHT-250,SCREEN_RIGHT-250);vertalign,bottom;y,SCREEN_CENTER_Y+30;strokecolor,Color.Black);
+		InitCommand=cmd(shadowlengthy,3;zoom,0.85;x,WideScale(SCREEN_RIGHT-250,SCREEN_RIGHT-270);vertalign,bottom;y,SCREEN_CENTER_Y+30;strokecolor,Color.Black);
 		OnCommand=cmd(diffusealpha,0;addx,100;decelerate,0.2;diffusealpha,1;addx,-100);
 	};
 
 	Def.Quad{
-		InitCommand=cmd(shadowlengthy,3;rotationz,45;zoom,20;x,WideScale(SCREEN_RIGHT-250,SCREEN_RIGHT-250);horizalign,right;vertalign,bottom;y,SCREEN_CENTER_Y+70);
+		InitCommand=cmd(shadowlengthy,3;rotationz,45;zoom,20;x,WideScale(SCREEN_RIGHT-250,SCREEN_RIGHT-270);horizalign,right;vertalign,bottom;y,SCREEN_CENTER_Y+70);
 		OnCommand=cmd(diffusealpha,0;addx,100;decelerate,0.2;diffusealpha,1;addx,-100;bob;effectmagnitude,0,5,0);
 	};
 
 	LoadActor( THEME:GetPathG("","InstallSongs_Tutorial/smzip_example") )..{
-		InitCommand=cmd(shadowlengthy,3;zoom,WideScale(0.2,0.3);x,WideScale(SCREEN_RIGHT-180,SCREEN_RIGHT-250);horizalign,right;vertalign,bottom;y,SCREEN_BOTTOM-50);
+		InitCommand=cmd(shadowlengthy,3;zoom,0.2;x,WideScale(SCREEN_RIGHT-180,SCREEN_RIGHT-200);horizalign,right;vertalign,bottom;y,SCREEN_BOTTOM-50);
 		OnCommand=cmd(diffusealpha,0;addx,100;decelerate,0.2;diffusealpha,1;addx,-100);
 	};
 	

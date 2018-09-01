@@ -6,9 +6,30 @@ t[#t+1] = Def.Quad{
 	OnCommand=cmd(FullScreen;);	
 };
 
+if ThemePrefs.Get("ShowRandomSongBackground") then
+	t[#t+1] = Def.Sprite{
+		InitCommand=cmd(FullScreen;diffusealpha,0);
+		DivaSongChangedMessageCommand=function(self)
+		if DIVA_RandomSong:GetBackgroundPath() then
+			self:Load( DIVA_RandomSong:GetBackgroundPath() )
+			self:scale_or_crop_background()
+			self:diffusealpha(0)
+			self:linear(0.2)
+			self:diffusealpha(0.4)
+		end
+		end,
+		HideBackgroundMessageCommand=cmd(linear,0.2;diffusealpha,0);
+		ShowBackgroundMessageCommand=function(self)
+		self:linear(0.2)
+		self:diffusealpha(0.4)
+		end,
+	};
+end
+
 t[#t+1] = Def.Quad{
 	OnCommand=cmd(FullScreen;diffuse,color("#00B6EA");fadebottom,1);
 };
+
 
 local function IsMikuBirthday()
 	return DayOfYear() == 242
@@ -47,26 +68,6 @@ t[#t+1] = Def.ActorFrame{
 		OnCommand=cmd(texcoordvelocity,(0.15/i),0;customtexturerect,0,0,TileXAmm,1;zoom,0.20;zoomx,0.2*TileXAmm;diffusealpha,(300/self:GetZ()));
 	};
 };
-end
-
-if ThemePrefs.Get("ShowRandomSongBackground") then
-	t[#t+1] = LoadActor( DIVA_RandomSong:GetBackgroundPath() )..{
-		InitCommand=cmd(FullScreen;diffusealpha,0);
-		DivaSongChangedMessageCommand=function(self)
-		if DIVA_RandomSong:GetBackgroundPath() then
-			self:Load( DIVA_RandomSong:GetBackgroundPath() )
-			self:scale_or_crop_background()
-			self:diffusealpha(0)
-			self:linear(0.2)
-			self:diffusealpha(0.4)
-		end
-		end,
-		HideBackgroundMessageCommand=cmd(linear,0.2;diffusealpha,0);
-		ShowBackgroundMessageCommand=function(self)
-		self:linear(0.2)
-		self:diffusealpha(0.4)
-		end,
-	};
 end
 
 t[#t+1] = LoadActor("Borders.lua");
