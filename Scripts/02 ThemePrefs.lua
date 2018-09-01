@@ -146,6 +146,12 @@ Prefs =
 		Choices = range(4),
 		Values = range(4),
 	},
+	ShowPlayedSongsInFolder =
+	{
+		Default = false,
+		Choices = { OptionNameString("Off"), OptionNameString("On") },
+		Values = { false,true },
+	},
 
 	-- Some other stuff
 	EnableRandomSongPlay =
