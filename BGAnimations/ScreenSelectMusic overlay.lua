@@ -3,6 +3,7 @@
 local t = Def.ActorFrame{
 	OnCommand=function(self)
 	DIVA:ResetRandomSong()
+	CalculatedAmmountOfSongs = false
 	MESSAGEMAN:Broadcast("HideBackground")
 	end,
 	CurrentStepsP1ChangedMessageCommand=function(self) MESSAGEMAN:Broadcast("UpdateSteps") end;

@@ -3,7 +3,7 @@ local t = Def.ActorFrame{};
 t[#t+1] = Def.Sprite {
 	CurrentSongChangedMessageCommand=function(self)
  	self:finishtweening()
- 	self:sleep(0.1)
+ 	self:sleep(0.2)
  	self:queuecommand("BeginProcess")
  	end,
  	BeginProcessCommand=function(self)
@@ -38,7 +38,11 @@ t[#t+1] = Def.Sprite {
 			:fadetop(0.8)
 			:croptop(1)
  			:visible(true)
- 			:LoadBackground(GAMESTATE:GetCurrentSong():GetBackgroundPath())
+ 			if (Sprite.LoadFromCached ~= nil) then
+    			self:LoadFromCached("Background", GAMESTATE:GetCurrentSong():GetBackgroundPath())
+			else
+    			self:load(GAMESTATE:GetCurrentSong():GetBackgroundPath())
+			end
 			self:scaletocover(0,0,SCREEN_WIDTH,SCREEN_BOTTOM)
  			:smooth(0.3)
 			:fadetop(0)
@@ -53,10 +57,18 @@ t[#t+1] = Def.Sprite {
 
 local function LoadImageForTile(self)
 	if GAMESTATE:GetCurrentSong():GetJacketPath() then
- 		self:LoadBackground(GAMESTATE:GetCurrentSong():GetJacketPath())
+ 		if (Sprite.LoadFromCached ~= nil) then
+    		self:LoadFromCached("Jacket", GAMESTATE:GetCurrentSong():GetJacketPath())
+		else
+    		self:load(GAMESTATE:GetCurrentSong():GetJacketPath())
+		end
  		self:setsize(400/2,400/2)
  	elseif GAMESTATE:GetCurrentSong():GetBackgroundPath() then
- 		self:LoadBackground(GAMESTATE:GetCurrentSong():GetBackgroundPath())
+ 		if (Sprite.LoadFromCached ~= nil) then
+    		self:LoadFromCached("Background", GAMESTATE:GetCurrentSong():GetBackgroundPath())
+		else
+    		self:load(GAMESTATE:GetCurrentSong():GetBackgroundPath())
+		end
  		self:setsize(450/2,450/2)
  	else
  		self:LoadBackground( THEME:GetPathG("","_blank") )
@@ -73,7 +85,11 @@ t[#t+1] = Def.ActorFrame{
 		InitCommand=cmd(diffusealpha,1;horizalign,left;x,-250);
 		BeginCommand=cmd(LoadFromCurrentSongBackground);
 		CurrentSongChangedMessageCommand=function(self)
- 			self:finishtweening():smooth(0.1):diffusealpha(0):sleep(0.1):queuecommand("UpdateBackground")
+ 			self:finishtweening():smooth(0.1):diffusealpha(0):sleep(0.1)
+ 		self:queuecommand("BeginProcess")
+ 		end,
+ 		BeginProcessCommand=function(self)
+ 		self:queuecommand("UpdateBackground")
  		end,
 		UpdateBackgroundCommand=function(self)
 		self:finishtweening()
@@ -172,7 +188,11 @@ t[#t+1] = Def.ActorFrame{
 		InitCommand=cmd(diffusealpha,1;x,-300;y,50);
 		BeginCommand=cmd(LoadFromCurrentSongBackground);
 		CurrentSongChangedMessageCommand=function(self)
- 			self:finishtweening():smooth(0.1):diffusealpha(0):sleep(0.1):queuecommand("UpdateBackground")
+ 			self:finishtweening():smooth(0.1):diffusealpha(0):sleep(0.1)
+ 		self:queuecommand("BeginProcess")
+ 		end,
+ 		BeginProcessCommand=function(self)
+ 		self:queuecommand("UpdateBackground")
  		end,
 		UpdateBackgroundCommand=function(self)
 		self:finishtweening()
