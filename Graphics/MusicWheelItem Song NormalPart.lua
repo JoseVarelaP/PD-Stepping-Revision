@@ -91,7 +91,7 @@ local t = Def.ActorFrame {};
 			LoadFont("proto sans/20px") ..{
 			OnCommand=cmd(x,500;y,-30;zoom,0.8;horizalign,right;shadowlength,1;strokecolor,Color.Blue);
 			SetMessageCommand=function(self,params)
-			self:settext("No Genre")
+			self:settext( THEME:GetString("ScreenSelectMusic","NoGenre") )
 			local song = params.Song;
 				if song and string.len(song:GetGenre()) > 1 then
 					self:settext( song:GetGenre() );
@@ -151,7 +151,7 @@ local t = Def.ActorFrame {};
 				};
 
 				LoadFont("renner/20px") ..{
-				Text="Stages";
+				Text=THEME:GetString("ScreenSelectMusic","Stages");
 				OnCommand=cmd(x,210;y,18;zoom,0.8;strokecolor,Color.Black);
 				SetMessageCommand=function(self,params)
 				local song = params.Song;

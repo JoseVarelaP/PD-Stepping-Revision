@@ -119,8 +119,8 @@ t[#t+1] = Def.ActorFrame {
 		Def.StepsDisplayList{
 			Name="StepsDisplayListColored";
 			OnCommand=cmd(zoom,0.8;x,0;y,60);
-			StartSelectingStepsMessageCommand=cmd(decelerate,0.2;y,20;zoom,1.2);
-			TwoPartConfirmCanceledMessageCommand=cmd(decelerate,0.2;y,40;zoom,1);
+			StartSelectingStepsMessageCommand=cmd(decelerate,0.2;y,20;zoom,1.4);
+			TwoPartConfirmCanceledMessageCommand=cmd(decelerate,0.2;y,40;zoom,1.2);
 			PlayerJoinedMessageCommand=cmd(queuecommand,"Set");
 
 			CursorP1=Def.ActorFrame{
@@ -286,6 +286,11 @@ t[#t+1] = Def.ActorFrame {
 		LoadFont("Common Normal")..{
 			Text=Screen.String("ButtonHelp");
 			InitCommand=cmd(zoom,0.8;wrapwidthpixels,600;horizalign,left;x,-240;vertspacing,8;vertalign,top;y,-80);
+			OnCommand=function(self)
+			if THEME:GetCurLanguage() == "es" then
+				self:zoom(0.7):wrapwidthpixels(650)
+			end
+			end,
 		};
 };
 
