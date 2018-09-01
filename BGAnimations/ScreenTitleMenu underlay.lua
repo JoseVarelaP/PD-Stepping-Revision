@@ -8,7 +8,7 @@ local t = Def.ActorFrame{
 	end,
 }
 
-if ThemePrefs.Get("EnableRandomSongPlay") then
+if DIVA:AbleToPlayRandomSongs() then
 
 	local FadeIn = cmd(sleep,.3;decelerate,0.2;diffuse,0,0,0,1);
 	local GlobalItems = cmd(horizalign,left;diffuse,0,0,0,1;zoom,0.6;shadowlengthy,1);

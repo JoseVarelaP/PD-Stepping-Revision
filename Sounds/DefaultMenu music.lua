@@ -3,7 +3,7 @@ if not DIVA_RandomSong then
 	DIVA_RandomSong = SONGMAN:GetRandomSong()
 end
 
-if ThemePrefs.Get("EnableRandomSongPlay") then
+if DIVA:AbleToPlayRandomSongs() then
 	WhatToPlay = DIVA_RandomSong:GetMusicPath()
 end
 

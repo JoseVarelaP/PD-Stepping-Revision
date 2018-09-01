@@ -13,14 +13,21 @@ DIVA = {
 	SingleSongWarning = function()
 	lua.ReportScriptError( "Random Song Play: Current Folder only contains 1 song. StepMania might get confused when picking the song via random. Selecting to index 1.")
 	end,
+	NoSongsWarning = function()
+	lua.ReportScriptError( "Random Song Play: No songs were found in your StepMania install folder! Switching back to fallback music.")
+	end,
 }
 
 function DIVA:GetPathLocation(filepart1,filepart2)
 	return "/"..THEME:GetCurrentThemeDirectory().."/Locations/"..filepart1 .. filepart2
 end
 
+function DIVA:AbleToPlayRandomSongs()
+	return ThemePrefs.Get("EnableRandomSongPlay") and #SONGMAN:GetAllSongs() > 0
+end
+
 function DIVA:ResetRandomSong()
-	if DIVA_RandomSong and ThemePrefs.Get("EnableRandomSongPlay") then
+	if DIVA_RandomSong and DIVA:AbleToPlayRandomSongs() then
 		if ThemePrefs.Get("FolderToPlayRandomMusic") ~= "All" then
 			local Sel = SONGMAN:GetSongsInGroup(ThemePrefs.Get("FolderToPlayRandomMusic"))
 			if #Sel > 1 then
@@ -34,6 +41,9 @@ function DIVA:ResetRandomSong()
 			DIVA_RandomSong = SONGMAN:GetRandomSong()
 		end
 		MESSAGEMAN:Broadcast("DivaSongChanged")
+	else
+		DIVA:NoSongsWarning()
+		DIVA_RandomSong = nil
     end
 end
 

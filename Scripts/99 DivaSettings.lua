@@ -110,11 +110,13 @@ DSet = {
 				Result = Result .. "DediCharsSettings,"
 			end
 
-			Result = Result .. "EnableRandomSongPlay,"
-
-			if ThemePrefs.Get("EnableRandomSongPlay") then
-				Result = Result .. "FolderToPlayRandomMusic,"
-				Result = Result .. "ShowRandomSongBackground,"
+			if #SONGMAN:GetAllSongs() > 0 then
+				Result = Result .. "EnableRandomSongPlay,"
+	
+				if ThemePrefs.Get("EnableRandomSongPlay") then
+					Result = Result .. "FolderToPlayRandomMusic,"
+					Result = Result .. "ShowRandomSongBackground,"
+				end
 			end
 
 			if ThemePrefs.Get("ShowCharactersOnHome") then
