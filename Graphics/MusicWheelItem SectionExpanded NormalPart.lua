@@ -65,19 +65,15 @@ local t = Def.ActorFrame{};
 if ThemePrefs.Get("ShowPlayedSongsInFolder") then
 
 t[#t+1] = LoadFont("renner/20px") ..{
-	Text="This is test";
+	Text="yes";
 	InitCommand=cmd(x,500;y,14;horizalign,right;shadowlength,1;zoom,0.8;strokecolor,Color.Black;maxwidth,430);
 	SetMessageCommand=function(self,params)
-	local BannerTitle = params.Text;
-	local songs = SONGMAN:GetSongsInGroup( BannerTitle )
-	local TotalNewVal = 0
-		for i=1,#songs do
-			if not PROFILEMAN:IsSongNew(songs[i]) then
-				TotalNewVal = TotalNewVal + 1
-			end
-		end
-	self:settext( TotalNewVal.."/"..#songs.." played (".. FormatPercentScore( (TotalNewVal/#songs) ) ..")" )
-	CalculatedAmmountCollapsed = true
+	-- We're picking up the text for the songs via ScreenSelectMusic.
+	-- check ScreenSelectMusic overlay to see the table.
+	local new_text = SongGroups[params.Text][1].."/"..SongGroups[params.Text][2]
+	if self:GetText() ~= new_text then
+		self:settext( new_text )
+	end
 	end;
 };
 

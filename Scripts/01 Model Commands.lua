@@ -47,23 +47,7 @@ function DIVA:ResetRandomSong()
 end
 
 function DIVA:CalculatePercentageSongs(params)
-	local songs = SONGMAN:GetSongsInGroup( params )
-	local TotalNewVal = 0
-	for i=1,#songs do
-		local function TotalNew()
-			if not PROFILEMAN:IsSongNew(songs[i]) then
-				TotalNewVal = TotalNewVal + 1
-			end
-			if TotalNewVal > #songs then
-				TotalNewVal = #songs
-			end
-			return TotalNewVal
-		end
-		local function PercetageTotal()
-			return (TotalNew()/#songs)
-		end
-		return PercetageTotal()
-	end
+	return (SongGroups[params][1]/SongGroups[params][2])
 end
 
 function DIVA:HasSubtitles(WhatToLoad)
