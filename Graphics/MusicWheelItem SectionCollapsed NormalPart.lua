@@ -63,20 +63,17 @@ t[#t+1] = LoadFont("renner/20px") ..{
 	local songs = SONGMAN:GetSongsInGroup( BannerTitle )
 	local TotalNewVal = 0
 	for i=1,#songs do
-		local function TotalNew()
-			if not PROFILEMAN:IsSongNew(songs[i]) then
-				TotalNewVal = TotalNewVal + 1
-			end
-			if TotalNewVal > #songs then
-				TotalNewVal = #songs
-			end
-			return TotalNewVal
+		if not PROFILEMAN:IsSongNew(songs[i]) then
+			TotalNewVal = TotalNewVal + 1
 		end
-		local function PercetageTotal()
-			return FormatPercentScore( (TotalNewVal/#songs) )
+		if TotalNewVal > #songs then
+			TotalNewVal = #songs
 		end
-		self:settext( TotalNew().."/"..#songs.." played (".. PercetageTotal() ..")" )
 	end
+	local function PercetageTotal()
+		return FormatPercentScore( (TotalNewVal/#songs) )
+	end
+	self:settext( TotalNewVal.."/"..#songs.." played (".. PercetageTotal() ..")" )
 	end;
 	};
 
