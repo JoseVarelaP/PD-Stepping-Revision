@@ -43,7 +43,6 @@ function DIVA:ResetRandomSong()
 		MESSAGEMAN:Broadcast("DivaSongChanged")
 	else
 		DIVA:NoSongsWarning()
-		DIVA_RandomSong = nil
     end
 end
 
