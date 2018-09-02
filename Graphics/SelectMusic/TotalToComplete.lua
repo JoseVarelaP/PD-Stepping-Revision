@@ -3,13 +3,13 @@ local TotalAmmountWidth = 0
 
 
 t[#t+1] = LoadFont("dinamight/25px")..{
-	Text=TotalForCompletion[1];
+	Text=DIVA["TotalForCompletion"][1];
 	InitCommand=cmd(horizalign,left;xy,0,15;zoom,1.5;strokecolor,Color.Black);
 };
 
 t[#t+1] = LoadFont("dinamight/25px")..{
 	Name="TotalAmmount";
-	Text="/"..TotalForCompletion[2];
+	Text="/"..DIVA["TotalForCompletion"][2];
 	InitCommand=cmd(horizalign,left;xy,30,44;zoom,0.9;strokecolor,Color.Black);
 	OnCommand=function(self)
 	TotalAmmountWidth = self:GetWidth();

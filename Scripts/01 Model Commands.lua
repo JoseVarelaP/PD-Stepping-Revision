@@ -16,24 +16,24 @@ DIVA = {
 	NoSongsWarning = function()
 	lua.ReportScriptError( THEME:GetString("Common","SongLoaderNoSongs") )
 	end,
+	
+	--[[
+		Here's the song table that will contain all the songs.
+		The reason why this is a global, is for perfomance concerns.
+	
+		Earlier versions of the Played/Total display updated every time an action
+		was done in ScreenSelectMusic. (Picking a song, changing difficulty/sort, etc.)
+		This resulted on a stutter everytime something happened, which would definetly
+		affect the gameplay experience.
+	
+		The way it is now, is by making it a global table, which will update every time
+		ScreenSelectMusic is opened, and ONLY then.
+		This means, that MusicWheelItems don't have to go with the trouble of recalculating
+		everything on each update, they already have values to work which come from this table.
+	--]]
+	SongGroups = {};
+	TotalForCompletion = {};
 }
-
---[[
-	Here's the song table that will contain all the songs.
-	The reason why this is a global, is for perfomance concerns.
-
-	Earlier versions of the Played/Total display updated every time an action
-	was done in ScreenSelectMusic. (Picking a song, changing difficulty/sort, etc.)
-	This resulted on a stutter everytime something happened, which would definetly
-	affect the gameplay experience.
-
-	The way it is now, is by making it a global table, which will update every time
-	ScreenSelectMusic is opened, and ONLY then.
-	This means, that MusicWheelItems don't have to go with the trouble of recalculating
-	everything on each update, they already have values to work which come from this table.
---]]
-SongGroups = {}
-TotalForCompletion = {}
 
 --[[
 	What we're going to do, is grab all the song groups, and then
@@ -55,9 +55,9 @@ function DIVA:UpdateSongGroupListing()
 	
     	end
 	
-    	SongGroups[groupname] = { NumTotalNew, #songs }
+    	DIVA["SongGroups"][groupname] = { NumTotalNew, #songs }
 	end
-    TotalForCompletion = { TotalEverything, #SONGMAN:GetAllSongs() }
+    DIVA["TotalForCompletion"] = { TotalEverything, #SONGMAN:GetAllSongs() }
 end
 
 -- This is here in case someone update the theme's scripts.
@@ -74,7 +74,7 @@ DIVA:UpdateSongGroupListing()
 	a full percentage, to show how much you have progressed on that particular folder.
 ]]
 function DIVA:GroupCompleted(params)
-	return SongGroups[params][1].."/"..SongGroups[params][2].." ("..FormatPercentScore( DIVA:CalculatePercentageSongs(params) )..")"
+	return DIVA["SongGroups"][params][1].."/"..DIVA["SongGroups"][params][2].." Played ("..FormatPercentScore( DIVA:CalculatePercentageSongs(params) )..")"
 end
 
 -- Used to retrieve files from the 'Locations' folder.
@@ -116,7 +116,7 @@ end
 -- Calculate a 0-1 value.
 -- This is used for the Played/Total display.
 function DIVA:CalculatePercentageSongs(params)
-	return (SongGroups[params][1]/SongGroups[params][2])
+	return (DIVA["SongGroups"][params][1]/DIVA["SongGroups"][params][2])
 end
 
 -- Just if it has subtitles
