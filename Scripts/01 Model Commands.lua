@@ -81,7 +81,11 @@ DIVA:UpdateSongGroupListing()
 	a full percentage, to show how much you have progressed on that particular folder.
 ]]
 function DIVA:GroupCompleted(params)
-	return DIVA["SongGroups"][params][1].."/"..DIVA["SongGroups"][params][2].." Played ("..FormatPercentScore( DIVA:CalculatePercentageSongs(params) )..")"
+	local Output = " "
+	if GAMESTATE:GetSortOrder() == "SortOrder_Group" then
+		Output = DIVA["SongGroups"][params][1].."/"..DIVA["SongGroups"][params][2].." Played ("..FormatPercentScore( DIVA:CalculatePercentageSongs(params) )..")"
+	end
+	return Output
 end
 
 -- Used to retrieve files from the 'Locations' folder.
@@ -129,7 +133,10 @@ end
 -- You don't have to make [this == "that"], but instead just [this > val].
 -- It ensures better results in case the value goes fucko if it was a string.
 function DIVA:CalculatePercentageSongs(params)
-	return (DIVA["SongGroups"][params][1]/DIVA["SongGroups"][params][2])
+	if GAMESTATE:GetSortOrder() == "SortOrder_Group" then
+		return (DIVA["SongGroups"][params][1]/DIVA["SongGroups"][params][2])
+	end
+	return 0
 end
 
 -- Just if it has subtitles
