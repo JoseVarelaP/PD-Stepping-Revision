@@ -68,11 +68,11 @@ function DIVA:GetPathLocation(filepart1,filepart2)
 end
 
 function DIVA:AbleToPlayRandomSongs()
-	return ThemePrefs.Get("EnableRandomSongPlay") and #SONGMAN:GetAllSongs() > 0
+	return #SONGMAN:GetAllSongs() > 0
 end
 
 function DIVA:ResetRandomSong()
-	if DIVA_RandomSong and DIVA:AbleToPlayRandomSongs() then
+	if ThemePrefs.Get("EnableRandomSongPlay") and DIVA:AbleToPlayRandomSongs() then
 		if ThemePrefs.Get("FolderToPlayRandomMusic") ~= "All" then
 			local Sel = SONGMAN:GetSongsInGroup(ThemePrefs.Get("FolderToPlayRandomMusic"))
 			if #Sel > 1 then
