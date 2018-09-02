@@ -59,10 +59,21 @@ end
 -- This is here in case someone update the theme's scripts.
 DIVA:UpdateSongGroupListing()
 
+--[[ 
+	Now that we have all the data needed to show the Played/Total display,
+	It's time to put it on a string.
+	The function basically reads:
+
+	SongGroups[Name Of The Group][ Total Songs Played ] / SongGroups[Name Of The Group][ Total Songs in Folder ]
+
+	And then CalculatePercentageSongs() will calculate a 0-1 range that FormatPercentScore will convert into
+	a full percentage, to show how much you have progressed on that particular folder.
+]]
 function DIVA:GroupCompleted(params)
 	return SongGroups[params][1].."/"..SongGroups[params][2].." ("..FormatPercentScore( DIVA:CalculatePercentageSongs(params) )..")"
 end
 
+-- Used to retrieve files from the 'Locations' folder.
 function DIVA:GetPathLocation(filepart1,filepart2)
 	return "/"..THEME:GetCurrentThemeDirectory().."/Locations/"..filepart1 .. filepart2
 end
@@ -71,48 +82,65 @@ function DIVA:AbleToPlayRandomSongs()
 	return #SONGMAN:GetAllSongs() > 0
 end
 
+-- Random Song Updater
 function DIVA:ResetRandomSong()
+	-- We have songs, then we coninue.
 	if ThemePrefs.Get("EnableRandomSongPlay") and DIVA:AbleToPlayRandomSongs() then
+		-- If we have it on a set folder, then look at that folder, and pick a random song from it.
 		if ThemePrefs.Get("FolderToPlayRandomMusic") ~= "All" then
 			local Sel = SONGMAN:GetSongsInGroup(ThemePrefs.Get("FolderToPlayRandomMusic"))
 			if #Sel > 1 then
 				DIVA_RandomSong = Sel[math.random(1,#Sel)]
 				DIVA:Folder_Random()
 			else
+				-- But if the folder only has 1 song, warn about it, and set it directly to it.
 				DIVA_RandomSong = Sel[1]
 				DIVA:SingleSongWarning()
 			end
 		else
 			DIVA_RandomSong = SONGMAN:GetRandomSong()
 		end
+		-- After this is done, send a Update MessageCommand to alert the actors that
+		-- the Random song has changed. 
 		MESSAGEMAN:Broadcast("DivaSongChanged")
 	else
+		-- If we don't have any songs, then warn about it.
 		DIVA:NoSongsWarning()
     end
 end
 
+-- Calculate a 0-1 value.
+-- This is used for the Played/Total display.
 function DIVA:CalculatePercentageSongs(params)
 	return (SongGroups[params][1]/SongGroups[params][2])
 end
 
+-- Just if it has subtitles
 function DIVA:HasSubtitles(WhatToLoad)
 	return string.len( WhatToLoad:GetDisplaySubTitle() ) > 1
 end
 
+-- Check if the current model from the player has any issues.
 function DIVA:IsSafeToLoad(pn)
-	if GAMESTATE:GetCharacter(pn):GetModelPath() ~= "" then return true
-	else
-		lua.ReportScriptError(
-			string.format( THEME:GetString("Common","ModelLoadError"), ToEnumShortString(pn), GAMESTATE:GetCharacter(pn):GetDisplayName() )
-		)
-		return false
+	-- Don't apply the check if we have the character set to "off" (default)
+	if GAMESTATE:GetCharacter(pn):GetDisplayName() ~= "default" then
+		-- Otherwise, check the model path.
+		if GAMESTATE:GetCharacter(pn):GetModelPath() ~= "" then return true
+		else
+			lua.ReportScriptError(
+				string.format( THEME:GetString("Common","ModelLoadError"), ToEnumShortString(pn), GAMESTATE:GetCharacter(pn):GetDisplayName() )
+			)
+			return false
+		end
 	end
 end
 
+-- Check if the player has any character loaded right now.
 function DIVA:HasAnyCharacters(pn)
 	return GAMESTATE:IsPlayerEnabled(pn) and GAMESTATE:GetCharacter(pn):GetDisplayName() ~= "default" and DIVA:IsSafeToLoad(pn)
 end
 
+-- Self explanatory.
 function DIVA:BothPlayersEnabled()
 	return GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsPlayerEnabled(PLAYER_2)
 end

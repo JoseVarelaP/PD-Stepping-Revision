@@ -156,7 +156,7 @@ DSet = {
 
 	Gameplay = {
 	LyricDisplay = function(self)
- 	self:xy(SCREEN_LEFT+80, SCREEN_BOTTOM-12):zoom(0.6):horizalign(left):draworder(101)
+ 	self:xy(SCREEN_LEFT+60, SCREEN_BOTTOM-32):zoom(0.6):horizalign(left):draworder(101)
 	end,
 	},
 

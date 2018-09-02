@@ -93,7 +93,7 @@ t.OnCommand=function(self)
 local ClearBG = self:GetChild("ClearBG");
 local ClearText = self:GetChild("ClearText");
 
-ClearText:x( ClearBG:GetZoomedWidth()/1.1 )
+ClearText:x( ClearBG:GetZoomedWidth()/WideScale(1.03,1.1) )
 end
 
 return t;

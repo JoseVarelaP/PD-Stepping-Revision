@@ -178,10 +178,6 @@ t[#t+1] = Def.ActorFrame{
 
 };
 
-local function BothPlayersEnabled()
-	return GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsPlayerEnabled(PLAYER_2)
-end
-
 local function UpdateModelRate(self)
 	if ThemePrefs.Get("DediModelBPM") then
 		if now<=ModelBeat then
@@ -210,9 +206,13 @@ if ThemePrefs.Get("DedicatedCharacterShow") then
 					Bones=GAMESTATE:GetCharacter(player):GetWarmUpAnimationPath(),
 					OnCommand=function(self)
 					self:cullmode("CullMode_None")
-					if BothPlayersEnabled() then self:x( (player == PLAYER_1 and 8) or -8 ) end
+					if DIVA:BothPlayersEnabled() then self:x( (player == PLAYER_1 and 8) or -8 ) end
 					self:queuecommand("UpdateRate")
-					end,			
+					end,
+					CurrentSongChangedMessageCommand=function(self)
+					self:visible(true)
+					self:queuecommand("UpdateRate")
+					end,
 					UpdateRateCommand=function(self)
 					-- Check function to see how it works.
 					UpdateModelRate(self)
@@ -234,14 +234,14 @@ if ThemePrefs.Get("DedicatedCharacterShow") then
 						self:cullmode("CullMode_None")
 						DebugMessages.ModelLoad()
 					-- position time
-					if BothPlayersEnabled() then
+					if DIVA:BothPlayersEnabled() then
 						-- reminder that x position is inverted because we inverted the Y axis
 						-- to make the character face towards the screen.
 						self:x( (player == PLAYER_1 and 8) or -8 )
 					end			
 					ModelBeat = GAMESTATE:GetSongBeat();
 					self:queuecommand("UpdateRate")
-					end,			
+					end,
 					-- Update Model animation speed depending on song's BPM.
 					-- To match SM's way of animation speeds.
 					UpdateRateCommand=function(self)
