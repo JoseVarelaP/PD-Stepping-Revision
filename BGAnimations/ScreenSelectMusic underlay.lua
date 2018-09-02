@@ -93,22 +93,7 @@ t[#t+1] = Def.ActorFrame{
 		UpdateBackgroundCommand=function(self)
 		self:finishtweening()
  		if GAMESTATE:GetCurrentSong() then
-			self:finishtweening()
- 			if GAMESTATE:GetCurrentSong():GetJacketPath() then
- 				if (Sprite.LoadFromCached ~= nil) then
-    				self:LoadFromCached("Jacket", GAMESTATE:GetCurrentSong():GetJacketPath())
-				else
-    				self:load(GAMESTATE:GetCurrentSong():GetJacketPath())
-				end
- 				self:setsize(400/2,400/2)
- 			else
- 				if (Sprite.LoadFromCached ~= nil) then
-    				self:LoadFromCached("Background", GAMESTATE:GetCurrentSong():GetBackgroundPath())
-				else
-    				self:load(GAMESTATE:GetCurrentSong():GetBackgroundPath())
-				end
- 				self:setsize(450/2,450/2)
- 			end
+ 			LoadImageForTile(self)
  			self:visible(true)
  			self:diffusealpha(0)
 			self:rotationz(-10):x(-270):decelerate(0.3):x(-250):rotationz(-5):diffusealpha(1)
@@ -198,8 +183,7 @@ t[#t+1] = Def.ActorFrame{
 		MyTextBanner (doubleres).png
 	--]]
 	Def.Sprite {
-		InitCommand=cmd(diffusealpha,1;x,WideScale(-150,-300);y,50);
-		BeginCommand=cmd(LoadFromCurrentSongBackground);
+		InitCommand=cmd(diffusealpha,1;x,WideScale(-150,-330);y,50);
 		CurrentSongChangedMessageCommand=function(self)
  			self:finishtweening():smooth(0.1):diffusealpha(0):sleep(0.1)
  		self:queuecommand("BeginProcess")
@@ -213,7 +197,7 @@ t[#t+1] = Def.ActorFrame{
 			self:finishtweening()
  			self:visible(true)
  			self:LoadBackground(GAMESTATE:GetCurrentSong():GetCDImagePath())
- 			self:zoom(0.7)
+ 			self:zoom(0.7):diffusealpha(0)
 			self:decelerate(0.2):diffusealpha(1)
 			self:zoom(0.6)
  		else
