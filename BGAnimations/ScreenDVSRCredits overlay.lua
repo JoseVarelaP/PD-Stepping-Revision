@@ -18,7 +18,7 @@ t[#t+1] = Def.ActorFrame{
 	};
 
 	LoadActor( THEME:GetPathG("","ThemeLogo") )..{
-		InitCommand=cmd(ztest,1;horizalign,right;zoom,0.4;diffusealpha,0;addx,200;shadowlengthy,2);
+		InitCommand=cmd(ztest,1;horizalign,right;zoom,WideScale(0.33,0.4);diffusealpha,0;addx,200;shadowlengthy,2);
 		OnCommand=cmd(sleep,.3;decelerate,0.8;diffusealpha,1;addx,-200);
 		OffCommand=cmd(accelerate,0.2;diffusealpha,0);
 	};
