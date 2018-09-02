@@ -156,7 +156,7 @@ local t = Def.ActorFrame {};
 			};
 
 			LoadFont("renner/20px") ..{
-			OnCommand=cmd(x,530;y,-30;zoom,0.8;shadowlength,1;strokecolor,Color.Blue);
+			OnCommand=cmd(x,530;y,-30;zoom,0.8;shadowlength,1);
 			SetMessageCommand=function(self,params)
 			local song = params.Song;
 				if song and PROFILEMAN:IsSongNew(song) then
@@ -192,7 +192,7 @@ local t = Def.ActorFrame {};
 				};
 	
 				LoadFont("unsteady oversteer/20px") ..{
-				OnCommand=cmd(x,170;y,14;zoom,1.2;strokecolor,Color.Black);
+				OnCommand=cmd(x,170;y,15;zoom,1.2;strokecolor,Color.Black);
 				SetMessageCommand=function(self,params)
 				local song = params.Song;
 				if song and song:IsLong() then
