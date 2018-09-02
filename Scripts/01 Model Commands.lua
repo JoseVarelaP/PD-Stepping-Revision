@@ -1,6 +1,10 @@
 -- Main Stepping Revision functions
+------------------------------------------------
 DIVA = {
+	------------------------------------------------
 	-- Command line debug stuff
+	-- They're also to inform the user of certain things.
+	------------------------------------------------
 	Folder_Random = function()
 	Trace(
 		"-----------------------------------\n"..
@@ -34,6 +38,7 @@ DIVA = {
 	SongGroups = {};
 	TotalForCompletion = {};
 }
+------------------------------------------------
 
 --[[
 	What we're going to do, is grab all the song groups, and then
@@ -60,7 +65,9 @@ function DIVA:UpdateSongGroupListing()
     DIVA["TotalForCompletion"] = { TotalEverything, #SONGMAN:GetAllSongs() }
 end
 
--- This is here in case someone update the theme's scripts.
+-- This is here in case someone updates the theme's scripts.
+-- Cause if updates without it, the global tables reset. Leaving nothing.
+-- That can lead to crashes.
 DIVA:UpdateSongGroupListing()
 
 --[[ 
@@ -115,6 +122,10 @@ end
 
 -- Calculate a 0-1 value.
 -- This is used for the Played/Total display.
+-- Why not just directly make it calculate the percentage in the function?
+-- Because having number values instead of a string is easier to make conditionals.
+-- You don't have to make [this == "that"], but instead just [this > val].
+-- It ensures better results in case the value goes fucko if it was a string.
 function DIVA:CalculatePercentageSongs(params)
 	return (DIVA["SongGroups"][params][1]/DIVA["SongGroups"][params][2])
 end

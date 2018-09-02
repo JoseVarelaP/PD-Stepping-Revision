@@ -1,24 +1,14 @@
--- hi im jose and welcome to jackass
-
-local t = Def.ActorFrame{
-	InitCommand=function()
-	DIVA:UpdateSongGroupListing()
-	end,
-	OnCommand=function(self)
-	DIVA:ResetRandomSong()
-	MESSAGEMAN:Broadcast("HideBackground")
-	self:queuecommand("LoopPrint")
-	end,
-	LoopPrintCommand=function(self)
-	end,
-	CurrentStepsP1ChangedMessageCommand=function(self) MESSAGEMAN:Broadcast("UpdateSteps") end;
-	CurrentStepsP2ChangedMessageCommand=function(self) MESSAGEMAN:Broadcast("UpdateSteps") end;
-	CurrentSongChangedMessageCommand=cmd(queuemessage,"UpdateSteps");
-}
+local t = Def.ActorFrame{};
 
 local function JustASinglePlayer(pn)
 	if pn == PLAYER_1 then return GAMESTATE:IsPlayerEnabled(PLAYER_1) and not GAMESTATE:IsPlayerEnabled(PLAYER_2) end
 	if pn == PLAYER_2 then return GAMESTATE:IsPlayerEnabled(PLAYER_2) and not GAMESTATE:IsPlayerEnabled(PLAYER_1) end
+end
+
+local function InvertSongBase()
+	WhatToLoad = "Color_WheelSong"
+	if DIVA:BothPlayersEnabled() then WhatToLoad = "2PColor_WheelSong" end
+	return WhatToLoad
 end
 
 local function DiffuseColorForBothPlayers(self)
@@ -31,19 +21,6 @@ local function DiffuseColorForBothPlayers(self)
 		end
 	end
 end
-
-local function InvertSongBase()
-	WhatToLoad = "Color_WheelSong"
-	if DIVA:BothPlayersEnabled() then WhatToLoad = "2PColor_WheelSong" end
-	return WhatToLoad
-end
-
------- ------ ------ ------ ------ ------ ------
------- ------ ------ ------ ------ ------ ------
------- End functionland begin actual mess ------
------- ------ ------ ------ ------ ------ ------
------- ------ ------ ------ ------ ------ ------
-
 
 t[#t+1] = Def.ActorFrame {
 	LoadActor(THEME:GetPathS("_switch","up")) .. {
@@ -176,8 +153,6 @@ t[#t+1] = Def.ActorFrame {
 	};
 };
 
--- Message for the new player that joined.
-
 t[#t+1] = Def.ActorFrame{
 		InitCommand=cmd(diffusealpha,0;x,WideScale(SCREEN_LEFT-15,SCREEN_LEFT+46);y,SCREEN_CENTER_Y-100;zoom,0.6);
 		NextSongMessageCommand=cmd(playcommand,"Close");
@@ -278,123 +253,6 @@ t[#t+1] = Def.ActorFrame{
 			end;
 			};
 
-	};
-
--- Button Help
-t[#t+1] = Def.ActorFrame {
-		OnCommand=cmd(Center;diffusealpha,0;zoom,0);
-		SelectMenuOpenedMessageCommand=cmd(stoptweening;decelerate,0.2;diffusealpha,1;zoom,0.8);
-		SelectMenuClosedMessageCommand=cmd(stoptweening;accelerate,0.2;diffusealpha,0;zoom,0.5);
-
-		LoadActor( THEME:GetPathG("","WideInterpreter"), { File="Global/TextBox", Width=500, Height=200 } )..{
-		};		
-
-		LoadFont("Common Normal")..{
-			Text=Screen.String("ButtonHelp");
-			InitCommand=cmd(zoom,0.8;wrapwidthpixels,600;horizalign,left;x,-240;vertspacing,8;vertalign,top;y,-80);
-			OnCommand=function(self)
-			if THEME:GetCurLanguage() == "es" then
-				self:zoom(0.7):wrapwidthpixels(650)
-			end
-			end,
-		};
-};
-
-for player in ivalues(PlayerNumber) do
-
-	t[#t+1] = Def.ActorFrame{
-		InitCommand=cmd(Center;diffusealpha,0;zoom,0);
-		PlayerJoinedMessageCommand=cmd(stoptweening;decelerate,0.2;diffusealpha,1;zoom,0.8;sleep,1;accelerate,0.2;diffusealpha,0;zoom,0);
-
-		LoadActor( THEME:GetPathG("","WideInterpreter"), { File="Global/TextBox", Width=500, Height=60 } )..{
-		Condition=not GAMESTATE:IsPlayerEnabled(player);
-		};		
-
-		LoadFont("Common Normal")..{
-			Condition=not GAMESTATE:IsPlayerEnabled(player);
-			InitCommand=cmd(zoom,0.8;wrapwidthpixels,600);
-			PlayerJoinedMessageCommand=function(self)
-			self:settextf( THEME:GetString("ScreenSelectMusic","PlayerJoin"), PROFILEMAN:GetProfile(player):GetDisplayName() )
-			end,
-		};
-	};
-end
-
-t[#t+1] = Def.Quad{
-	OnCommand=cmd(zoomto,SCREEN_WIDTH,25;diffuse,Color.Black;CenterX;vertalign,top);	
-};
-
-t[#t+1] = LoadActor( THEME:GetPathG("","TopBarText") )..{
-	OnCommand=cmd(vertalign,top;horizalign,right;x,SCREEN_RIGHT;diffusealpha,0.6;rotationz,-2.6;y,-2;zoom,0.8);	
-};
-
-t[#t+1] = LoadActor( THEME:GetPathG("","SelectMusic/DiffBase") )..{
-	OnCommand=cmd(vertalign,top;horizalign,right;xy,SCREEN_RIGHT,30;zoom,0.6;shadowlengthy,3);	
-};
-
-t[#t+1] = LoadActor( THEME:GetPathG("","SelectMusic/SortDisplay") )..{
-	InitCommand=cmd(vertalign,top;horizalign,right;xy,SCREEN_CENTER_X+60,110;zoom,0.6);
-	OnCommand=cmd(diffusealpha,0;addx,10;decelerate,0.2;diffusealpha,1;addx,-10);
-};
-
-if ThemePrefs.Get("DedicatedCharacterShow") then
-	t[#t+1] = LoadActor( THEME:GetPathG("","SelectMusic/CharacterShow") )..{
-		InitCommand=cmd(vertalign,bottom;horizalign,right;xy,SCREEN_RIGHT-250,SCREEN_BOTTOM-90;zoom,0.8;);	
-		OnCommand=cmd(diffusealpha,0;addx,10;decelerate,0.2;diffusealpha,1;addx,-10);
-	};
-end
-
-t[#t+1] = LoadActor( THEME:GetPathG("","SelectMusic/ScoreDisplay") )..{
-	InitCommand=cmd(vertalign,bottom;horizalign,right;xy,SCREEN_RIGHT-90,SCREEN_BOTTOM-90;zoom,0.8;);	
-	OnCommand=cmd(diffusealpha,0;addx,10;decelerate,0.2;diffusealpha,1;addx,-10);
-};
-
-t[#t+1] = LoadActor( THEME:GetPathG("","SelectMusic/TotalToComplete") )..{
-	InitCommand=cmd(vertalign,bottom;horizalign,left;xy,SCREEN_LEFT+10,SCREEN_BOTTOM-70;zoom,0.7;);	
-	OnCommand=cmd(diffusealpha,0;addx,-10;decelerate,0.2;diffusealpha,1;addx,10);
-};
-
-t[#t+1] = LoadFont("Common Normal")..{
-	Text=Screen.String("HeaderText");
-	InitCommand=cmd(vertalign,top;horizalign,left;xy,30,6;zoom,0.8);
-};
-
-t[#t+1] = Def.Quad{
-	OnCommand=cmd(zoomto,SCREEN_WIDTH,25;diffuse,Color.Black;CenterX;vertalign,bottom;y,SCREEN_BOTTOM);	
-};
-
-t[#t+1] = LoadFont("Common Normal")..{
-	Text="Stuck? Press the &SELECT; button for a button guide.";
-	InitCommand=cmd(vertalign,bottom;horizalign,left;xy,10,SCREEN_BOTTOM-8;zoom,0.6;maxwidth,SCREEN_WIDTH*1.6);
-	PreviousSongMessageCommand=cmd(playcommand,"RegularTextFade");
-	NextSongMessageCommand=cmd(playcommand,"RegularTextFade");
-	TwoPartConfirmCanceledMessageCommand=function(self)
-	self:decelerate(0.2):diffusealpha(0):queuecommand("UpdateTextInst_DiffSel")
-	end,
-	UpdateTextInst_DiffSelCommand=function(self)
-	self:accelerate(0.2):diffusealpha(1):settext( THEME:GetString("ScreenSelectMusic","Inst_DiffSel") )
-	end,
-	StartSelectingStepsMessageCommand=function(self)
-	AlreadyExited = false
-	self:decelerate(0.2):diffusealpha(0):queuecommand("UpdateTextInst_Decided")
-	end,
-	UpdateTextInst_DecidedCommand=function(self)
-	self:accelerate(0.2):diffusealpha(1):settext( THEME:GetString("ScreenSelectMusic","Inst_Decided") )
-	end,
-	RegularTextFadeCommand=function(self)
-	if not AlreadyExited then
-		AlreadyExited = true
-		self:decelerate(0.2):diffusealpha(0):queuecommand("RegularTextSet")
-	end
-	end,
-	RegularTextSetCommand=function(self)
-	self:accelerate(0.2):diffusealpha(1):settext( "Stuck? Press the &SELECT; button for a button guide." )
-	end,
-};
-
-t[#t+1] = Def.Quad{
-	OnCommand=cmd(FullScreen;diffuse,Color.Black;diffusealpha,0);
-	OffCommand=cmd(linear,0.2;diffusealpha,1);
 };
 
 return t;

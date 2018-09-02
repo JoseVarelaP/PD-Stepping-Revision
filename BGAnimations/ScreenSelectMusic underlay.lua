@@ -82,10 +82,9 @@ t[#t+1] = Def.ActorFrame{
 	GoAwayCommand=cmd(accelerate,0.2;addx,100;diffusealpha,0);
 
 	Def.Sprite {
-		InitCommand=cmd(diffusealpha,1;horizalign,left;x,-250);
-		BeginCommand=cmd(LoadFromCurrentSongBackground);
+		InitCommand=cmd(diffusealpha,1;horizalign,left;x,-250;setsize,0,0);
 		CurrentSongChangedMessageCommand=function(self)
- 			self:finishtweening():smooth(0.1):diffusealpha(0):sleep(0.1)
+ 		self:finishtweening():smooth(0.1):diffusealpha(0):sleep(0.1)
  		self:queuecommand("BeginProcess")
  		end,
  		BeginProcessCommand=function(self)
@@ -95,16 +94,32 @@ t[#t+1] = Def.ActorFrame{
 		self:finishtweening()
  		if GAMESTATE:GetCurrentSong() then
 			self:finishtweening()
+ 			if GAMESTATE:GetCurrentSong():GetJacketPath() then
+ 				if (Sprite.LoadFromCached ~= nil) then
+    				self:LoadFromCached("Jacket", GAMESTATE:GetCurrentSong():GetJacketPath())
+				else
+    				self:load(GAMESTATE:GetCurrentSong():GetJacketPath())
+				end
+ 				self:setsize(400/2,400/2)
+ 			elseif GAMESTATE:GetCurrentSong():GetBackgroundPath() then
+ 				if (Sprite.LoadFromCached ~= nil) then
+    				self:LoadFromCached("Background", GAMESTATE:GetCurrentSong():GetBackgroundPath())
+				else
+    				self:load(GAMESTATE:GetCurrentSong():GetBackgroundPath())
+				end
+ 				self:setsize(450/2,450/2)
+ 			else
+ 				self:LoadBackground( THEME:GetPathG("","_blank") )
+ 			end
  			self:visible(true)
- 			LoadImageForTile(self)
+ 			self:diffusealpha(0)
 			self:rotationz(-10):x(-270):decelerate(0.3):x(-250):rotationz(-5):diffusealpha(1)
  		else
  			self:visible(false)
  		end
 		end,
 		OnCommand=function(self)
-			self:shadowlength(10):diffusealpha(0):linear(0.5):diffusealpha(1)
-			self:setsize(400/2,400/2)
+			self:shadowlength(10)
 		end;
 	};
 

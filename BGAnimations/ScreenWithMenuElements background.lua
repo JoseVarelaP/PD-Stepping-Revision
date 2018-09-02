@@ -3,7 +3,7 @@ local t = Def.ActorFrame{
 }
 
 t[#t+1] = Def.Quad{
-	OnCommand=cmd(FullScreen;);	
+	OnCommand=cmd(FullScreen);
 };
 
 if ThemePrefs.Get("ShowRandomSongBackground") then
@@ -27,9 +27,8 @@ if ThemePrefs.Get("ShowRandomSongBackground") then
 end
 
 t[#t+1] = Def.Quad{
-	OnCommand=cmd(FullScreen;diffuse,color("#00B6EA");fadebottom,1);
+	OnCommand=cmd(FullScreen;diffuse,color("#00B6EA");fadebottom,1;);
 };
-
 
 local function IsMikuBirthday()
 	return DayOfYear() == 242
