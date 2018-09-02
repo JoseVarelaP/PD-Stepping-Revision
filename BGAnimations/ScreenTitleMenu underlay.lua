@@ -34,6 +34,4 @@ if DIVA:AbleToPlayRandomSongs() then
 	};
 end
 
-t[#t+1] = LoadActor("Borders.lua");
-
 return t;

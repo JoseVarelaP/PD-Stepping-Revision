@@ -11,10 +11,10 @@ DIVA = {
 	)
 	end,
 	SingleSongWarning = function()
-	lua.ReportScriptError( "Random Song Play: Current Folder only contains 1 song. StepMania might get confused when picking the song via random. Selecting to index 1.")
+	lua.ReportScriptError( THEME:GetString("Common","SongLoaderSingleSong") )
 	end,
 	NoSongsWarning = function()
-	lua.ReportScriptError( "Random Song Play: No songs were found in your StepMania install folder! Switching back to fallback music.")
+	lua.ReportScriptError( THEME:GetString("Common","SongLoaderNoSongs") )
 	end,
 }
 

@@ -10,7 +10,7 @@ local t = Def.ActorFrame{};
 		self:diffusetopedge(Color.White)
 		self:diffuse(Color.White)
 		if steps then
-			self:diffuse( CustomDifficultyToColor( steps:GetDifficulty() ) )
+			self:diffuse( ColorLightTone( CustomDifficultyToColor( steps:GetDifficulty() ) ) )
 		end
 		if DIVA:CalculatePercentageSongs(params.Text) == 1 then
 			self:diffusebottomedge( color("#E1A81D") )
@@ -39,7 +39,7 @@ local t = Def.ActorFrame{};
 		self:diffusetopedge(Color.White)
 		self:diffuse(Color.White)
 		if steps then
-			self:diffuse( CustomDifficultyToColor( steps:GetDifficulty() ) )
+			self:diffuse( ColorLightTone( CustomDifficultyToColor( steps:GetDifficulty() ) ) )
 		end
 		if DIVA:CalculatePercentageSongs(params.Text) == 1 then
 			self:diffusebottomedge( color("#E1A81D") )

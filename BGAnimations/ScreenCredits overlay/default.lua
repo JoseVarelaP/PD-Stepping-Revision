@@ -1,6 +1,6 @@
-local line_on = cmd(y,-3;vertalign,top;wrapwidthpixels,WideScale(400,520);horizalign,left;zoom,WideScale(0.5,0.6);strokecolor,color("#444444");shadowcolor,color("#444444");shadowlength,1)
-local section_on = cmd(wrapwidthpixels,WideScale(400,520);horizalign,left;zoom,WideScale(0.6,0.8);diffuse,color("#88DDFF");strokecolor,color("#446688");shadowcolor,color("#446688");shadowlength,1)
-local subsection_on = cmd(wrapwidthpixels,WideScale(400,520);horizalign,left;zoom,WideScale(0.5,0.7);diffuse,color("#88DDFF");strokecolor,color("#446688");shadowcolor,color("#446688");shadowlength,1)
+local line_on = cmd(y,-3;vertalign,top;wrapwidthpixels,WideScale(450,520);horizalign,left;zoom,WideScale(0.5,0.6);strokecolor,color("#444444");shadowcolor,color("#444444");shadowlength,1)
+local section_on = cmd(wrapwidthpixels,WideScale(450,520);horizalign,left;zoom,WideScale(0.6,0.8);diffuse,color("#88DDFF");strokecolor,color("#446688");shadowcolor,color("#446688");shadowlength,1)
+local subsection_on = cmd(wrapwidthpixels,WideScale(450,520);horizalign,left;zoom,WideScale(0.5,0.7);diffuse,color("#88DDFF");strokecolor,color("#446688");shadowcolor,color("#446688");shadowlength,1)
 local item_padding_start = 4;
 local line_height= WideScale(22,21)
 -- Tell the credits table the line height so it can use it for logo sizing.

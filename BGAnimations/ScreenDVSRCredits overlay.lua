@@ -70,7 +70,8 @@ t[#t+1] = Def.ActorScroller {
  	GenerateHeader("Special Thanks");
  	GenerateNormal("UKSRT Discord");
  	GenerateNormal("StepMania Online Discord");
- 	GenerateNormal("Jared Gaming Discord");
+ 	GenerateNormal("dbk2 (Code Help)");
+ 	GenerateNormal("R.O.B-Bot (Suggestions/Feedback)");
  	GenerateNormal("Tesseract (Suggestions)");
  	GenerateNormal("KcHecKa (Suggestions)");
  	GenerateNormal("ElliotBG (Feedback)");
