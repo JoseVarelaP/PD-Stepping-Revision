@@ -68,26 +68,28 @@ function DIVA:GetPathLocation(filepart1,filepart2)
 end
 
 function DIVA:AbleToPlayRandomSongs()
-	return ThemePrefs.Get("EnableRandomSongPlay") and #SONGMAN:GetAllSongs() > 0
+	return #SONGMAN:GetAllSongs() > 0
 end
 
 function DIVA:ResetRandomSong()
-	if DIVA_RandomSong and DIVA:AbleToPlayRandomSongs() then
-		if ThemePrefs.Get("FolderToPlayRandomMusic") ~= "All" then
-			local Sel = SONGMAN:GetSongsInGroup(ThemePrefs.Get("FolderToPlayRandomMusic"))
-			if #Sel > 1 then
-				DIVA_RandomSong = Sel[math.random(1,#Sel)]
-				DIVA:Folder_Random()
+	if DIVA_RandomSong and ThemePrefs.Get("EnableRandomSongPlay")then
+		if DIVA:AbleToPlayRandomSongs() then
+			if ThemePrefs.Get("FolderToPlayRandomMusic") ~= "All" then
+				local Sel = SONGMAN:GetSongsInGroup(ThemePrefs.Get("FolderToPlayRandomMusic"))
+				if #Sel > 1 then
+					DIVA_RandomSong = Sel[math.random(1,#Sel)]
+					DIVA:Folder_Random()
+				else
+					DIVA_RandomSong = Sel[1]
+					DIVA:SingleSongWarning()
+				end
 			else
-				DIVA_RandomSong = Sel[1]
-				DIVA:SingleSongWarning()
+				DIVA_RandomSong = SONGMAN:GetRandomSong()
 			end
+			MESSAGEMAN:Broadcast("DivaSongChanged")
 		else
-			DIVA_RandomSong = SONGMAN:GetRandomSong()
+			DIVA:NoSongsWarning()
 		end
-		MESSAGEMAN:Broadcast("DivaSongChanged")
-	else
-		DIVA:NoSongsWarning()
     end
 end
 
