@@ -94,7 +94,7 @@ for player in ivalues(PlayerNumber) do
 t[#t+1] = LoadActor("ScoreInfoBG")..{ OnCommand=cmd(y,(player == PLAYER_1 and -4) or 42;x,-8;zoomy,0.7); };
 t[#t+1] = LoadFont("unsteady oversteer/20px")..{
 	Condition=GAMESTATE:IsPlayerEnabled(player);
-	OnCommand=cmd(horizalign,right;x,50;y,(player == PLAYER_1 and -20) or 25;zoom,1);
+	OnCommand=cmd(horizalign,right;x,50;y,(player == PLAYER_1 and -12) or 34;zoom,1);
 	UpdateScoreMessageCommand=function(self)
 	self:settext( PercentScore(player) )
 	end,

@@ -33,6 +33,7 @@ DIVA = {
 	everything on each update, they already have values to work which come from this table.
 --]]
 SongGroups = {}
+TotalForCompletion = {}
 
 --[[
 	What we're going to do, is grab all the song groups, and then
@@ -40,6 +41,7 @@ SongGroups = {}
 	played and which are, to create the Played/Total display.
 ]]
 function DIVA:UpdateSongGroupListing()
+    local TotalEverything = 0
 	for groupname in ivalues(SONGMAN:GetSongGroupNames()) do
     	local songs = SONGMAN:GetSongsInGroup(groupname) 
     	local NumTotalNew = 0
@@ -48,12 +50,14 @@ function DIVA:UpdateSongGroupListing()
 	        
         	if not PROFILEMAN:IsSongNew(song) then
             	NumTotalNew = NumTotalNew + 1
+            	TotalEverything = TotalEverything + 1
         	end
 	
     	end
 	
     	SongGroups[groupname] = { NumTotalNew, #songs }
 	end
+    TotalForCompletion = { TotalEverything, #SONGMAN:GetAllSongs() }
 end
 
 -- This is here in case someone update the theme's scripts.

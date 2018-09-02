@@ -192,7 +192,7 @@ local t = Def.ActorFrame {};
 				};
 	
 				LoadFont("unsteady oversteer/20px") ..{
-				OnCommand=cmd(x,170;y,6;zoom,1.2;strokecolor,Color.Black);
+				OnCommand=cmd(x,170;y,14;zoom,1.2;strokecolor,Color.Black);
 				SetMessageCommand=function(self,params)
 				local song = params.Song;
 				if song and song:IsLong() then
@@ -241,7 +241,7 @@ local t = Def.ActorFrame {};
 
 				Def.BitmapText{
 				Font="unsteady oversteer/20px",
-				OnCommand=cmd(zoom,0.6;strokecolor,color("0,0,0,1");wrapwidthpixels,500;x,128;vertspacing,-8;y,12);
+				OnCommand=cmd(zoom,0.6;strokecolor,color("0,0,0,1");wrapwidthpixels,500;x,128;vertspacing,-8;y,16);
 				SetMessageCommand=function(self,params)
 				local song = params.Song;
 				val = " "
@@ -261,7 +261,7 @@ local t = Def.ActorFrame {};
 
 for player in ivalues(PlayerNumber) do
 t[#t+1] = LoadFont("unsteady oversteer/20px") ..{
-	OnCommand=cmd(x,((player == PLAYER_1 and 80) or 528);y,-10;zoom,1.2;strokecolor,Color.Black);
+	OnCommand=cmd(x,((player == PLAYER_1 and 80) or 528);y,0;zoom,1.2;strokecolor,Color.Black);
 	SetMessageCommand=function(self,params)
 	local song = params.Song;
 	local enabled = GAMESTATE:IsPlayerEnabled(player);
@@ -282,7 +282,7 @@ t[#t+1] = LoadFont("unsteady oversteer/20px") ..{
 		self:x( (player == PLAYER_1 and 380) or 490 )
 	end
 	end,
-	OnCommand=cmd(y,7;zoom,1;strokecolor,Color.Black;horizalign,right);
+	OnCommand=cmd(y,16;zoom,1;strokecolor,Color.Black;horizalign,right);
 	SetMessageCommand=function(self,params)
 	local song = params.Song;
 	local enabled = GAMESTATE:IsPlayerEnabled(player);

@@ -249,7 +249,7 @@ t[#t+1] = Def.ActorFrame{
 			};
 	
 			LoadFont("unsteady oversteer/20px") ..{
-			OnCommand=cmd(x,80;y,-10;zoom,1.2;strokecolor,Color.Black);
+			OnCommand=cmd(x,80;y,0;zoom,1.2;strokecolor,Color.Black);
 			UpdateStepsMessageCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong();
 			local steps = GAMESTATE:GetCurrentSteps(PLAYER_1);
@@ -264,7 +264,7 @@ t[#t+1] = Def.ActorFrame{
 			};
 
 			LoadFont("unsteady oversteer/20px") ..{
-			OnCommand=cmd(x,528;y,-10;zoom,1.2;strokecolor,Color.Black);
+			OnCommand=cmd(x,528;y,0;zoom,1.2;strokecolor,Color.Black);
 			UpdateStepsMessageCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong();
 			local steps = GAMESTATE:GetCurrentSteps(PLAYER_2);
@@ -349,16 +349,15 @@ t[#t+1] = LoadActor( THEME:GetPathG("","SelectMusic/ScoreDisplay") )..{
 	OnCommand=cmd(diffusealpha,0;addx,10;decelerate,0.2;diffusealpha,1;addx,-10);
 };
 
-t[#t+1] = LoadFont("Common Normal")..{
-	Text=Screen.String("HeaderText");
-	InitCommand=cmd(vertalign,top;horizalign,left;xy,30,6;zoom,0.8);
+t[#t+1] = LoadActor( THEME:GetPathG("","SelectMusic/TotalToComplete") )..{
+	InitCommand=cmd(vertalign,bottom;horizalign,left;xy,SCREEN_LEFT+10,SCREEN_BOTTOM-70;zoom,0.7;);	
+	OnCommand=cmd(diffusealpha,0;addx,-10;decelerate,0.2;diffusealpha,1;addx,10);
 };
 
 t[#t+1] = LoadFont("Common Normal")..{
 	Text=Screen.String("HeaderText");
 	InitCommand=cmd(vertalign,top;horizalign,left;xy,30,6;zoom,0.8);
 };
-
 
 t[#t+1] = Def.Quad{
 	OnCommand=cmd(zoomto,SCREEN_WIDTH,25;diffuse,Color.Black;CenterX;vertalign,bottom;y,SCREEN_BOTTOM);	
