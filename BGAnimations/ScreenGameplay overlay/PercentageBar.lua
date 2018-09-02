@@ -1,5 +1,31 @@
 local t = Def.ActorFrame{};
 
+local TileXAmm = 4
+
+local ColorsToUse = {
+	color("#FFFFFF"),
+	color("#DE5AC8"),
+	color("#FFFF83"),
+	color("#3184F1"),
+	color("#A8FFD6"),
+};
+
+if GAMESTATE:GetCurrentSong():HasLyrics() then
+	for i=1,5 do
+	t[#t+1] = Def.ActorFrame{
+		OnCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_BOTTOM-40+(1*i));
+		LoadActor( THEME:GetPathG("","BGElements/SmoothLine") )..{
+			InitCommand=cmd(diffuse,ColorsToUse[i];z,math.random(-30,150);fadetop,1;wag;effectmagnitude,0,0,1;effectperiod,20;effectoffset,7*i);
+			OnCommand=cmd(texcoordvelocity,(0.15/i),0;customtexturerect,0,0,TileXAmm,1;zoom,0.10;zoomx,0.1*TileXAmm;diffusealpha,(300/self:GetZ()));
+		};
+	};
+	end
+	t[#t+1] = Def.Quad{
+		OnCommand=cmd(y,SCREEN_BOTTOM;horizalign,left;zoomto,SCREEN_WIDTH,200;diffuse,Color.Black;fadetop,0.6);	
+	};
+end
+
+
 t[#t+1] = Def.Quad{
 	OnCommand=cmd(x,SCREEN_LEFT+86;y,SCREEN_BOTTOM-14;horizalign,left;zoomto,SCREEN_WIDTH-118,16;diffuse,Color.Black;fadetop,1);	
 };

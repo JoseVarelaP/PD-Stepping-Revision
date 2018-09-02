@@ -101,15 +101,13 @@ t[#t+1] = Def.ActorFrame{
     				self:load(GAMESTATE:GetCurrentSong():GetJacketPath())
 				end
  				self:setsize(400/2,400/2)
- 			elseif GAMESTATE:GetCurrentSong():GetBackgroundPath() then
+ 			else
  				if (Sprite.LoadFromCached ~= nil) then
     				self:LoadFromCached("Background", GAMESTATE:GetCurrentSong():GetBackgroundPath())
 				else
     				self:load(GAMESTATE:GetCurrentSong():GetBackgroundPath())
 				end
  				self:setsize(450/2,450/2)
- 			else
- 				self:LoadBackground( THEME:GetPathG("","_blank") )
  			end
  			self:visible(true)
  			self:diffusealpha(0)
@@ -200,7 +198,7 @@ t[#t+1] = Def.ActorFrame{
 		MyTextBanner (doubleres).png
 	--]]
 	Def.Sprite {
-		InitCommand=cmd(diffusealpha,1;x,-300;y,50);
+		InitCommand=cmd(diffusealpha,1;x,WideScale(-150,-300);y,50);
 		BeginCommand=cmd(LoadFromCurrentSongBackground);
 		CurrentSongChangedMessageCommand=function(self)
  			self:finishtweening():smooth(0.1):diffusealpha(0):sleep(0.1)

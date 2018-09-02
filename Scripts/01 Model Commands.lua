@@ -96,27 +96,29 @@ end
 -- Random Song Updater
 function DIVA:ResetRandomSong()
 	-- We have songs, then we coninue.
-	if ThemePrefs.Get("EnableRandomSongPlay") and DIVA:AbleToPlayRandomSongs() then
-		-- If we have it on a set folder, then look at that folder, and pick a random song from it.
-		if ThemePrefs.Get("FolderToPlayRandomMusic") ~= "All" then
-			local Sel = SONGMAN:GetSongsInGroup(ThemePrefs.Get("FolderToPlayRandomMusic"))
-			if #Sel > 1 then
-				DIVA_RandomSong = Sel[math.random(1,#Sel)]
-				DIVA:Folder_Random()
+	if ThemePrefs.Get("EnableRandomSongPlay") then
+		if DIVA:AbleToPlayRandomSongs() then
+			-- If we have it on a set folder, then look at that folder, and pick a random song from it.
+			if ThemePrefs.Get("FolderToPlayRandomMusic") ~= "All" then
+				local Sel = SONGMAN:GetSongsInGroup(ThemePrefs.Get("FolderToPlayRandomMusic"))
+				if #Sel > 1 then
+					DIVA_RandomSong = Sel[math.random(1,#Sel)]
+					DIVA:Folder_Random()
+				else
+					-- But if the folder only has 1 song, warn about it, and set it directly to it.
+					DIVA_RandomSong = Sel[1]
+					DIVA:SingleSongWarning()
+				end
 			else
-				-- But if the folder only has 1 song, warn about it, and set it directly to it.
-				DIVA_RandomSong = Sel[1]
-				DIVA:SingleSongWarning()
+				DIVA_RandomSong = SONGMAN:GetRandomSong()
 			end
+			-- After this is done, send a Update MessageCommand to alert the actors that
+			-- the Random song has changed. 
+			MESSAGEMAN:Broadcast("DivaSongChanged")
 		else
-			DIVA_RandomSong = SONGMAN:GetRandomSong()
-		end
-		-- After this is done, send a Update MessageCommand to alert the actors that
-		-- the Random song has changed. 
-		MESSAGEMAN:Broadcast("DivaSongChanged")
-	else
 		-- If we don't have any songs, then warn about it.
 		DIVA:NoSongsWarning()
+		end
     end
 end
 
