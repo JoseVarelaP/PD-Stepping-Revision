@@ -42,13 +42,17 @@ DSet = {
 		return Result
 		end,
 		ChoiceQuickPlay = function()
-		return "applydefaultoptions;screen,ScreenSelectMusic;style,single;text,QuickPlay"
+		if #SONGMAN:GetAllSongs() > 0 then
+			return "applydefaultoptions;screen,ScreenSelectMusic;style,single;text,QuickPlay"
+		else
+			return "screen,ScreenHowToInstallSongs;text,QuickPlay"
+		end
 		end,
 		ScrollOn = function(self)
 			self:zoom(0.7):addx(-300):decelerate(0.3):addx(300)
 		end,
 		ScrollOff = function(self)
-			self:accelerate(0.2):addx(-300)
+			self:accelerate(0.2):addx(-370)
 		end,
 	},
 	ScreenOptionsService = {
