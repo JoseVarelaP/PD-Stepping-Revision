@@ -93,15 +93,11 @@ function DIVA:GetPathLocation(filepart1,filepart2)
 	return "/"..THEME:GetCurrentThemeDirectory().."/Locations/"..filepart1 .. filepart2
 end
 
-function DIVA:AbleToPlayRandomSongs()
-	return #SONGMAN:GetAllSongs() > 0
-end
-
 -- Random Song Updater
 function DIVA:ResetRandomSong()
 	-- We have songs, then we coninue.
 	if ThemePrefs.Get("EnableRandomSongPlay") then
-		if DIVA:AbleToPlayRandomSongs() then
+		if #SONGMAN:GetAllSongs() > 0 then
 			-- If we have it on a set folder, then look at that folder, and pick a random song from it.
 			if ThemePrefs.Get("FolderToPlayRandomMusic") ~= "All" then
 				local Sel = SONGMAN:GetSongsInGroup(ThemePrefs.Get("FolderToPlayRandomMusic"))
