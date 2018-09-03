@@ -183,7 +183,7 @@ t[#t+1] = Def.ActorFrame{
 		MyTextBanner (doubleres).png
 	--]]
 	Def.Sprite {
-		InitCommand=cmd(diffusealpha,1;x,WideScale(-150,-330);y,50);
+		InitCommand=cmd(diffusealpha,1;x,WideScale(-150,-310);y,50);
 		CurrentSongChangedMessageCommand=function(self)
  			self:finishtweening():smooth(0.1):diffusealpha(0):sleep(0.1)
  		self:queuecommand("BeginProcess")
