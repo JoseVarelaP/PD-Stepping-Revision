@@ -52,6 +52,8 @@ t[#t+1] = LoadActor( THEME:GetPathG("","SelectMusic/TotalToComplete") )..{
 	OnCommand=cmd(diffusealpha,0;addx,-10;decelerate,0.2;diffusealpha,1;addx,10);
 };
 
+t[#t+1] = LoadActor("../Borders.lua");
+
 t[#t+1] = LoadFont("Common Normal")..{
 	Text=Screen.String("HeaderText");
 	InitCommand=cmd(vertalign,top;horizalign,left;xy,30,6;zoom,0.8);
@@ -85,8 +87,6 @@ t[#t+1] = LoadFont("Common Normal")..{
 	self:accelerate(0.2):diffusealpha(1):settext( "Stuck? Press the &SELECT; button for a button guide." )
 	end,
 };
-
-t[#t+1] = LoadActor("../Borders.lua");
 
 t[#t+1] = Def.Quad{
 	OnCommand=cmd(FullScreen;diffuse,Color.Black;diffusealpha,0);
