@@ -145,7 +145,7 @@ local t = Def.ActorFrame {};
 			};
 	
 			LoadFont("proto sans/20px") ..{
-			OnCommand=cmd(x,500;y,-30;zoom,0.8;horizalign,right;shadowlength,1;strokecolor,Color.Blue);
+			OnCommand=cmd(x,500;y,-30;zoom,0.8;horizalign,right;shadowlength,1;diffuse,Color.Blue;strokecolor,Color.White);
 			SetMessageCommand=function(self,params)
 			self:settext( THEME:GetString("ScreenSelectMusic","NoGenre") )
 			local song = params.Song;
