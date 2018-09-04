@@ -13,6 +13,9 @@
 
 local t = Def.ActorFrame{
 	InitCommand=cmd(Center;fov,90;rotationy,180;z,WideScale(300,400);addy,10);
+	OnCommand=function(self)
+	Camera = self;
+	end,
 };
 
 t[#t+1] = Def.Quad{
@@ -324,35 +327,10 @@ local function ResetCamera(self)
 end
 
 -- The cameras
--- You can add more by adding another camera MessageCommand.
--- Feel free to also PR additions!
-t.InitialTweenMessageCommand=function(self)
-	self:addz(-40):decelerate(3):addz(40)
-end
-t.Camera1MessageCommand=function(self)
-	ResetCamera(self)
-	self:rotationx(30):spin()
-	:effectmagnitude(0,10,0)
-	if ThemePrefs.Get("CurrentStageLocation") ~= "Japonica" then
-		self:z(WideScale(200,300))
-	end
-end
-t.Camera2MessageCommand=function(self)
-	ResetCamera(self)
-	self:rotationy(45):rotationx(20):rotationz(-30)
-end
-t.Camera3MessageCommand=function(self)
-	ResetCamera(self)
-	self:rotationy(140):rotationz(10):rotationx(-10)
-end
-t.Camera4MessageCommand=function(self)
-	ResetCamera(self)
-	self:rotationy(210):rotationx(25)
-end
-t.Camera5MessageCommand=function(self)
-	ResetCamera(self)
-	self:rotationx(70)
-	:z(WideScale(190,290))
+if FILEMAN:DoesFileExist(DIVA:CallCurrentStage().."/Cameras.lua") then
+	t[#t+1] = LoadActor( "../../../"..DIVA:CallCurrentStage().."/Cameras.lua" )
+else
+	t[#t+1] = LoadActor( "../Locations/Default_Camera.lua" )
 end
 
 return t;
