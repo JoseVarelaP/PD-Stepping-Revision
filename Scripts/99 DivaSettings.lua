@@ -148,7 +148,6 @@ DSet = {
 		LineNames = function()
 			Result = ""
 
-			Result = Result .. "DediModelBPM,"
 			Result = Result .. "DediSongData,"
 			Result = Result .. "DediMeasureCamera,"
 

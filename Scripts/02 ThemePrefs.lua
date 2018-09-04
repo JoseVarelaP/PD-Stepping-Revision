@@ -159,12 +159,6 @@ Prefs =
 	},
 
 	-- Dedicated character settings
-	DediModelBPM =
-	{
-		Default = false,
-		Choices = { OptionNameString("Off"), OptionNameString("On") },
-		Values = { false,true },
-	},
 	DediSongData =
 	{
 		Default = false,

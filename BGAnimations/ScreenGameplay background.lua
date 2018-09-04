@@ -121,24 +121,6 @@ local DebugMessages = {
 			end
 		end
 	end,
-	TempoCheck = function()
-		if DebugMode and MassiveLog then
-			if ThemePrefs.Get("DediModelBPM") then
-				print(
-				"CharacterDisplay: Current Beat: "..GAMESTATE:GetSongBeat() ..
-				" - New Model Rate: ".. 0.5*GAMESTATE:GetSongBPS() ..
-				" - Current BPS: ".. GAMESTATE:GetSongBPS()
-				)
-			else
-				print(
-				"CharacterDisplay: Current Beat: "..GAMESTATE:GetSongBeat() ..
-				" - New Model Rate: ".. 0.5*GAMESTATE:GetSongBPS() ..
-				" - Current BPS: ".. GAMESTATE:GetSongBPS()
-				)
-				print( now.. " - ".. ModelBeat )
-			end
-		end
-	end,
 };
 
 -- timing manager
@@ -212,27 +194,25 @@ t[#t+1] = Def.ActorFrame{
 local function UpdateModelRate(self)
 	-- The real kicker, recreating SM's true tempo updater.
 	-- StepMania always kept a rate of 0.75 to 1.5, I wanted to break it a little bit more.
+	
+	-- In case the song is on a rate, then we can multiply it.
 	local so = GAMESTATE:GetSongOptionsObject("ModsLevel_Song")
 	local MusicRate = so:MusicRate()
+
 	local BPM = (GAMESTATE:GetSongBPS()*60)
 	
 	-- We're using scale to compare higher values with lower values.
 	local UpdateScale = scale( BPM, 60, 300, 0.75, 1.5 );
+
+	-- Then clamp it so it's on a max and a low ammount
 	local Clamped = clamp( UpdateScale, 0.5, 2.5 );
 
 	local ToConvert = Clamped*MusicRate
 
-	if ThemePrefs.Get("DediModelBPM") then
-		if now<=ModelBeat then
-			self:rate(0)
-			DebugMessages.TempoCheck()
-		else
-			self:rate(ToConvert)
-			DebugMessages.TempoCheck()
-		end
-	else
+	if not GAMESTATE:GetSongPosition():GetFreeze() then
 		self:rate(ToConvert)
-		DebugMessages.TempoCheck()
+	else
+		self:rate(0)
 	end
 	ModelBeat = GAMESTATE:GetSongBeat();
 end
@@ -290,7 +270,7 @@ if ThemePrefs.Get("DedicatedCharacterShow") then
 					UpdateRateCommand=function(self)
 					-- Check function to see how it works.
 					UpdateModelRate(self)
-					self:sleep(1/40)
+					self:sleep(Frm)
 					if now<start then
 						self:visible(false)
 					else
