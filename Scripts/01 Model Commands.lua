@@ -127,18 +127,25 @@ end
 
 -- Check to see if the model can actually change the time of day.
 function DIVA:IsModelAbleForDayCycle()
-	local file = RageFileUtil.CreateRageFile()
 	local Directory = ThemePrefs.Get("CurrentStageLocation")
-
 	local filetoload = THEME:GetCurrentThemeDirectory().."/Locations/"..Directory.."/ModelConfig.cfg"
-	if FILEMAN:DoesFileExist(filetoload) then
-		local content = Config.Load("AbleToChangeLight",filetoload)
-		if content == "true" then
-			return true
-		end
+	local content = Config.Load("AbleToChangeLight",filetoload)
+	if content == "true" then
+		return true
 	end
-	file:destroy()
 	return false
+end
+
+-- Check to see if the model contains any Size setting.
+function DIVA:ModelZoom()
+	local result = 1
+	local Directory = ThemePrefs.Get("CurrentStageLocation")
+	local filetoload = THEME:GetCurrentThemeDirectory().."/Locations/"..Directory.."/ModelConfig.cfg"
+	local content = Config.Load("ModelZoom",filetoload)
+	if content then
+		result = tonumber(content)
+	end
+	return result
 end
 
 -- Random Song Updater
