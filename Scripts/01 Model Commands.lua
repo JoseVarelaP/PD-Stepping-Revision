@@ -125,10 +125,13 @@ function DIVA:GetPathLocation(filepart1,filepart2)
 	return "/"..THEME:GetCurrentThemeDirectory().."/Locations/"..filepart1 .. filepart2
 end
 
+function DIVA:CallCurrentStage()
+	return THEME:GetCurrentThemeDirectory().."/Locations/"..ThemePrefs.Get("CurrentStageLocation")
+end
+
 -- Check to see if the model can actually change the time of day.
 function DIVA:IsModelAbleForDayCycle()
-	local Directory = ThemePrefs.Get("CurrentStageLocation")
-	local filetoload = THEME:GetCurrentThemeDirectory().."/Locations/"..Directory.."/ModelConfig.cfg"
+	local filetoload = DIVA:CallCurrentStage().."/ModelConfig.cfg";
 	local content = Config.Load("AbleToChangeLight",filetoload)
 	if content == "true" then
 		return true
@@ -136,9 +139,16 @@ function DIVA:IsModelAbleForDayCycle()
 	return false
 end
 
-function DIVA:CallCurrentStage()
-	return THEME:GetCurrentThemeDirectory().."/Locations/"..ThemePrefs.Get("CurrentStageLocation")
+function DIVA:LocationIsSafeToLoad()
+	if not FILEMAN:DoesFileExist(DIVA:CallCurrentStage().."/model.txt") then
+		lua.ReportScriptError(
+			string.format( THEME:GetString("Common","LocationLoadError"), ThemePrefs.Get("CurrentStageLocation"))
+			)
+		return false
+	end
+	return true
 end
+
 
 function DIVA:CheckStageConfigurationNumber(def,conf)
 	local result = def or 0

@@ -171,7 +171,7 @@ t[#t+1] = Def.ActorFrame{
 
 		--Load the Stage
 		Def.Model {
-			Condition=ThemePrefs.Get("CurrentStageLocation") ~= "None";
+			Condition=ThemePrefs.Get("CurrentStageLocation") ~= "None" and DIVA:LocationIsSafeToLoad();
 			Meshes=DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
 			Materials=Load_Appropiate_Material();
 			Bones=DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
