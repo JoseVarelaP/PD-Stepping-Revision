@@ -1,8 +1,8 @@
 local t = Def.ActorFrame{}
 
-t[#t+1] = LoadSongBackground()..{
-	OnCommand=cmd(diffusealpha,0.1);
-}
+-- t[#t+1] = LoadSongBackground()..{
+-- 	OnCommand=cmd(diffusealpha,0.1);
+-- }
 
 t[#t+1] = LoadActor( THEME:GetPathG("","BGElements/CircleInner") )..{
 	OnCommand=cmd(x,SCREEN_RIGHT;diffusealpha,0.3;spin;effectmagnitude,0,0,24;zoom,1.2);

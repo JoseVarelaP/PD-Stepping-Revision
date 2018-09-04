@@ -1,6 +1,6 @@
 local t = Def.ActorFrame{};
 
-local TileXAmm = 4
+local TileXAmm = 5
 
 local ColorsToUse = {
 	color("#FFFFFF"),
