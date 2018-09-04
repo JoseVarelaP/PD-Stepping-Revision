@@ -20,6 +20,12 @@ DIVA = {
 	NoSongsWarning = function()
 	lua.ReportScriptError( THEME:GetString("Common","SongLoaderNoSongs") )
 	end,
+
+	Locations_List = {
+		{"Japonica",true},
+		{"CyberWorld",false},
+		{"RoofTop",false},
+	};
 	
 	--[[
 		Here's the song table that will contain all the songs.
@@ -91,6 +97,18 @@ end
 -- Used to retrieve files from the 'Locations' folder.
 function DIVA:GetPathLocation(filepart1,filepart2)
 	return "/"..THEME:GetCurrentThemeDirectory().."/Locations/"..filepart1 .. filepart2
+end
+
+-- Check to see if the model can actually change the time of day.
+function DIVA:IsModelAbleForDayCycle()
+	for i=1,#DIVA["Locations_List"] do
+		if DIVA["Locations_List"][i][1] == ThemePrefs.Get("CurrentStageLocation") then
+			if DIVA["Locations_List"][i][2] == true then
+				return true
+			end
+		end
+	end
+	return false
 end
 
 -- Random Song Updater

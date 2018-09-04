@@ -31,6 +31,15 @@ local FuturaToLoad = (
 --Settings & Shortcuts
 local BeatsBeforeNextSegment = 8*ThemePrefs.Get("DediMeasureCamera")
 
+-- This will check if the current stage is able to change its lighting cycle.
+-- Not all locations can do this, so doing this will save space.
+local function Load_Appropiate_Material()
+	if DIVA:IsModelAbleForDayCycle() then
+		return DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/"..FuturaToLoad.."_material.txt");
+	end
+	return DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/main_material.txt");
+end
+
 -- Set the time to wait
 local Frm = 1/60
 
@@ -164,7 +173,7 @@ t[#t+1] = Def.ActorFrame{
 		Def.Model {
 			Condition=ThemePrefs.Get("CurrentStageLocation") ~= "None";
 			Meshes=DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
-			Materials=DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/"..FuturaToLoad.."_material.txt");
+			Materials=Load_Appropiate_Material();
 			Bones=DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
 			OnCommand=function(self)
 				self:cullmode("CullMode_None")
