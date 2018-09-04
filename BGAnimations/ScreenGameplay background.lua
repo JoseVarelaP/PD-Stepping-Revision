@@ -43,10 +43,10 @@ local Frm = 1/60
 	Just ensure this is on.
 	ShowLogOutput=1
 ]]
-local DebugMode = true 
+local DebugMode = false
 
 -- In case you want frame-by-frame info on specific stuff.
-local MassiveLog = true 
+local MassiveLog = false
 local function CameraRandom()
 	return math.random(1,5)
 end
