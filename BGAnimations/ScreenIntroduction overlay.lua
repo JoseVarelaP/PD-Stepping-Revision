@@ -35,8 +35,8 @@ t.OnCommand=function(self)
 		theme again, while already loaded, so the script loads with the
 		now available data.
 	]]
-	if not AlreadyReloaded then
-		AlreadyReloaded = true
+	if not DIVA_AlreadyReloaded then
+		DIVA_AlreadyReloaded = true
 		for i=1,#ThemeNamesToLoad do
 			if THEME:DoesThemeExist(ThemeNamesToLoad[i]) then
 				THEME:SetTheme(ThemeNamesToLoad[i])

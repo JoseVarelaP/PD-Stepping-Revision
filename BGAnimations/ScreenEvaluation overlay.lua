@@ -1,12 +1,8 @@
 local GradeP1 = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1):GetGrade()
 local GradeP2 = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2):GetGrade()
 
-local function failed(g)
-	if g == "Grade_Failed" then
-		return true;
-	else
-		return false;
-	end
+local function failed(pn, g)
+	return g == "Grade_Failed"
 end
 
 local Stats_FrameState = 0
@@ -45,14 +41,13 @@ t[#t+1] = Def.Sprite {
 	BeginCommand=cmd(queuecommand,"UpdateBackground");
 	UpdateBackgroundCommand=function(self)
 	self:finishtweening()
+	self:visible(false)
  	if GAMESTATE:GetCurrentSong() and GAMESTATE:GetCurrentSong():GetBackgroundPath() then
 		self:finishtweening()
  		self:visible(true)
  		self:LoadBackground(GAMESTATE:GetCurrentSong():GetBackgroundPath())
 		self:setsize(450/2,400/2)
 		:rotationz(-10):x(SCREEN_LEFT+80):decelerate(0.3):x(SCREEN_LEFT+100):rotationz(-5):diffusealpha(1)
- 	else
- 		self:visible(false)
  	end
 	end,
 	OnCommand=function(self)
