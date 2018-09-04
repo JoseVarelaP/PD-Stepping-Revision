@@ -12,7 +12,6 @@ t[#t+1] = Def.ActorFrame{
 	};
 };
 
-
 local ThemeNamesToLoad = {
 	"PD-Stepping-Revision",
 	"PD-Stepping-Revision-master",
@@ -22,7 +21,6 @@ t.OnCommand=function(self)
 	-- get everything
 	local Jose = self:GetChild("Jose");
 	local Logo = self:GetChild("Logo");
-	local BGLines = self:GetChild("BGLines");
 	local BGQuad = self:GetChild("BGQuad");
 
 	-- Reload the theme!
