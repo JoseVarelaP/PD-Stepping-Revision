@@ -76,12 +76,22 @@ local MassiveLog = false
 
 local NumCam = DIVA:CheckStageConfigurationNumber(5,"NumCameras")
 local StageHasCamera = FILEMAN:DoesFileExist(DIVA:CallCurrentStage().."/Cameras.lua")
+CurrentStageCamera = 0
 
 local function CameraRandom()
 	if NumCam and StageHasCamera then
-		return ( NumCam > 1 and math.random(1, NumCam ) ) or NumCam
+		if DIVA:IsStageCameraTweenSequential() then
+			CurrentStageCamera = CurrentStageCamera + 1
+			if CurrentStageCamera > NumCam then
+				CurrentStageCamera = 1
+			end
+			return CurrentStageCamera
+		else
+			return ( NumCam > 1 and math.random(1, NumCam ) ) or NumCam
+		end
+	else
+		return math.random(1,5)
 	end
-	return math.random(1,5)
 end
 
 -- Messages to trace when Debug Mode is on.
@@ -196,8 +206,7 @@ local function UpdateModelRate(self)
 	-- StepMania always kept a rate of 0.75 to 1.5, I wanted to break it a little bit more.
 	
 	-- In case the song is on a rate, then we can multiply it.
-	local so = GAMESTATE:GetSongOptionsObject("ModsLevel_Song")
-	local MusicRate = so:MusicRate()
+	local MusicRate = GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
 
 	local BPM = (GAMESTATE:GetSongBPS()*60)
 	

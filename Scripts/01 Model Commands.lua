@@ -139,6 +139,15 @@ function DIVA:IsModelAbleForDayCycle()
 	return false
 end
 
+function DIVA:IsStageCameraTweenSequential()
+	local filetoload = DIVA:CallCurrentStage().."/ModelConfig.cfg";
+	local content = Config.Load("IsCameraTweenSequential",filetoload)
+	if content == "true" then
+		return true
+	end
+	return false
+end
+
 function DIVA:LocationIsSafeToLoad()
 	if not FILEMAN:DoesFileExist(DIVA:CallCurrentStage().."/model.txt") then
 		lua.ReportScriptError(
@@ -233,6 +242,8 @@ end
 -- Camera utilities
 CAMERA = {}
 -- some utilities
+-- This will reset the camera in case it is needed.
+-- It is quite recommended that this is applied on the start of every Camera MessageCommand.
 function CAMERA:ResetCamera()
 	Camera:rotationy(180):rotationx(0):rotationz(0)
 	:z(WideScale(300,400))
