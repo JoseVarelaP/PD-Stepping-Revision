@@ -177,7 +177,9 @@ t[#t+1] = Def.ActorFrame{
 			Bones=DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
 			OnCommand=function(self)
 				self:cullmode("CullMode_None")
-				self:zoom( DIVA:ModelZoom() )
+				self:zoom( DIVA:CheckStageConfigurationNumber(1,"StageZoom") )
+				self:addy( DIVA:CheckStageConfigurationNumber(0,"StageYOffset") )
+				self:addx( DIVA:CheckStageConfigurationNumber(0,"StageXOffset") )
 			end,
 		};
 

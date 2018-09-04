@@ -136,15 +136,15 @@ function DIVA:IsModelAbleForDayCycle()
 	return false
 end
 
--- Check to see if the model contains any Size setting.
-function DIVA:ModelZoom()
-	local result = 1
-	local Directory = ThemePrefs.Get("CurrentStageLocation")
-	local filetoload = THEME:GetCurrentThemeDirectory().."/Locations/"..Directory.."/ModelConfig.cfg"
-	local content = Config.Load("ModelZoom",filetoload)
-	if content then
-		result = tonumber(content)
-	end
+function DIVA:CallCurrentStage()
+	return THEME:GetCurrentThemeDirectory().."/Locations/"..ThemePrefs.Get("CurrentStageLocation")
+end
+
+function DIVA:CheckStageConfigurationNumber(def,conf)
+	local result = def or 0
+	local filetoload = DIVA:CallCurrentStage().."/ModelConfig.cfg";
+	local content = Config.Load(conf,filetoload)
+	if content then result = tonumber(content) end
 	return result
 end
 
