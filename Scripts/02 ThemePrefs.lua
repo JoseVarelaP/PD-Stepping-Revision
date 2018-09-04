@@ -103,9 +103,9 @@ function LOADER:LoadStageNames()
 	local Directory = FILEMAN:GetDirListing( THEME:GetCurrentThemeDirectory().."/Locations/", true, false )
 
 	for i=1,#Directory do
-		local filetoload = THEME:GetCurrentThemeDirectory().."/Locations/"..Directory[i].."/LocationName.nam"
+		local filetoload = THEME:GetCurrentThemeDirectory().."/Locations/"..Directory[i].."/LocationName.cfg"
 		if FILEMAN:DoesFileExist(filetoload) then
-			file:Open(THEME:GetCurrentThemeDirectory().."/Locations/"..Directory[i].."/LocationName.nam", 1)
+			file:Open(THEME:GetCurrentThemeDirectory().."/Locations/"..Directory[i].."/LocationName.cfg", 1)
 			local content = file:Read()
 			table.insert(ResultTable, content)
 			file:Close()
