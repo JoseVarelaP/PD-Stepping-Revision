@@ -89,6 +89,33 @@ function MusicFolder_AddChoices(n)
 	end
 end
 
+LOADER = {}
+
+function LOADER:LoadStages()
+	local TableToReturn = FILEMAN:GetDirListing( THEME:GetCurrentThemeDirectory().."/Locations/", true, false )
+
+	return TableToReturn
+end
+
+function LOADER:LoadStageNames()
+	local ResultTable = {}
+	local file = RageFileUtil.CreateRageFile()
+	local Directory = FILEMAN:GetDirListing( THEME:GetCurrentThemeDirectory().."/Locations/", true, false )
+
+	for i=1,#Directory do
+		local filetoload = THEME:GetCurrentThemeDirectory().."/Locations/"..Directory[i].."/LocationName.nam"
+		if FILEMAN:DoesFileExist(filetoload) then
+			file:Open(THEME:GetCurrentThemeDirectory().."/Locations/"..Directory[i].."/LocationName.nam", 1)
+			local content = file:Read()
+			table.insert(ResultTable, content)
+			file:Close()
+		end
+	end
+	file:destroy()
+
+	return ResultTable
+end
+
 -- Now let's start adding the options
 Prefs =
 {
@@ -116,8 +143,8 @@ Prefs =
 	CurrentStageLocation =
 	{
 		Default = "None",
-		Choices = { OptionNameString("None"), "Rooftop", "Japonica (+P)", "Cyber World" },
-		Values = { "None", "Rooftop", "Japonica", "CyberWorld" },
+		Choices = LOADER:LoadStageNames(),
+		Values = LOADER:LoadStages(),
 	},
 
 	DedicatedCharacterShow =

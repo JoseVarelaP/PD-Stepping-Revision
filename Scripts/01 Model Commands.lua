@@ -1,4 +1,29 @@
 -- Main Stepping Revision functions
+
+-- Configuration board by Jousway
+Config = {};
+
+-- We don't need the write, just load
+function Config.Load(key,file)
+	if not FILEMAN:DoesFileExist(file) then return false end
+	
+	local Container = {}
+
+	local configfile = RageFileUtil.CreateRageFile()
+	configfile:Open(file, 1)
+	
+	local configcontent = configfile:Read()
+	
+	configfile:Close()
+	configfile:destroy()
+	
+	for line in string.gmatch(configcontent.."\n", "(.-)\n") do
+		for KeyVal, Val in string.gmatch(line, "(.-)=(.+)") do
+			if key == KeyVal then return Val end
+		end		
+	end
+end
+
 ------------------------------------------------
 DIVA = {
 	------------------------------------------------
@@ -25,6 +50,7 @@ DIVA = {
 		{"Japonica",true},
 		{"CyberWorld",false},
 		{"RoofTop",false},
+		{"Penthouse",true},
 	};
 	
 	--[[
@@ -101,13 +127,17 @@ end
 
 -- Check to see if the model can actually change the time of day.
 function DIVA:IsModelAbleForDayCycle()
-	for i=1,#DIVA["Locations_List"] do
-		if DIVA["Locations_List"][i][1] == ThemePrefs.Get("CurrentStageLocation") then
-			if DIVA["Locations_List"][i][2] == true then
-				return true
-			end
+	local file = RageFileUtil.CreateRageFile()
+	local Directory = ThemePrefs.Get("CurrentStageLocation")
+
+	local filetoload = THEME:GetCurrentThemeDirectory().."/Locations/"..Directory.."/ModelConfig.cfg"
+	if FILEMAN:DoesFileExist(filetoload) then
+		local content = Config.Load("AbleToChangeLight",filetoload)
+		if content == "true" then
+			return true
 		end
 	end
+	file:destroy()
 	return false
 end
 

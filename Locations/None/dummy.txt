@@ -1,0 +1,3 @@
+Hello! This is a dummy file!
+This is just to indicate the loader to NOT use this folder as a Stage.
+For you see, None is indicated as the only stage to not load, at all.
