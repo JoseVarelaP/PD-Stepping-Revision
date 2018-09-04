@@ -104,7 +104,7 @@ DSet = {
 		
 			Result = Result .. "CurrentStageLocation,"
 			
-			if ThemePrefs.Get("CurrentStageLocation") and ThemePrefs.Get("CurrentStageLocation") ~= "None" then
+			if ThemePrefs.Get("CurrentStageLocation") and ThemePrefs.Get("CurrentStageLocation") ~= "None" and DIVA:IsModelAbleForDayCycle() then
 				Result = Result .. "CurrentStageLighting,"
 			end
 
