@@ -233,8 +233,8 @@ end
 -- Camera utilities
 CAMERA = {}
 -- some utilities
-function CAMERA:ResetCamera(self)
-	self:rotationy(180):rotationx(0):rotationz(0)
+function CAMERA:ResetCamera()
+	Camera:rotationy(180):rotationx(0):rotationz(0)
 	:z(WideScale(300,400))
 	:stopeffect()
 
