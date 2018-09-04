@@ -59,8 +59,18 @@ local DebugMode = false
 
 -- In case you want frame-by-frame info on specific stuff.
 local MassiveLog = false
+
+local NumCam = DIVA:CheckStageConfigurationNumber(5,"NumCameras")
 local function CameraRandom()
-	return math.random(1,5)
+	if NumCam then
+		if NumCam > 1 then
+			return math.random(1, NumCam )
+		else
+			return NumCam
+		end
+	else
+		return math.random(1,5)
+	end
 end
 
 -- Messages to trace when Debug Mode is on.
