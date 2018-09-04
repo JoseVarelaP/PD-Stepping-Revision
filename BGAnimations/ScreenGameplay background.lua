@@ -210,16 +210,28 @@ t[#t+1] = Def.ActorFrame{
 };
 
 local function UpdateModelRate(self)
+	-- The real kicker, recreating SM's true tempo updater.
+	-- StepMania always kept a rate of 0.75 to 1.5, I wanted to break it a little bit more.
+	local so = GAMESTATE:GetSongOptionsObject("ModsLevel_Song")
+	local MusicRate = so:MusicRate()
+	local BPM = (GAMESTATE:GetSongBPS()*60)
+	
+	-- We're using scale to compare higher values with lower values.
+	local UpdateScale = scale( fBPM, 60, 300, 0.75, 1.5 );
+	local Clamped = clamp( UpdateScale, 0.5, 2.5 );
+
+	local ToConvert = Clamped*MusicRate
+
 	if ThemePrefs.Get("DediModelBPM") then
 		if now<=ModelBeat then
 			self:rate(0)
 			DebugMessages.TempoCheck()
 		else
-			self:rate(0.5*GAMESTATE:GetSongBPS())
+			self:rate(ToConvert)
 			DebugMessages.TempoCheck()
 		end
 	else
-		self:rate(0.5*GAMESTATE:GetSongBPS())
+		self:rate(ToConvert)
 		DebugMessages.TempoCheck()
 	end
 	ModelBeat = GAMESTATE:GetSongBeat();
