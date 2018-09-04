@@ -60,14 +60,14 @@ local function LoadImageForTile(self)
  		if (Sprite.LoadFromCached ~= nil) then
     		self:LoadFromCached("Jacket", GAMESTATE:GetCurrentSong():GetJacketPath())
 		else
-    		self:load(GAMESTATE:GetCurrentSong():GetJacketPath())
+    		self:Load(GAMESTATE:GetCurrentSong():GetJacketPath())
 		end
  		self:setsize(400/2,400/2)
  	elseif GAMESTATE:GetCurrentSong():GetBackgroundPath() then
  		if (Sprite.LoadFromCached ~= nil) then
     		self:LoadFromCached("Background", GAMESTATE:GetCurrentSong():GetBackgroundPath())
 		else
-    		self:load(GAMESTATE:GetCurrentSong():GetBackgroundPath())
+    		self:Load(GAMESTATE:GetCurrentSong():GetBackgroundPath())
 		end
  		self:setsize(450/2,450/2)
  	else
