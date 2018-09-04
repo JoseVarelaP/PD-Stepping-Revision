@@ -28,7 +28,6 @@ local FuturaToLoad = (
 			((Hour() < 6 or Hour() > 19) and "Night" or "Day")
 		) or ThemePrefs.Get("CurrentStageLighting")
 
-
 --Settings & Shortcuts
 local BeatsBeforeNextSegment = 8*ThemePrefs.Get("DediMeasureCamera")
 
@@ -44,10 +43,10 @@ local Frm = 1/60
 	Just ensure this is on.
 	ShowLogOutput=1
 ]]
-local DebugMode = false
+local DebugMode = true 
 
 -- In case you want frame-by-frame info on specific stuff.
-local MassiveLog = false
+local MassiveLog = true 
 local function CameraRandom()
 	return math.random(1,5)
 end
@@ -160,7 +159,6 @@ t[#t+1] = Def.ActorFrame{
 	Condition=ThemePrefs.Get("DedicatedCharacterShow") and (DIVA:HasAnyCharacters(PLAYER_1) or DIVA:HasAnyCharacters(PLAYER_2));
 	InitCommand=cmd(queuecommand,"BeginCamera");
 	BeginCameraCommand=cmd();
-
 
 		--Load the Stage
 		Def.Model {
