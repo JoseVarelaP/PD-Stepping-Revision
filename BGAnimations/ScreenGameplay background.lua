@@ -61,16 +61,13 @@ local DebugMode = false
 local MassiveLog = false
 
 local NumCam = DIVA:CheckStageConfigurationNumber(5,"NumCameras")
+local StageHasCamera = FILEMAN:DoesFileExist(DIVA:CallCurrentStage().."/Cameras.lua")
+
 local function CameraRandom()
-	if NumCam then
-		if NumCam > 1 then
-			return math.random(1, NumCam )
-		else
-			return NumCam
-		end
-	else
-		return math.random(1,5)
+	if NumCam and StageHasCamera then
+		return ( NumCam > 1 and math.random(1, NumCam ) ) or NumCam
 	end
+	return math.random(1,5)
 end
 
 -- Messages to trace when Debug Mode is on.
@@ -337,10 +334,12 @@ local function ResetCamera(self)
 end
 
 -- The cameras
-if FILEMAN:DoesFileExist(DIVA:CallCurrentStage().."/Cameras.lua") then
+if StageHasCamera then
 	t[#t+1] = LoadActor( "../../../"..DIVA:CallCurrentStage().."/Cameras.lua" )
+	print( "Loaded custom Camera!" )
 else
 	t[#t+1] = LoadActor( "../Locations/Default_Camera.lua" )
+	print( "Loaded Default Camera!" )
 end
 
 return t;
