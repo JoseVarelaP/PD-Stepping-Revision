@@ -340,13 +340,6 @@ t[#t+1] = Def.ActorFrame{
 	FadeAwayCommand=cmd(accelerate,0.2;diffusealpha,0);
 };
 
--- some utilities
-local function ResetCamera(self)
-	self:rotationy(180):rotationx(0):rotationz(0)
-	:z(WideScale(300,400))
-	:stopeffect()
-end
-
 -- The cameras
 if StageHasCamera then
 	t[#t+1] = LoadActor( "../../../"..DIVA:CallCurrentStage().."/Cameras.lua" )

@@ -229,3 +229,14 @@ end
 function DIVA:BothPlayersEnabled()
 	return GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsPlayerEnabled(PLAYER_2)
 end
+
+-- Camera utilities
+CAMERA = {}
+-- some utilities
+function CAMERA:ResetCamera(self)
+	self:rotationy(180):rotationx(0):rotationz(0)
+	:z(WideScale(300,400))
+	:stopeffect()
+
+	return self
+end
