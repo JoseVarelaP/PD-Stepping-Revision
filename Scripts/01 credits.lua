@@ -1,28 +1,5 @@
 PDSRPInfo = {
 	Version = "0.5.1-a",
-	Author = "Jose_Varela",
-	Graphics = {
-		"Jose_Varela",
-		"Akira Sora",
-	},
-	SpecialT ={
-		"UKSRT Discord",
-		"StepMania Online Discord",
-		"Jared Gaming Discord",
-		"Tesseract (Suggestions)",
-		"KcHecKa (Suggestions)",
-		"ElliotBG (Feedback)",
-		"Moru Zenhiro (Feedback)",
-		"StepMania Themming Community",
-	},
-	Modelling = {
-		"Jose_Varela",
-	},
-
-	OriginalWork = {
-		"SEGA",
-		"Crypton Future Media, Inc.",
-	},
 }
 
 function GenerateHeader(texttomake)
