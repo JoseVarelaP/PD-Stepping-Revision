@@ -129,22 +129,11 @@ function DIVA:CallCurrentStage()
 	return THEME:GetCurrentThemeDirectory().."/Locations/"..ThemePrefs.Get("CurrentStageLocation")
 end
 
--- Check to see if the model can actually change the time of day.
-function DIVA:IsModelAbleForDayCycle()
+-- For all kinds of settings that are boolean based
+function DIVA:CheckBooleanOnLocationSetting(setting)
 	local filetoload = DIVA:CallCurrentStage().."/ModelConfig.cfg";
-	local content = Config.Load("AbleToChangeLight",filetoload)
-	if content == "true" then
-		return true
-	end
-	return false
-end
-
-function DIVA:IsStageCameraTweenSequential()
-	local filetoload = DIVA:CallCurrentStage().."/ModelConfig.cfg";
-	local content = Config.Load("IsCameraTweenSequential",filetoload)
-	if content == "true" then
-		return true
-	end
+	local content = Config.Load(setting,filetoload)
+	if content == "true" then return true end
 	return false
 end
 

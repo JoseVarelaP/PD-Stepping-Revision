@@ -51,7 +51,7 @@ local BeatsBeforeNextSegment = 8*ThemePrefs.Get("DediMeasureCamera")
 -- This will check if the current stage is able to change its lighting cycle.
 -- Not all locations can do this, so doing this will save space.
 local function Load_Appropiate_Material()
-	if DIVA:IsModelAbleForDayCycle() then
+	if DIVA:CheckBooleanOnLocationSetting("AbleToChangeLight") then
 		return DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/"..FuturaToLoad.."_material.txt");
 	end
 	return DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/main_material.txt");
@@ -80,7 +80,7 @@ CurrentStageCamera = 0
 
 local function CameraRandom()
 	if NumCam and StageHasCamera then
-		if DIVA:IsStageCameraTweenSequential() then
+		if DIVA:CheckBooleanOnLocationSetting("IsCameraTweenSequential") then
 			CurrentStageCamera = CurrentStageCamera + 1
 			if CurrentStageCamera > NumCam then
 				CurrentStageCamera = 1
