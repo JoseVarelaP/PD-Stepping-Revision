@@ -336,10 +336,10 @@ end
 -- The cameras
 if StageHasCamera then
 	t[#t+1] = LoadActor( "../../../"..DIVA:CallCurrentStage().."/Cameras.lua" )
-	print( "Loaded custom Camera!" )
+	print( "CAMERA: Loaded custom Camera!" )
 else
 	t[#t+1] = LoadActor( "../Locations/Default_Camera.lua" )
-	print( "Loaded Default Camera!" )
+	print( "CAMERA: Loaded Default Camera!" )
 end
 
 return t;

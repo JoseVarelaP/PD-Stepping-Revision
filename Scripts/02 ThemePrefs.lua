@@ -107,7 +107,11 @@ function LOADER:LoadStageNames()
 		if FILEMAN:DoesFileExist(filetoload) then
 			file:Open(THEME:GetCurrentThemeDirectory().."/Locations/"..Directory[i].."/LocationName.cfg", 1)
 			local content = file:Read()
-			table.insert(ResultTable, content)
+			if content == "None" then
+				table.insert(ResultTable, OptionNameString("None"))
+			else
+				table.insert(ResultTable, content)
+			end
 			file:Close()
 		end
 	end

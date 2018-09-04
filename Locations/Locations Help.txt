@@ -1,0 +1,10 @@
+Information on Locations
+
+A more detail documentation of this system and how to support your stage, visit:
+https://github.com/JoseVarelaP/PD-Stepping-Revision/wiki/Locations
+
+Warnings:
+- Make sure the model.txt file for the stage is correctly named and formatted.
+- Ensure the materials are correctly set and named to the appropiate material name that is described on the wiki.
+- Don't add random symbols to the stage name and folder. StepMania cannot recognize all characters in the world.
+- If no Cameras.lua is provided for the Location, Default_Camera.lua is loaded. (PLEASE DO NOT DELETE THIS FILE.)
