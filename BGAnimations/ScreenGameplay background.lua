@@ -10,6 +10,16 @@
 	in StepMania are flipped, and set the Z position depending on Aspect Ratio because
 	the z field changes on the current Aspect Ratio, so correct that.
 ]]
+local background = Def.ActorFrame{};
+
+if ThemePrefs.Get("CurrentStageLocation") == "None" then
+background[#background+1] = Def.Sprite{
+	OnCommand=function(self)
+	self:LoadFromCurrentSongBackground(GAMESTATE:GetCurrentSong())
+	self:scale_or_crop_background()
+	end,
+};
+end
 
 local t = Def.ActorFrame{
 	InitCommand=cmd(Center;fov,90;rotationy,180;z,WideScale(300,400);addy,10);
@@ -18,10 +28,14 @@ local t = Def.ActorFrame{
 	end,
 };
 
-t[#t+1] = Def.Quad{
-	Condition=ThemePrefs.Get("DedicatedCharacterShow") and (ThemePrefs.Get("CurrentStageLocation") ~= "None" and (DIVA:HasAnyCharacters(PLAYER_1) or DIVA:HasAnyCharacters(PLAYER_2)));
-	OnCommand=cmd(zoomto,1000,1000;diffuse,Color.Black);
-};
+background[#background+1] = t;
+
+if ThemePrefs.Get("DedicatedCharacterShow") and (DIVA:HasAnyCharacters(PLAYER_1) or DIVA:HasAnyCharacters(PLAYER_2)) then
+	t[#t+1] = Def.Quad{
+		Condition=ThemePrefs.Get("DedicatedCharacterShow") and ThemePrefs.Get("CurrentStageLocation") ~= "None";
+		OnCommand=cmd(zoomto,1000,1000;diffuse,Color.Black);
+	};
+end
 
 -- This is to load the stage's time of day.
 -- It goes along the Current Stage Lighting setting found on the
@@ -342,4 +356,4 @@ else
 	print( "CAMERA: Loaded Default Camera!" )
 end
 
-return t;
+return background;
