@@ -217,7 +217,7 @@ local function UpdateModelRate(self)
 	local BPM = (GAMESTATE:GetSongBPS()*60)
 	
 	-- We're using scale to compare higher values with lower values.
-	local UpdateScale = scale( fBPM, 60, 300, 0.75, 1.5 );
+	local UpdateScale = scale( BPM, 60, 300, 0.75, 1.5 );
 	local Clamped = clamp( UpdateScale, 0.5, 2.5 );
 
 	local ToConvert = Clamped*MusicRate
