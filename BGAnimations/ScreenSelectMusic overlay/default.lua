@@ -21,6 +21,13 @@ t[#t+1] = LoadActor("SongPreviewer");
 -- Button Help
 t[#t+1] = LoadActor("ButtonHelp");
 
+-- Course display
+if GAMESTATE:IsCourseMode() then
+t[#t+1] = LoadActor( THEME:GetPathG("","Playlists/CourseDisplayList.lua") )..{
+	OnCommand=cmd(x,SCREEN_RIGHT-230;CenterY);
+};
+end
+
 -- Message for the new player that joined.
 for player in ivalues(PlayerNumber) do
 	t[#t+1] = LoadActor("PlayerJoin.lua", player);
@@ -92,5 +99,4 @@ t[#t+1] = Def.Quad{
 	OnCommand=cmd(FullScreen;diffuse,Color.Black;diffusealpha,0);
 	OffCommand=cmd(linear,0.2;diffusealpha,1);
 };
-
 return t;
