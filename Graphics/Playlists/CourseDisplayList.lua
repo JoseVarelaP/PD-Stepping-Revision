@@ -6,7 +6,7 @@ t[#t+1] = LoadActor("PlaylistInfoBG")..{
 
 t[#t+1] = Def.CourseContentsList {
 	MaxSongs = 8;
-    NumItemsToDraw = 8;
+    NumItemsToDraw = 80;
     OnCommand=cmd(y,-75);
 	ShowCommand=cmd(linear,0.3;zoomy,1);
 	HideCommand=cmd(linear,0.3;zoomy,0);
