@@ -140,6 +140,7 @@ local DebugMessages = {
 t[#t+1] = Def.Quad{
 	Condition=ThemePrefs.Get("DedicatedCharacterShow");
 	OnCommand=cmd(visible,false;queuemessage,"InitialTween";queuecommand,"WaitForStart");
+	CurrentSongChangedMessageCommand=cmd(queuecommand,"WaitForStart");
 	WaitForStartCommand=function(self)
 	-- set globals, we need these later.
 	song = GAMESTATE:GetCurrentSong();
@@ -278,7 +279,8 @@ if ThemePrefs.Get("DedicatedCharacterShow") then
 					self:queuecommand("UpdateRate")
 					end,
 					-- Update Model animation speed depending on song's BPM.
-					-- To match SM's way of animation speeds.
+					-- To match SM's way of animation speeds
+					CurrentSongChangedMessageCommand=cmd(finishtweening;queuecommand,"UpdateRate");
 					UpdateRateCommand=function(self)
 					-- Check function to see how it works.
 					self:rate( UpdateModelRate() )
