@@ -81,7 +81,6 @@ CurrentStageCamera = 0
 local function CameraRandom()
 	if NumCam and StageHasCamera then
 		if DIVA:CheckBooleanOnLocationSetting("IsCameraTweenSequential") then
-			CurrentStageCamera = CurrentStageCamera + 1
 			if CurrentStageCamera > NumCam then
 				CurrentStageCamera = 1
 			end
@@ -170,6 +169,7 @@ t[#t+1] = Def.Quad{
 			self:queuecommand("TrackTime")
 		else
 			self:queuemessage("Camera"..CameraRandom())
+			CurrentStageCamera = CurrentStageCamera + 1
 			NextSegment = now + BeatsBeforeNextSegment
 			DebugMessages.CameraLoaded()
 			self:queuecommand("TrackTime")
@@ -207,7 +207,6 @@ local function UpdateModelRate(self)
 	
 	-- In case the song is on a rate, then we can multiply it.
 	local MusicRate = GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
-
 	local BPM = (GAMESTATE:GetSongBPS()*60)
 	
 	-- We're using scale to compare higher values with lower values.
@@ -242,8 +241,7 @@ if ThemePrefs.Get("DedicatedCharacterShow") then
 					self:queuecommand("UpdateRate")
 					end,
 					CurrentSongChangedMessageCommand=function(self)
-					self:visible(true)
-					self:queuecommand("UpdateRate")
+					self:visible(true):queuecommand("UpdateRate")
 					end,
 					UpdateRateCommand=function(self)
 					-- Check function to see how it works.
@@ -349,5 +347,10 @@ else
 	t[#t+1] = LoadActor( "../Locations/Default_Camera.lua" )
 	print( "CAMERA: Loaded Default Camera!" )
 end
+
+t.CurrentSongChangedMessageCommand=function(self)
+self:finishtweening()
+MESSAGEMAN:Broadcast("InitialTween")
+end;
 
 return background;

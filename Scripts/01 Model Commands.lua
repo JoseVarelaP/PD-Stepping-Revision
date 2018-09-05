@@ -137,6 +137,15 @@ function DIVA:CheckBooleanOnLocationSetting(setting)
 	return false
 end
 
+-- For all kinds of settings that are number based
+function DIVA:CheckStageConfigurationNumber(def,conf)
+	local result = def or 0
+	local filetoload = DIVA:CallCurrentStage().."/ModelConfig.cfg";
+	local content = Config.Load(conf,filetoload)
+	if content then result = tonumber(content) end
+	return result
+end
+
 function DIVA:LocationIsSafeToLoad()
 	if not FILEMAN:DoesFileExist(DIVA:CallCurrentStage().."/model.txt") then
 		lua.ReportScriptError(
@@ -145,15 +154,6 @@ function DIVA:LocationIsSafeToLoad()
 		return false
 	end
 	return true
-end
-
-
-function DIVA:CheckStageConfigurationNumber(def,conf)
-	local result = def or 0
-	local filetoload = DIVA:CallCurrentStage().."/ModelConfig.cfg";
-	local content = Config.Load(conf,filetoload)
-	if content then result = tonumber(content) end
-	return result
 end
 
 -- Random Song Updater
