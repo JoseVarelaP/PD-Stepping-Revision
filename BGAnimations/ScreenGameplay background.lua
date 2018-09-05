@@ -33,6 +33,10 @@ background[#background+1] = Def.Sprite{
 	OnCommand=function(self)
 	self:LoadFromCurrentSongBackground(GAMESTATE:GetCurrentSong())
 	self:scale_or_crop_background()
+	end;
+	CurrentSongChangedMessageCommand=function(self)
+	self:LoadFromCurrentSongBackground(GAMESTATE:GetCurrentSong())
+	self:scale_or_crop_background()
 	end,
 };
 end
