@@ -105,7 +105,7 @@ DSet = {
 			if #LOADER:LoadStages() > 1 then
 				Result = Result .. "CurrentStageLocation,"
 				
-				if ThemePrefs.Get("CurrentStageLocation") and ThemePrefs.Get("CurrentStageLocation") ~= "None" and DIVA:IsModelAbleForDayCycle() then
+				if ThemePrefs.Get("CurrentStageLocation") and ThemePrefs.Get("CurrentStageLocation") ~= "None" and DIVA:CheckBooleanOnLocationSetting("AbleToChangeLight") then
 					Result = Result .. "CurrentStageLighting,"
 				end
 			end

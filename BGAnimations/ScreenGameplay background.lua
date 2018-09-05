@@ -12,6 +12,22 @@
 ]]
 local background = Def.ActorFrame{};
 
+--[[
+	Change this to true in case you want to see the timer
+	before the next animation on your Log Display. (Only windows)
+	If mac, it needs to be on a SystemMessage as the mac cannot display the Log Display.
+	Unless you run the game via the terminal.
+
+	Just ensure this is on.
+	ShowLogOutput=1
+]]
+local DebugMode = true
+
+-- In case you want frame-by-frame info on specific stuff.
+local MassiveLog = false
+
+-- In case location is disabled, but characters are still shown, display
+-- the song's background.
 if ThemePrefs.Get("CurrentStageLocation") == "None" then
 background[#background+1] = Def.Sprite{
 	OnCommand=function(self)
@@ -27,8 +43,6 @@ local t = Def.ActorFrame{
 	Camera = self;
 	end,
 };
-
-background[#background+1] = t;
 
 if ThemePrefs.Get("DedicatedCharacterShow") and (DIVA:HasAnyCharacters(PLAYER_1) or DIVA:HasAnyCharacters(PLAYER_2)) then
 	t[#t+1] = Def.Quad{
@@ -59,20 +73,6 @@ end
 
 -- Set the time to wait
 local Frm = 1/60
-
---[[
-	Change this to true in case you want to see the timer
-	before the next animation on your Log Display. (Only windows)
-	If mac, it needs to be on a SystemMessage as the mac cannot display the Log Display.
-	Unless you run the game via the terminal.
-
-	Just ensure this is on.
-	ShowLogOutput=1
-]]
-local DebugMode = false
-
--- In case you want frame-by-frame info on specific stuff.
-local MassiveLog = false
 
 local NumCam = DIVA:CheckStageConfigurationNumber(5,"NumCameras")
 local StageHasCamera = FILEMAN:DoesFileExist(DIVA:CallCurrentStage().."/Cameras.lua")
@@ -201,7 +201,7 @@ t[#t+1] = Def.ActorFrame{
 
 };
 
-local function UpdateModelRate(self)
+local function UpdateModelRate()
 	-- The real kicker, recreating SM's true tempo updater.
 	-- StepMania always kept a rate of 0.75 to 1.5, I wanted to break it a little bit more.
 	
@@ -218,9 +218,9 @@ local function UpdateModelRate(self)
 	local ToConvert = Clamped*MusicRate
 
 	if not GAMESTATE:GetSongPosition():GetFreeze() then
-		self:rate(ToConvert)
+		return ToConvert
 	else
-		self:rate(0)
+		return 0
 	end
 	ModelBeat = GAMESTATE:GetSongBeat();
 end
@@ -245,6 +245,7 @@ if ThemePrefs.Get("DedicatedCharacterShow") then
 					end,
 					UpdateRateCommand=function(self)
 					-- Check function to see how it works.
+					self:rate( UpdateModelRate() )
 					UpdateModelRate(self)
 					self:sleep(Frm)
 					if now<start then
@@ -276,7 +277,7 @@ if ThemePrefs.Get("DedicatedCharacterShow") then
 					-- To match SM's way of animation speeds.
 					UpdateRateCommand=function(self)
 					-- Check function to see how it works.
-					UpdateModelRate(self)
+					self:rate( UpdateModelRate() )
 					self:sleep(Frm)
 					if now<start then
 						self:visible(false)
@@ -352,5 +353,7 @@ t.CurrentSongChangedMessageCommand=function(self)
 self:finishtweening()
 MESSAGEMAN:Broadcast("InitialTween")
 end;
+
+background[#background+1] = t;
 
 return background;
