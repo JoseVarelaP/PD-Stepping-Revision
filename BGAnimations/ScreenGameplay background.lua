@@ -171,7 +171,6 @@ t[#t+1] = Def.Quad{
 	now = GAMESTATE:GetSongBeat();
 
 	self:sleep(Frm)
-	SCREENMAN:SystemMessage( now .." - "..start.." - "..NextSegment )
 	if (DIVA:HasAnyCharacters(PLAYER_1) or DIVA:HasAnyCharacters(PLAYER_2)) then
 		if now < NextSegment then
 			DebugMessages.TimeBeforeNextCamera()
