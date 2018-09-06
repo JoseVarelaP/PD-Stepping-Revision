@@ -141,6 +141,7 @@ local DebugMessages = {
 t[#t+1] = Def.Quad{
 	Condition=ThemePrefs.Get("DedicatedCharacterShow");
 	OnCommand=cmd(visible,false;queuemessage,"InitialTween";queuecommand,"WaitForStart");
+	CurrentSongChangedMessageCommand=cmd(queuecommand,"WaitForStart");
 	WaitForStartCommand=function(self)
 	-- set globals, we need these later.
 	song = GAMESTATE:GetCurrentSong();
@@ -170,6 +171,7 @@ t[#t+1] = Def.Quad{
 	now = GAMESTATE:GetSongBeat();
 
 	self:sleep(Frm)
+	SCREENMAN:SystemMessage( now .." - "..start.." - "..NextSegment )
 	if (DIVA:HasAnyCharacters(PLAYER_1) or DIVA:HasAnyCharacters(PLAYER_2)) then
 		if now < NextSegment then
 			DebugMessages.TimeBeforeNextCamera()
