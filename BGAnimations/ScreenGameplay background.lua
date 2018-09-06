@@ -280,7 +280,9 @@ if ThemePrefs.Get("DedicatedCharacterShow") then
 					end,
 					-- Update Model animation speed depending on song's BPM.
 					-- To match SM's way of animation speeds
-					CurrentSongChangedMessageCommand=cmd(finishtweening;queuecommand,"UpdateRate");
+					CurrentSongChangedMessageCommand=function(self)
+					self:visible(false):queuecommand("UpdateRate")
+					end,
 					UpdateRateCommand=function(self)
 					-- Check function to see how it works.
 					self:rate( UpdateModelRate() )
