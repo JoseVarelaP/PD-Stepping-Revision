@@ -18,9 +18,6 @@ local t = Def.ActorFrame{
 -- Enter on a song.
 t[#t+1] = LoadActor("SongPreviewer");
 
--- Button Help
-t[#t+1] = LoadActor("ButtonHelp");
-
 -- Course display
 if GAMESTATE:IsCourseMode() then
 t[#t+1] = LoadActor( THEME:GetPathG("","Playlists/CourseDisplayList.lua") )..{
@@ -58,6 +55,9 @@ t[#t+1] = LoadActor( THEME:GetPathG("","SelectMusic/TotalToComplete") )..{
 	InitCommand=cmd(vertalign,bottom;horizalign,left;xy,SCREEN_LEFT+10,SCREEN_BOTTOM-70;zoom,0.7;);	
 	OnCommand=cmd(diffusealpha,0;addx,-10;decelerate,0.2;diffusealpha,1;addx,10);
 };
+
+-- Button Help
+t[#t+1] = LoadActor("ButtonHelp");
 
 t[#t+1] = LoadActor("../Borders.lua");
 

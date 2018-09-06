@@ -29,7 +29,7 @@ t[#t+1] = Def.CourseContentsList {
 			SetSongCommand=function(self, params)
 				if params.PlayerNumber ~= GAMESTATE:GetMasterPlayerNumber() then return end
 				self:settext( params.Meter );
-				(cmd(finishtweening;diffusealpha,0;sleep,0.125*params.Number;linear,0.125;diffusealpha,0.4))(self);
+				(cmd(finishtweening;diffusealpha,0;sleep,0.130*params.Number;decelerate,0.130;diffusealpha,0.4))(self);
 			end;
 		};
 
@@ -39,7 +39,7 @@ t[#t+1] = Def.CourseContentsList {
 			SetSongCommand=function(self, params)
 				if params.PlayerNumber ~= GAMESTATE:GetMasterPlayerNumber() then return end
 				self:settext( params.Meter );
-				(cmd(finishtweening;diffusealpha,0;sleep,0.125*params.Number;linear,0.125;diffusealpha,0.4))(self);
+				(cmd(finishtweening;diffusealpha,0;sleep,0.130*params.Number;decelerate,0.130;diffusealpha,0.4))(self);
 			end;
 		};
 
@@ -51,7 +51,7 @@ t[#t+1] = Def.CourseContentsList {
 				else
 					self:SetFromString( "??????????", "??????????", "", "", "", "" );
 				end
-				(cmd(finishtweening;x,20;diffusealpha,0;sleep,0.125*params.Number;linear,0.125;x,0;diffusealpha,0.4))(self);
+				(cmd(finishtweening;x,20;diffusealpha,0;sleep,0.130*params.Number;decelerate,0.130;x,0;diffusealpha,0.4))(self);
 			end;
 		};
 	};

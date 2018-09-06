@@ -15,7 +15,7 @@ local text= {
 local t = Def.ActorFrame{};
 
 t[#t+1] = Def.ActorFrame{
-	LoadActor( THEME:GetPathG("","WideInterpreter"), { File="Global/TextBox", Width=SCREEN_WIDTH/1.1, Height=40 } )..{
+	LoadActor( THEME:GetPathG("","WideInterpreter"), { File="Global/TextBox", Width=SCREEN_WIDTH/1.2, Height=40 } )..{
 		InitCommand=cmd(diffusealpha,0;Center;y,SCREEN_BOTTOM-40;zoom,0);
 		ShowCommand= function(self)
 			self:stoptweening():decelerate(.2):zoom(1):diffusealpha(1)
@@ -51,10 +51,10 @@ t[#t+1] = Def.ActorFrame{
 for i=1,#text do
 	t[#t+1] = Def.BitmapText{
 		Name= "help_text", Font= "Common Normal", InitCommand= function(self)
-			self:diffuse(1, 1, 1, 0)
+			self:diffuse(1, 1, 1, 0):strokecolor(Color.Black)
 				:shadowlengthy(2):settext(text[i][2])
 				:wrapwidthpixels(WideScale(200,350))
-				:xy(text[i][1], SCREEN_BOTTOM-40):zoom(0.48)
+				:xy(text[i][1], SCREEN_BOTTOM-42):zoom(0.48)
 		end,
 		ShowCommand= function(self)
 			self:settext(text[i][2]):stoptweening():linear(.3):diffusealpha(1)

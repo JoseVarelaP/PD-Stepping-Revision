@@ -52,6 +52,7 @@ if ThemePrefs.Get("DedicatedCharacterShow") and (DIVA:HasAnyCharacters(PLAYER_1)
 	t[#t+1] = Def.Quad{
 		Condition=ThemePrefs.Get("DedicatedCharacterShow") and ThemePrefs.Get("CurrentStageLocation") ~= "None";
 		OnCommand=cmd(zoomto,1000,1000;diffuse,Color.Black);
+		CurrentSongChangedMessageCommand=cmd(queuemessage,"InitialTween")
 	};
 end
 
@@ -140,7 +141,6 @@ local DebugMessages = {
 t[#t+1] = Def.Quad{
 	Condition=ThemePrefs.Get("DedicatedCharacterShow");
 	OnCommand=cmd(visible,false;queuemessage,"InitialTween";queuecommand,"WaitForStart");
-	CurrentSongChangedMessageCommand=cmd(queuecommand,"WaitForStart");
 	WaitForStartCommand=function(self)
 	-- set globals, we need these later.
 	song = GAMESTATE:GetCurrentSong();
@@ -165,6 +165,8 @@ t[#t+1] = Def.Quad{
 		NextSegment = now + BeatsBeforeNextSegment
 	end
 
+	song = GAMESTATE:GetCurrentSong();
+	start = song:GetFirstBeat();
 	now = GAMESTATE:GetSongBeat();
 
 	self:sleep(Frm)
@@ -245,19 +247,17 @@ if ThemePrefs.Get("DedicatedCharacterShow") then
 					if DIVA:BothPlayersEnabled() then self:x( (player == PLAYER_1 and 8) or -8 ) end
 					self:queuecommand("UpdateRate")
 					end,
-					CurrentSongChangedMessageCommand=function(self)
-					self:visible(true):queuecommand("UpdateRate")
-					end,
 					UpdateRateCommand=function(self)
 					-- Check function to see how it works.
 					self:rate( UpdateModelRate() )
 					UpdateModelRate(self)
 					self:sleep(Frm)
 					if now<start then
-						self:queuecommand("UpdateRate")
+						self:visible(true)
 					else
 						self:visible(false)
 					end
+					self:queuecommand("UpdateRate")
 					end,
 			};
 			-- Load the Character
@@ -280,9 +280,6 @@ if ThemePrefs.Get("DedicatedCharacterShow") then
 					end,
 					-- Update Model animation speed depending on song's BPM.
 					-- To match SM's way of animation speeds
-					CurrentSongChangedMessageCommand=function(self)
-					self:visible(false):queuecommand("UpdateRate")
-					end,
 					UpdateRateCommand=function(self)
 					-- Check function to see how it works.
 					self:rate( UpdateModelRate() )
@@ -356,11 +353,6 @@ else
 	t[#t+1] = LoadActor( "../Locations/Default_Camera.lua" )
 	print( "CAMERA: Loaded Default Camera!" )
 end
-
-t.CurrentSongChangedMessageCommand=function(self)
-self:finishtweening()
-MESSAGEMAN:Broadcast("InitialTween")
-end;
 
 background[#background+1] = t;
 

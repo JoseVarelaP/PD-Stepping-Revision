@@ -21,7 +21,7 @@ t[#t+1] = Def.ActorFrame{
 
 	LoadFont("Common Normal")..{
 		Text=Screen.String("Message"),
-		InitCommand=cmd(zoom,0.5;wrapwidthpixels,500);
+		InitCommand=cmd(zoom,0.5;strokecolor,Color.Black;wrapwidthpixels,500);
 	};
 
 }
