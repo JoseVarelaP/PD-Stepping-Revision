@@ -1,6 +1,7 @@
 local t = Def.ActorFrame{}
 
 t.InitialTweenMessageCommand=function(self)
+	CAMERA:ResetCamera()
 	Camera:addz(-40):decelerate(3):addz(40)
 end
 t.Camera1MessageCommand=function(self)
