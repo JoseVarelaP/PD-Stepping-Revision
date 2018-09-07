@@ -230,7 +230,6 @@ local function UpdateModelRate()
 	else
 		return 0
 	end
-	ModelBeat = GAMESTATE:GetSongBeat();
 end
 
 if ThemePrefs.Get("DedicatedCharacterShow") then
@@ -275,8 +274,7 @@ if ThemePrefs.Get("DedicatedCharacterShow") then
 						-- reminder that x position is inverted because we inverted the Y axis
 						-- to make the character face towards the screen.
 						self:x( (player == PLAYER_1 and 8) or -8 )
-					end			
-					ModelBeat = GAMESTATE:GetSongBeat();
+					end
 					self:queuecommand("UpdateRate")
 					end,
 					-- Update Model animation speed depending on song's BPM.
