@@ -6,8 +6,8 @@ t[#t+1] = LoadActor("PlaylistInfoBG")..{
 
 t[#t+1] = Def.CourseContentsList {
 	MaxSongs = 8;
-    NumItemsToDraw = 80;
-    OnCommand=cmd(y,-75);
+  NumItemsToDraw = 80;
+  OnCommand=cmd(y,-75);
 	ShowCommand=cmd(linear,0.3;zoomy,1);
 	HideCommand=cmd(linear,0.3;zoomy,0);
 	SetCommand=function(self)
@@ -16,14 +16,19 @@ t[#t+1] = Def.CourseContentsList {
 		self:SetTransformFromHeight(18);
 		self:SetCurrentAndDestinationItem(0);
 		self:SetLoop(false);
+		--[[
+			Masking is not that important because
+			we're limiting the ammount of items on the list already...
+			but still, it's neccesary. Juuuuust in case.
+		]]
 		self:SetMask(270,0);
 	end;
 	CurrentTrailP1ChangedMessageCommand=cmd(playcommand,"Set");
 	CurrentTrailP2ChangedMessageCommand=cmd(playcommand,"Set");
 
-	Display = Def.ActorFrame { 
+	Display = Def.ActorFrame {
 
-		LoadFont("DifficultyListRow number") .. {
+		LoadFont("unsteady oversteer/20px") .. {
 			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_1);
 			InitCommand=cmd(x,-165;zoom,0.8;shadowlength,0;diffuse,0,0,0,1);
 			SetSongCommand=function(self, params)
@@ -33,7 +38,7 @@ t[#t+1] = Def.CourseContentsList {
 			end;
 		};
 
-		LoadFont("DifficultyListRow number") .. {
+		LoadFont("unsteady oversteer/20px") .. {
 			Condition=GAMESTATE:IsPlayerEnabled(PLAYER_2);
 			InitCommand=cmd(x,145;zoom,0.8;shadowlength,0;diffuse,0,0,0,1);
 			SetSongCommand=function(self, params)

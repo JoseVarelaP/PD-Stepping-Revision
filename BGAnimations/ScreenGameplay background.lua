@@ -250,7 +250,6 @@ if ThemePrefs.Get("DedicatedCharacterShow") then
 					UpdateRateCommand=function(self)
 					-- Check function to see how it works.
 					self:rate( UpdateModelRate() )
-					UpdateModelRate(self)
 					self:sleep(Frm)
 					if now<start then
 						self:visible(true)
