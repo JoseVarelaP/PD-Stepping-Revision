@@ -3,25 +3,33 @@ local t = Def.ActorFrame{
 	ThemePrefs.Save()
 	DIVA:ResetRandomSong()
 	end,
-	OnCommand=cmd(sleep,0.5;queuecommand,"SaveAndReload");
+	OnCommand=function(self)
+		self:sleep(0.5):queuecommand("SaveAndReload")
+	end;
 	SaveAndReloadCommand=function(self)
 	SCREENMAN:SetNewScreen("ScreenTitleMenu")
 	end,
 }
 
 t[#t+1] = Def.Quad{
-	OnCommand=cmd(FullScreen;diffuse,0,0,0,1);
+	OnCommand=function(self)
+		self:FullScreen():diffuse(0,0,0,1)
+	end;
 }
 
 t[#t+1] = Def.ActorFrame{
-	InitCommand=cmd(Center);
+	InitCommand=function(self)
+		self:Center()
+	end;
 
 	LoadActor( THEME:GetPathG("","WideInterpreter"), { File="Global/TextBox", Width=140, Height=40 } )..{
 	};
 
 	LoadFont("Common Normal")..{
 		Text=Screen.String("Message"),
-		InitCommand=cmd(zoom,0.5;strokecolor,Color.Black;wrapwidthpixels,500);
+		InitCommand=function(self)
+			self:zoom(0.5):strokecolor(Color.Black):wrapwidthpixels(500)
+		end;
 	};
 
 }

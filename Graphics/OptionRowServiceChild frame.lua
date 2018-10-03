@@ -57,11 +57,15 @@ end
 local gc = Var("GameCommand");
 
 t[#t+1] = LoadActor("MenuScrollers/SettingBase")..{
-	OnCommand=cmd(horizalign,left;zoom,0.4;shadowlengthy,2);
+	OnCommand=function(self)
+		self:horizalign(left):zoom(0.4):shadowlengthy(2)
+	end;
 };
 
 t[#t+1] = LoadActor("MenuScrollers/SettingHighlight")..{
-	OnCommand=cmd(horizalign,left;zoom,0.4);
+	OnCommand=function(self)
+		self:horizalign(left):zoom(0.4)
+	end;
 	GainFocusCommand=function(self)
 	local optrow = self:GetParent():GetParent():GetParent()
 	self:stoptweening():diffuseshift():diffusealpha(1):effectcolor1(1,1,1,1):effectcolor2(0.8,0.8,0.8,0.5)
@@ -71,12 +75,14 @@ t[#t+1] = LoadActor("MenuScrollers/SettingHighlight")..{
 		end
 	end
 	end,
-	LoseFocusCommand=cmd(stoptweening;linear,0.1;diffusealpha,0);
+	LoseFocusCommand=function(self)
+		self:stoptweening():linear(0.1):diffusealpha(0)
+	end;
 };
 
 t[#t+1] = LoadFont("Common Normal")..{
 	OnCommand=function(self)
-	(cmd(horizalign,left;x,40;maxwidth,220;y,-2;shadowlengthy,3;shadowcolor,color("0,0,0,0.3");diffuse,0,0,0,1))(self);
+	self:horizalign(left):x(40):maxwidth(220):y(-2):shadowlengthy(3):shadowcolor(color("0,0,0,0.3")):diffuse(0,0,0,1);
 	local optrow = self:GetParent():GetParent():GetParent()
 
 	self:settext(THEME:GetString("OptionTitles",optrow:GetName()) ):horizalign(left)
@@ -86,7 +92,9 @@ t[#t+1] = LoadFont("Common Normal")..{
 
 
 t[#t+1] = LoadActor("MenuScrollers/ChoiceBackLabel")..{
-	InitCommand=cmd(horizalign,left;zoom,0.4);
+	InitCommand=function(self)
+		self:horizalign(left):zoom(0.4)
+	end;
 	OnCommand=function(self)
 	self:visible(false)
 	self:queuecommand("CheckForAnything")

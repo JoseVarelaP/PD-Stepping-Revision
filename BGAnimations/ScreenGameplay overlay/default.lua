@@ -1,11 +1,15 @@
 local t = Def.ActorFrame{};
 
 t[#t+1] = LoadActor("InfoBar")..{
-	OnCommand=cmd(addy,-100;linear,3;addy,100);
+	OnCommand=function(self)
+		self:addy(-100):linear(3):addy(100)
+	end;
 };
 
 t[#t+1] = LoadActor("PercentageBar")..{
-	OnCommand=cmd(addy,100;linear,3;addy,-100);
+	OnCommand=function(self)
+		self:addy(100):linear(3):addy(-100)
+	end;
 };
 
 
@@ -17,7 +21,9 @@ t[#t+1] = LoadActor("PercentageBar")..{
 
 
 t[#t+1] = Def.Quad{
-	OnCommand=cmd(FullScreen;linear,1;diffusealpha,0);
+	OnCommand=function(self)
+		self:FullScreen():linear(1):diffusealpha(0)
+	end;
 };
 
 return t;

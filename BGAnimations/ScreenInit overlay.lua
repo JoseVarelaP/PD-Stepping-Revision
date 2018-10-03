@@ -11,22 +11,30 @@ end
 }
 
 t[#t+1] = Def.ActorFrame{
-	InitCommand=cmd(Center);
-	BeginCommand=cmd(diffusealpha,0;sleep,.3;decelerate,0.2;diffusealpha,1);
-	OnCommand=cmd(sleep,3;accelerate,0.2;diffusealpha,0);
+	InitCommand=function(self) self:Center() end;
+	BeginCommand=function(self)
+		self:diffusealpha(0):sleep(.3):decelerate(0.2):diffusealpha(1)
+	end;
+	OnCommand=function(self)
+		self:sleep(3):accelerate(0.2):diffusealpha(0)
+	end;
 
 	LoadActor( THEME:GetPathG("","ThemeLogo") )..{
-		InitCommand=cmd(shadowlengthy,2;zoom,0.7);
+		InitCommand=function(self) self:shadowlengthy(2):zoom(0.7) end;
 	};	
 
 	LoadFont("Common Normal")..{
 		Text="Version ".. PDSRPInfo["Version"],
-		InitCommand=cmd(shadowlengthy,2;x,200;horizalign,right;y,60;zoom,0.8;strokecolor,Color.Black);
+		InitCommand=function(self)
+			self:shadowlengthy(2):xy(200,60):halign(1):zoom(0.8):strokecolor(Color.Black);
+		end;
 	};
 
 	LoadFont("Common Normal")..{
 		Text=Screen.String("Message"),
-		InitCommand=cmd(zoom,0.5;y,150;wrapwidthpixels,900;diffuse,Color.Black;strokecolor,Color.White);
+		InitCommand=function(self)
+			self:zoom(0.5):y(150):wrapwidthpixels(900):diffuse(Color.Black):strokecolor(Color.White);
+		end;
 	};
 };
 

@@ -8,7 +8,9 @@ t[#t+1] = Def.ActorFrame{
 	LoadActor( THEME:GetPathG("","Intro/White_ThemeLogo") );
 	LoadFont("Common Normal")..{
 		Text="Version ".. PDSRPInfo["Version"],
-		InitCommand=cmd(x,130;horizalign,right;y,45;zoom,0.6;diffuse,Color.Black);
+		InitCommand=function(self)
+		self:xy(130,45):halign(1):zoom(0.6):diffuse(Color.Black)
+		end;
 	};
 };
 
@@ -17,7 +19,7 @@ local ThemeNamesToLoad = {
 	-- ran under the name DV-Stepping-Revision.
 	"DV-Stepping-Revision",
 	"DV-Stepping-Revision-master",
-	
+
 	"PD-Stepping-Revision",
 	"PD-Stepping-Revision-master",
 };

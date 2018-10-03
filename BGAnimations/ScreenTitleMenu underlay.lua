@@ -10,8 +10,12 @@ local t = Def.ActorFrame{
 
 if #SONGMAN:GetAllSongs() > 0 and ThemePrefs.Get("EnableRandomSongPlay") then
 
-	local FadeIn = cmd(sleep,.3;decelerate,0.2;diffuse,0,0,0,1);
-	local GlobalItems = cmd(horizalign,left;diffuse,0,0,0,1;zoom,0.6;shadowlengthy,1);
+	local FadeIn = function(self)
+		self:sleep(.3):decelerate(0.2):diffuse(0,0,0,1)
+	end;
+	local GlobalItems = function(self)
+		self:horizalign(left):diffuse(0,0,0,1):zoom(0.6):shadowlengthy(1)
+	end;
 
 	t[#t+1] = Def.ActorFrame{
 		InitCommand=function(self)

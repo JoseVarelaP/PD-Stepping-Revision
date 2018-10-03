@@ -41,7 +41,7 @@ t[#t+1] = Def.Sprite {
  			if (Sprite.LoadFromCached ~= nil) then
     			self:LoadFromCached("Background", GAMESTATE:GetCurrentSong():GetBackgroundPath())
 			else
-    			self:load(GAMESTATE:GetCurrentSong():GetBackgroundPath())
+    			self:Load(GAMESTATE:GetCurrentSong():GetBackgroundPath())
 			end
 			self:scaletocover(0,0,SCREEN_WIDTH,SCREEN_BOTTOM)
  			:smooth(0.3)
@@ -76,13 +76,23 @@ local function LoadImageForTile(self)
 end
 
 t[#t+1] = Def.ActorFrame{
-	OnCommand=cmd(x,WideScale(SCREEN_RIGHT,SCREEN_RIGHT);y,SCREEN_CENTER_Y;diffusealpha,0;zoom,0.8;sleep,0.3;decelerate,0.2;zoom,1;diffusealpha,1);
-	OffCommand=cmd(playcommand,"GoAway");
-	CancelMessageCommand=cmd(playcommand,"GoAway");
-	GoAwayCommand=cmd(accelerate,0.2;addx,100;diffusealpha,0);
+	OnCommand=function(self)
+		self:x(WideScale(SCREEN_RIGHT,SCREEN_RIGHT)):y(SCREEN_CENTER_Y):diffusealpha(0):zoom(0.8):sleep(0.3):decelerate(0.2):zoom(1):diffusealpha(1)
+	end;
+	OffCommand=function(self)
+		self:playcommand("GoAway")
+	end;
+	CancelMessageCommand=function(self)
+		self:playcommand("GoAway")
+	end;
+	GoAwayCommand=function(self)
+		self:accelerate(0.2):addx(100):diffusealpha(0)
+	end;
 
 	Def.Sprite {
-		InitCommand=cmd(diffusealpha,1;horizalign,left;x,-250;setsize,0,0);
+		InitCommand=function(self)
+			self:diffusealpha(1):horizalign(left):x(-250):setsize(0,0)
+		end;
 		CurrentSongChangedMessageCommand=function(self)
  		self:finishtweening():smooth(0.1):diffusealpha(0):sleep(0.1)
  		self:queuecommand("BeginProcess")
@@ -107,7 +117,9 @@ t[#t+1] = Def.ActorFrame{
 	};
 
 	LoadFont("Common Normal")..{
-		InitCommand=cmd(diffusealpha,1;horizalign,left;x,WideScale(-280,-400);y,40;strokecolor,Color.Black;rotationz,-2;maxwidth,WideScale(260,550));
+		InitCommand=function(self)
+			self:diffusealpha(1):horizalign(left):x(WideScale(-280,-400)):y(40):strokecolor(Color.Black):rotationz(-2):maxwidth(WideScale(260,550))
+		end;
 		CurrentSongChangedMessageCommand=function(self)
  			self:finishtweening():smooth(0.1):diffusealpha(0):sleep(0.1):queuecommand("UpdateBackground")
  		end,
@@ -128,7 +140,9 @@ t[#t+1] = Def.ActorFrame{
 	};
 
 	LoadFont("Common Normal")..{
-		InitCommand=cmd(diffusealpha,1;horizalign,left;x,WideScale(-280,-400);y,65;strokecolor,Color.Black;rotationz,-2;maxwidth,WideScale(340,550));
+		InitCommand=function(self)
+			self:diffusealpha(1):horizalign(left):x(WideScale(-280,-400)):y(65):strokecolor(Color.Black):rotationz(-2):maxwidth(WideScale(340,550))
+		end;
 		CurrentSongChangedMessageCommand=function(self)
  			self:finishtweening():smooth(0.1):diffusealpha(0):sleep(0.1):queuecommand("UpdateBackground")
  		end,
@@ -153,7 +167,9 @@ t[#t+1] = Def.ActorFrame{
 	};
 
 	LoadFont("Common Normal")..{
-		InitCommand=cmd(diffusealpha,1;horizalign,left;x,WideScale(-280,-400);y,53;strokecolor,Color.Black;rotationz,-2;maxwidth,WideScale(340,550));
+		InitCommand=function(self)
+			self:diffusealpha(1):horizalign(left):x(WideScale(-280,-400)):y(53):strokecolor(Color.Black):rotationz(-2):maxwidth(WideScale(340,550))
+		end;
 		CurrentSongChangedMessageCommand=function(self)
  			self:finishtweening():smooth(0.1):diffusealpha(0):sleep(0.1):queuecommand("UpdateBackground")
  		end,
@@ -183,7 +199,9 @@ t[#t+1] = Def.ActorFrame{
 		MyTextBanner (doubleres).png
 	--]]
 	Def.Sprite {
-		InitCommand=cmd(diffusealpha,1;x,WideScale(-150,-310);y,50);
+		InitCommand=function(self)
+			self:diffusealpha(1):x(WideScale(-150,-310)):y(50)
+		end;
 		CurrentSongChangedMessageCommand=function(self)
  			self:finishtweening():smooth(0.1):diffusealpha(0):sleep(0.1)
  		self:queuecommand("BeginProcess")

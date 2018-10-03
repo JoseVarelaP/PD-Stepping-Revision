@@ -82,26 +82,45 @@ end
 
 
 local t = Def.ActorFrame{
-	CurrentStepsP1ChangedMessageCommand=cmd(queuemessage,"UpdateScore");
-	CurrentStepsP2ChangedMessageCommand=cmd(queuemessage,"UpdateScore");
-	CurrentSongChangedMessageCommand=cmd(queuemessage,"UpdateScore");
+	CurrentStepsP1ChangedMessageCommand=function(self)
+		self:queuemessage("UpdateScore")
+	end;
+	CurrentStepsP2ChangedMessageCommand=function(self)
+		self:queuemessage("UpdateScore")
+	end;
+	CurrentSongChangedMessageCommand=function(self)
+		self:queuemessage("UpdateScore")
+	end;
 };
 
-t[#t+1] = LoadActor("Base")..{ OnCommand=cmd(); };
-t[#t+1] = LoadFont("Common Normal")..{ Text="Score", OnCommand=cmd(diffuse,color("#5A5A5A");x,38;y,-50;zoom,0.8); };
+t[#t+1] = LoadActor("Base");
+t[#t+1] = LoadFont("Common Normal")..{
+	 Text="Score", OnCommand=function(self)
+		self:diffuse(color("#5A5A5A")):x(38):y(-50):zoom(0.8)
+	end
+};
 
 for player in ivalues(PlayerNumber) do
-t[#t+1] = LoadActor("ScoreInfoBG")..{ OnCommand=cmd(y,(player == PLAYER_1 and -4) or 42;x,-8;zoomy,0.7); };
+
+t[#t+1] = LoadActor("ScoreInfoBG")..{
+	 OnCommand=function(self)
+		self:y((player == PLAYER_1 and -4) or 42):x(-8):zoomy(0.7)
+	end
+};
 t[#t+1] = LoadFont("unsteady oversteer/20px")..{
 	Condition=GAMESTATE:IsPlayerEnabled(player);
-	OnCommand=cmd(horizalign,right;x,50;y,(player == PLAYER_1 and -12) or 34;zoom,1);
+	OnCommand=function(self)
+		self:horizalign(right):x(50):y((player == PLAYER_1 and -12) or 34):zoom(1)
+	end;
 	UpdateScoreMessageCommand=function(self)
 	self:settext( PercentScore(player) )
 	end,
 };
 t[#t+1] = LoadFont("Common Normal")..{
 	Condition=GAMESTATE:IsPlayerEnabled(player);
-	OnCommand=cmd(horizalign,right;x,50;y,(player == PLAYER_1 and 5) or 50;zoom,0.8);
+	OnCommand=function(self)
+		self:horizalign(right):x(50):y((player == PLAYER_1 and 5) or 50):zoom(0.8)
+	end;
 	UpdateScoreMessageCommand=function(self)
 	self:settext( PointScore(player) )
 	end,

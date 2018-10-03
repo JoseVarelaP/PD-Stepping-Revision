@@ -1,20 +1,26 @@
 local t = Def.ActorFrame {};
 
 t[#t+1] = LoadActor("MenuScrollers/Base")..{
-	OnCommand=cmd(horizalign,left;zoom,0.4);
+	OnCommand=function(self)
+		self:horizalign(left):zoom(0.4)
+	end;
 };
 
 t[#t+1] = LoadActor("MenuScrollers/Bright")..{
-	OnCommand=cmd(horizalign,left;zoom,0.4);
+	OnCommand=function(self)
+		self:horizalign(left):zoom(0.4)
+	end;
 	GainFocusCommand=function(self)
 	self:stoptweening():diffuseshift():diffusealpha(1):effectcolor1(1,1,1,1):effectcolor2(0.8,0.8,0.8,0.5)
 	end,
-	LoseFocusCommand=cmd(stoptweening;linear,0.1;diffusealpha,0);
+	LoseFocusCommand=function(self)
+		self:stoptweening():linear(0.1):diffusealpha(0)
+	end;
 };
 
 t[#t+1] = LoadFont("Common Normal")..{
 	OnCommand=function(self)
-	(cmd(horizalign,left;x,100;shadowlengthy,5;shadowcolor,color("0,0,0,0.3");diffuse,0.3,0.3,0.3,1))(self);
+	self:horizalign(left):x(100):shadowlengthy(5):shadowcolor(color("0,0,0,0.3")):diffuse(0.3,0.3,0.3,1);
 	local optrow = self:GetParent():GetParent():GetParent()
 
 	self:settext(THEME:GetString("OptionTitles",optrow:GetName()) ):horizalign(left)

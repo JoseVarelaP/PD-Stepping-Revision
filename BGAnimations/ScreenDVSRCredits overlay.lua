@@ -1,45 +1,77 @@
 local t = Def.ActorFrame{}
 
 t[#t+1] = Def.Quad{
-	InitCommand=cmd(zwrite,true;blend,"BlendMode_NoEffect";zoomto,350,100;CenterX;y,SCREEN_CENTER_Y;horizalign,left);
-	OnCommand=cmd(sleep,1;queuecommand,"Dissapear");
-	DissapearCommand=cmd(visible,false);
+	InitCommand=function(self)
+		self:zwrite(true):blend("BlendMode_NoEffect"):zoomto(350,100):CenterX():y(SCREEN_CENTER_Y):horizalign(left)
+	end;
+	OnCommand=function(self)
+		self:sleep(1):queuecommand("Dissapear")
+	end;
+	DissapearCommand=function(self)
+		self:visible(false)
+	end;
 };
 
 t[#t+1] = Def.ActorFrame{
-	InitCommand=cmd(x,SCREEN_CENTER_X-20;CenterY);
-	OnCommand=cmd(sleep,25;accelerate,1;diffusealpha,0);
+	InitCommand=function(self)
+		self:x(SCREEN_CENTER_X-20):CenterY()
+	end;
+	OnCommand=function(self)
+		self:sleep(25):accelerate(1):diffusealpha(0)
+	end;
 
 	LoadFont("Common Normal")..{
 		Text="Version ".. PDSRPInfo["Version"],
-		InitCommand=cmd(horizalign,right;y,35;x,-70;zoom,0.5;diffusealpha,0;shadowlengthy,2;strokecolor,Color.Black);
-		OnCommand=cmd(sleep,1;decelerate,0.2;diffusealpha,1);
-		OffCommand=cmd(accelerate,0.2;diffusealpha,0);
+		InitCommand=function(self)
+			self:horizalign(right):y(35):x(-70):zoom(0.5):diffusealpha(0):shadowlengthy(2):strokecolor(Color.Black)
+		end;
+		OnCommand=function(self)
+			self:sleep(1):decelerate(0.2):diffusealpha(1)
+		end;
+		OffCommand=function(self)
+			self:accelerate(0.2):diffusealpha(0)
+		end;
 	};
 
 	LoadActor( THEME:GetPathG("","ThemeLogo") )..{
-		InitCommand=cmd(ztest,1;horizalign,right;zoom,WideScale(0.33,0.4);diffusealpha,0;addx,200;shadowlengthy,2);
-		OnCommand=cmd(sleep,.3;decelerate,0.8;diffusealpha,1;addx,-200);
-		OffCommand=cmd(accelerate,0.2;diffusealpha,0);
+		InitCommand=function(self)
+			self:ztest(1):horizalign(right):zoom(WideScale(0.33,0.4)):diffusealpha(0):addx(200):shadowlengthy(2)
+		end;
+		OnCommand=function(self)
+			self:sleep(.3):decelerate(0.8):diffusealpha(1):addx(-200)
+		end;
+		OffCommand=function(self)
+			self:accelerate(0.2):diffusealpha(0)
+		end;
 	};
 
 };
 
 t[#t+1] = Def.Quad{
-	InitCommand=cmd(Center;zoomto,2,0;sleep,0.2;decelerate,0.8;zoomto,2,350;fadetop,0.5;fadebottom,0.5);
-	OnCommand=cmd(sleep,24;accelerate,1;diffusealpha,0);
-	OffCommand=cmd(stoptweening;accelerate,0.2;diffusealpha,0);
+	InitCommand=function(self)
+		self:Center():zoomto(2,0):sleep(0.2):decelerate(0.8):zoomto(2,350):fadetop(0.5):fadebottom(0.5)
+	end;
+	OnCommand=function(self)
+		self:sleep(24):accelerate(1):diffusealpha(0)
+	end;
+	OffCommand=function(self)
+		self:stoptweening():accelerate(0.2):diffusealpha(0)
+	end;
 };
 
 local line_height= 20
 local item_padding_start = 12;
 
 t[#t+1] = Def.Quad{
-	OnCommand=cmd(zwrite,true;blend,"BlendMode_NoEffect";zoomto,350,350;CenterX;y,SCREEN_CENTER_Y-150;horizalign,left;vertalign,bottom);
+	OnCommand=function(self)
+		self:zwrite(true):blend("BlendMode_NoEffect"):zoomto(350,350):CenterX():y(SCREEN_CENTER_Y-150):horizalign(left):vertalign(bottom)
+	end;
 };
 
 t[#t+1] = Def.Quad{
-	OnCommand=cmd(zwrite,true;blend,"BlendMode_NoEffect";zoomto,350,350;CenterX;y,SCREEN_CENTER_Y+150;horizalign,left;vertalign,top);
+	OnCommand=function(self)
+		self:zwrite(true):blend("BlendMode_NoEffect"):zoomto(350,350):CenterX():y(SCREEN_CENTER_Y+150):horizalign(left):vertalign(top)
+	end;
 };
 
 t[#t+1] = Def.ActorScroller {
@@ -48,11 +80,15 @@ t[#t+1] = Def.ActorScroller {
 	TransformFunction = function( self, offset, itemIndex, numItems)
 		self:y(line_height*offset)
 	end;
-	OnCommand = cmd(ztest,1;scrollwithpadding,item_padding_start,15;Center);
+	OnCommand = function(self)
+		self:ztest(1):scrollwithpadding(item_padding_start,15):Center()
+	end;
 	BeginCommand= function(self)
 		SCREENMAN:GetTopScreen():PostScreenMessage( 'SM_MenuTimer', (26) );
 	end,
-	OffCommand=cmd(accelerate,0.2;diffusealpha,0);
+	OffCommand=function(self)
+		self:accelerate(0.2):diffusealpha(0)
+	end;
 
 	GenerateHeader("Main Programming");
  	GenerateNormal("Jose_Varela");

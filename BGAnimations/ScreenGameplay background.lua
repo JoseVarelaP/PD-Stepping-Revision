@@ -42,17 +42,21 @@ background[#background+1] = Def.Sprite{
 end
 
 local t = Def.ActorFrame{
-	InitCommand=cmd(Center;fov,90;rotationy,180;z,WideScale(300,400);addy,10);
+	InitCommand=function(self)
+		self:Center():fov(90):rotationy(180):z( WideScale(300,400) ):addy(10);
+	end;
 	OnCommand=function(self)
 	Camera = self;
-	end,
+	end;
 };
 
 if ThemePrefs.Get("DedicatedCharacterShow") and (DIVA:HasAnyCharacters(PLAYER_1) or DIVA:HasAnyCharacters(PLAYER_2)) then
 	t[#t+1] = Def.Quad{
 		Condition=ThemePrefs.Get("DedicatedCharacterShow") and ThemePrefs.Get("CurrentStageLocation") ~= "None";
-		OnCommand=cmd(zoomto,1000,1000;diffuse,Color.Black);
-		CurrentSongChangedMessageCommand=cmd(queuemessage,"InitialTween")
+		OnCommand=function(self)
+			self:zoomto(1000,1000):diffuse(Color.Black);
+		end;
+		CurrentSongChangedMessageCommand=function(self) self:queuemessage("InitialTween") end;
 	};
 end
 
@@ -140,8 +144,13 @@ local DebugMessages = {
 -- timing manager
 t[#t+1] = Def.Quad{
 	Condition=ThemePrefs.Get("DedicatedCharacterShow");
-	OnCommand=cmd(visible,false;queuemessage,"InitialTween";queuecommand,"WaitForStart");
-	CurrentSongChangedMessageCommand=cmd(queuecommand,"WaitForStart");
+	OnCommand=function(self)
+		self:visible(false)
+		:queuemessage("InitialTween"):queuecommand("WaitForStart");
+	end;
+	CurrentSongChangedMessageCommand=function(self)
+		self:queuecommand("WaitForStart");
+	end;
 	WaitForStartCommand=function(self)
 	-- set globals, we need these later.
 	song = GAMESTATE:GetCurrentSong();
@@ -190,8 +199,6 @@ t[#t+1] = Def.Quad{
 -- Stage Enviroment
 t[#t+1] = Def.ActorFrame{
 	Condition=ThemePrefs.Get("DedicatedCharacterShow") and (DIVA:HasAnyCharacters(PLAYER_1) or DIVA:HasAnyCharacters(PLAYER_2));
-	InitCommand=cmd(queuecommand,"BeginCamera");
-	BeginCameraCommand=cmd();
 
 		--Load the Stage
 		Def.Model {
@@ -223,6 +230,7 @@ local function UpdateModelRate()
 	-- Then clamp it so it's on a max and a low ammount
 	local Clamped = clamp( UpdateScale, 0.5, 2.5 );
 
+	-- Then take what we have and update depending on the music rate.
 	local ToConvert = Clamped*MusicRate
 
 	if not GAMESTATE:GetSongPosition():GetFreeze() then
@@ -232,65 +240,63 @@ local function UpdateModelRate()
 	end
 end
 
-if ThemePrefs.Get("DedicatedCharacterShow") then
-	if DIVA:HasAnyCharacters(PLAYER_1) or DIVA:HasAnyCharacters(PLAYER_2) then
-		for player in ivalues(PlayerNumber) do
-			if GAMESTATE:IsPlayerEnabled(player) and DIVA:IsSafeToLoad(player) then
-			-- This will be the warmup model.
-			t[#t+1] = Def.Model {
-					Condition=GAMESTATE:GetCharacter(player):GetDisplayName() ~= "default",
-					Meshes=GAMESTATE:GetCharacter(player):GetModelPath(),
-					Materials=GAMESTATE:GetCharacter(player):GetModelPath(),
-					Bones=GAMESTATE:GetCharacter(player):GetWarmUpAnimationPath(),
-					OnCommand=function(self)
+if ThemePrefs.Get("DedicatedCharacterShow") and (DIVA:HasAnyCharacters(PLAYER_1) or DIVA:HasAnyCharacters(PLAYER_2)) then
+	for player in ivalues(PlayerNumber) do
+		if GAMESTATE:IsPlayerEnabled(player) and DIVA:IsSafeToLoad(player) then
+		-- This will be the warmup model.
+		t[#t+1] = Def.Model {
+				Condition=GAMESTATE:GetCharacter(player):GetDisplayName() ~= "default",
+				Meshes=GAMESTATE:GetCharacter(player):GetModelPath(),
+				Materials=GAMESTATE:GetCharacter(player):GetModelPath(),
+				Bones=GAMESTATE:GetCharacter(player):GetWarmUpAnimationPath(),
+				OnCommand=function(self)
+				self:cullmode("CullMode_None")
+				if DIVA:BothPlayersEnabled() then self:x( (player == PLAYER_1 and 8) or -8 ) end
+				self:queuecommand("UpdateRate")
+				end,
+				UpdateRateCommand=function(self)
+				-- Check function to see how it works.
+				self:rate( UpdateModelRate() )
+				self:sleep(Frm)
+				if now<start then
+					self:visible(true)
+				else
+					self:visible(false)
+				end
+				self:queuecommand("UpdateRate")
+				end,
+		};
+		-- Load the Character
+		t[#t+1] = Def.Model {
+				Condition=GAMESTATE:GetCharacter(player):GetDisplayName() ~= "default",
+				Meshes=GAMESTATE:GetCharacter(player):GetModelPath(),
+				Materials=GAMESTATE:GetCharacter(player):GetModelPath(),
+				Bones=GAMESTATE:GetCharacter(player):GetDanceAnimationPath(),
+				OnCommand=function(self)
 					self:cullmode("CullMode_None")
-					if DIVA:BothPlayersEnabled() then self:x( (player == PLAYER_1 and 8) or -8 ) end
-					self:queuecommand("UpdateRate")
-					end,
-					UpdateRateCommand=function(self)
-					-- Check function to see how it works.
-					self:rate( UpdateModelRate() )
-					self:sleep(Frm)
-					if now<start then
-						self:visible(true)
-					else
-						self:visible(false)
-					end
-					self:queuecommand("UpdateRate")
-					end,
-			};
-			-- Load the Character
-			t[#t+1] = Def.Model {
-					Condition=GAMESTATE:GetCharacter(player):GetDisplayName() ~= "default",
-					Meshes=GAMESTATE:GetCharacter(player):GetModelPath(),
-					Materials=GAMESTATE:GetCharacter(player):GetModelPath(),
-					Bones=GAMESTATE:GetCharacter(player):GetDanceAnimationPath(),
-					OnCommand=function(self)
-						self:cullmode("CullMode_None")
-						DebugMessages.ModelLoad()
-					-- position time
-					if DIVA:BothPlayersEnabled() then
-						-- reminder that x position is inverted because we inverted the Y axis
-						-- to make the character face towards the screen.
-						self:x( (player == PLAYER_1 and 8) or -8 )
-					end
-					self:queuecommand("UpdateRate")
-					end,
-					-- Update Model animation speed depending on song's BPM.
-					-- To match SM's way of animation speeds
-					UpdateRateCommand=function(self)
-					-- Check function to see how it works.
-					self:rate( UpdateModelRate() )
-					self:sleep(Frm)
-					if now<start then
-						self:visible(false)
-					else
-						self:visible(true)
-					end
-					self:queuecommand("UpdateRate")
-					end,
-			};
-			end
+					DebugMessages.ModelLoad()
+				-- position time
+				if DIVA:BothPlayersEnabled() then
+					-- reminder that x position is inverted because we inverted the Y axis
+					-- to make the character face towards the screen.
+					self:x( (player == PLAYER_1 and 8) or -8 )
+				end
+				self:queuecommand("UpdateRate")
+				end,
+				-- Update Model animation speed depending on song's BPM.
+				-- To match SM's way of animation speeds
+				UpdateRateCommand=function(self)
+				-- Check function to see how it works.
+				self:rate( UpdateModelRate() )
+				self:sleep(Frm)
+				if now<start then
+					self:visible(false)
+				else
+					self:visible(true)
+				end
+				self:queuecommand("UpdateRate")
+				end,
+		};
 		end
 	end
 end
@@ -299,19 +305,24 @@ end
 t[#t+1] = Def.ActorFrame{
 	Condition=ThemePrefs.Get("DedicatedCharacterShow") and ThemePrefs.Get("DediSongData");
 
-	InitCommand=cmd(z,-5;x,0;y,-10;rotationy,180;diffusealpha,0;sleep,0.3;decelerate,0.2;diffusealpha,1);
+	InitCommand=function(self)
+		self:xyz(0,-10,-5):rotationy(180):diffusealpha(0):sleep(0.3):decelerate(0.2):diffusealpha(1);
+	end;
 
 		LoadActor( THEME:GetPathG("","BGElements/CircleInner") )..{
-			OnCommand=cmd(diffusealpha,0.3;spin;effectmagnitude,0,0,24;zoom,0.08;z,-10);
+			OnCommand=function(self)
+				self:diffusealpha(0.3):spin():effectmagnitude(0,0,24):zoom(0.08):z(-10);
+			end;
 		};
 	
 		Def.Quad{
-		OnCommand=cmd(zoomto,40,6;y,1;diffuse,0,0.5,0.5,1;fadeleft,1;faderight,1);
+		OnCommand=function(self)
+			self:zoomto(40,6):y(1):diffuse(0,0.5,0.5,1):fadeleft(1):faderight(1);
+		end;
 		};
 
 		Def.Sprite {
-			InitCommand=cmd(diffusealpha,1);
-			BeginCommand=cmd(LoadFromCurrentSongBackground);
+			BeginCommand=function(self) self:LoadFromCurrentSongBackground() end;
 			OnCommand=function(self)
 				self:scaletoclipped(648/30,480/30)
 				:croptop(0.37):cropbottom(0.25)
@@ -322,15 +333,19 @@ t[#t+1] = Def.ActorFrame{
 	
 		LoadFont("Common Normal")..{
 		Text=GAMESTATE:GetCurrentSong():GetDisplayArtist();
-		InitCommand=cmd(zoom,0.07;shadowlengthy,0.2);
+		InitCommand=function(self)
+			self:zoom(0.07):shadowlengthy(0.2);
+		end;
 		};
 	
 		LoadFont("Common Normal")..{
 		Text=GAMESTATE:GetCurrentSong():GetDisplayFullTitle();
-		InitCommand=cmd(shadowlengthy,0.2;y,2;zoom,0.05);
+		InitCommand=function(self)
+			self:shadowlengthy(0.2):y(2):zoom(0.05)
+		end;
 		};
 
-	OnCommand=cmd(queuecommand,"UpdateToSleep");
+	OnCommand=function(self) self:queuecommand("UpdateToSleep") end;
 	UpdateToSleepCommand=function(self)
 	if now<(start-4) then
 		self:queuecommand("UpdateToSleep")
@@ -340,7 +355,7 @@ t[#t+1] = Def.ActorFrame{
 		self:queuecommand("FadeAway")
 	end
 	end,
-	FadeAwayCommand=cmd(accelerate,0.2;diffusealpha,0);
+	FadeAwayCommand=function(self) self:accelerate(0.2):diffusealpha(0) end;
 };
 
 -- The cameras

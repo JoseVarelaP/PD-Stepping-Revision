@@ -31,7 +31,9 @@ t[#t+1] = Def.Quad{
 local TimesPaused = 0
 
 local t = Def.ActorFrame{
-	OnCommand=cmd(queuecommand,"Update");
+	OnCommand=function(self)
+		self:queuecommand("Update")
+	end;
 	UpdateCommand=function(self)
 	self:finishtweening()
 	if HOOKS:AppHasFocus() then

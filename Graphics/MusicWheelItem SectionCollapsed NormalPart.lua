@@ -3,7 +3,9 @@ local t = Def.ActorFrame {};
 	t[#t+1] = Def.ActorFrame{
 
 		LoadActor("SelectMusic/WheelHighlight")..{
-		InitCommand=cmd(horizalign,left;zoom,0.5;shadowlength,3);
+		InitCommand=function(self)
+			self:horizalign(left):zoom(0.5):shadowlength(3)
+		end;
 		SetMessageCommand=function(self,params)
 		self:diffusebottomedge(Color.White)
 		self:diffusetopedge(Color.White)
@@ -15,7 +17,9 @@ local t = Def.ActorFrame {};
 		};
 
 		LoadActor("SelectMusic/Base_WheelSong")..{
-		OnCommand=cmd(horizalign,left;zoom,0.5);
+		OnCommand=function(self)
+			self:horizalign(left):zoom(0.5)
+		end;
 		SetMessageCommand=function(self,params)
 		self:diffusebottomedge(Color.White)
 		self:diffusetopedge(Color.White)
@@ -27,7 +31,9 @@ local t = Def.ActorFrame {};
 		};
 
 		LoadActor("SelectMusic/Color_WheelSong")..{
-		OnCommand=cmd(horizalign,left;zoom,0.5);
+		OnCommand=function(self)
+			self:horizalign(left):zoom(0.5)
+		end;
 		SetMessageCommand=function(self,params)
 		self:diffusebottomedge(Color.White)
 		self:diffusetopedge(Color.White)
@@ -40,7 +46,9 @@ local t = Def.ActorFrame {};
 
 		LoadFont("Common Normal") ..{
 		Text="This is test";
-		OnCommand=cmd(x,110;y,-14;horizalign,left;shadowlength,1;strokecolor,Color.Black;maxwidth,430);
+		OnCommand=function(self)
+			self:x(110):y(-14):horizalign(left):shadowlength(1):strokecolor(Color.Black):maxwidth(430)
+		end;
 		SetMessageCommand=function(self,params)
 		local BannerTitle = params.Text;
 		self:settext("")
@@ -54,7 +62,9 @@ local t = Def.ActorFrame {};
 
 t[#t+1] = LoadFont("renner/20px") ..{
 	Text="yes";
-	InitCommand=cmd(x,500;y,14;horizalign,right;shadowlength,1;zoom,0.8;strokecolor,Color.Black;maxwidth,430);
+	InitCommand=function(self)
+		self:x(500):y(14):horizalign(right):shadowlength(1):zoom(0.8):strokecolor(Color.Black):maxwidth(430)
+	end;
 	SetMessageCommand=function(self,params)
 	-- We're picking up the text for the songs via ScreenSelectMusic.
 	-- check [01 Model Commands.lua] to see the table.

@@ -1,14 +1,20 @@
 local t = Def.ActorFrame{
-	OnCommand=cmd(fov,90);
+	OnCommand=function(self)
+		self:fov(90)
+	end;
 }
 
 t[#t+1] = Def.Quad{
-	OnCommand=cmd(FullScreen);
+	OnCommand=function(self)
+		self:FullScreen()
+	end;
 };
 
 if ThemePrefs.Get("ShowRandomSongBackground") then
 	t[#t+1] = Def.Sprite{
-		InitCommand=cmd(FullScreen;diffusealpha,0);
+		InitCommand=function(self)
+			self:FullScreen():diffusealpha(0)
+		end;
 		DivaSongChangedMessageCommand=function(self)
 		if DIVA_RandomSong:GetBackgroundPath() then
 			self:Load( DIVA_RandomSong:GetBackgroundPath() )
@@ -18,7 +24,9 @@ if ThemePrefs.Get("ShowRandomSongBackground") then
 			self:diffusealpha(0.4)
 		end
 		end,
-		HideBackgroundMessageCommand=cmd(linear,0.2;diffusealpha,0);
+		HideBackgroundMessageCommand=function(self)
+			self:linear(0.2):diffusealpha(0)
+		end;
 		ShowBackgroundMessageCommand=function(self)
 		self:linear(0.2)
 		self:diffusealpha(0.4)
@@ -27,7 +35,9 @@ if ThemePrefs.Get("ShowRandomSongBackground") then
 end
 
 t[#t+1] = Def.Quad{
-	OnCommand=cmd(FullScreen;diffuse,color("#00B6EA");fadebottom,1;);
+	OnCommand=function(self)
+		self:FullScreen():diffuse(color("#00B6EA")):fadebottom(1)
+	end;
 };
 
 local function IsMikuBirthday()
@@ -37,16 +47,22 @@ end
 -- Miku's birthday
 if IsMikuBirthday() then
 	t[#t+1] = Def.Quad{
-		OnCommand=cmd(FullScreen;diffuse,color("#00F6EA");fadetop,1);
+		OnCommand=function(self)
+			self:FullScreen():diffuse(color("#00F6EA")):fadetop(1)
+		end;
 	};
 end
 
 t[#t+1] = LoadActor( THEME:GetPathG("","BGElements/DotTileBG") )..{
-	OnCommand=cmd(x,SCREEN_RIGHT+100;horizalign,right;vertalign,top;diffusealpha,0.2;zoom,2;cropleft,0.05;rotationz,5;fadeleft,1);
+	OnCommand=function(self)
+		self:x(SCREEN_RIGHT+100):horizalign(right):vertalign(top):diffusealpha(0.2):zoom(2):cropleft(0.05):rotationz(5):fadeleft(1)
+	end;
 };
 
 t[#t+1] = LoadActor( THEME:GetPathG("","BGElements/DotCircle") )..{
-	OnCommand=cmd(x,SCREEN_RIGHT;y,SCREEN_BOTTOM;diffusealpha,0.5;spin;effectmagnitude,0,0,10);
+	OnCommand=function(self)
+		self:x(SCREEN_RIGHT):y(SCREEN_BOTTOM):diffusealpha(0.5):spin():effectmagnitude(0,0,10)
+	end;
 };
 
 local TileXAmm = 4
@@ -61,10 +77,16 @@ local ColorsToUse = {
 
 for i=1,5 do
 t[#t+1] = Def.ActorFrame{
-	OnCommand=cmd(CenterX;y,SCREEN_CENTER_Y-40+(15*i));
+	OnCommand=function(self)
+		self:CenterX():y(SCREEN_CENTER_Y-40+(15*i))
+	end;
 	LoadActor( THEME:GetPathG("","BGElements/SmoothLine") )..{
-		InitCommand=cmd(diffuse,ColorsToUse[i];z,math.random(-30,150);fadetop,1;wag;effectmagnitude,0,0,5;effectperiod,20;effectoffset,7*i);
-		OnCommand=cmd(texcoordvelocity,(0.15/i),0;customtexturerect,0,0,TileXAmm,1;zoom,0.20;zoomx,0.2*TileXAmm;diffusealpha,(300/self:GetZ()));
+		InitCommand=function(self)
+			self:diffuse(ColorsToUse[i]):z(math.random(-30,150)):fadetop(1):wag():effectmagnitude(0,0,5):effectperiod(20):effectoffset(7*i)
+		end;
+		OnCommand=function(self)
+			self:texcoordvelocity((0.15/i),0):customtexturerect(0,0,TileXAmm,1):zoom(0.20):zoomx(0.2*TileXAmm):diffusealpha((300/self:GetZ()))
+		end;
 	};
 };
 end

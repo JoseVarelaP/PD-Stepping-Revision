@@ -5,11 +5,15 @@ local t = Def.ActorFrame{}
 -- }
 
 t[#t+1] = LoadActor( THEME:GetPathG("","BGElements/CircleInner") )..{
-	OnCommand=cmd(x,SCREEN_RIGHT;diffusealpha,0.3;spin;effectmagnitude,0,0,24;zoom,1.2);
+	OnCommand=function(self)
+		self:x(SCREEN_RIGHT):diffusealpha(0.3):spin():effectmagnitude(0,0,24):zoom(1.2)
+	end;
 };
 
 t[#t+1] = LoadActor( THEME:GetPathG("","BGElements/CircleOuter") )..{
-	OnCommand=cmd(x,SCREEN_RIGHT;zoom,1.2;queuecommand,"Loop");
+	OnCommand=function(self)
+		self:x(SCREEN_RIGHT):zoom(1.2):queuecommand("Loop")
+	end;
 	LoopCommand=function(self)
 	self:diffusealpha(0.2):linear(5)
 	:diffusealpha(0.8):decelerate(1)
@@ -19,7 +23,9 @@ t[#t+1] = LoadActor( THEME:GetPathG("","BGElements/CircleOuter") )..{
 };
 
 t[#t+1] = Def.Quad{
-	OnCommand=cmd(zoom,1.2;queuecommand,"Loop");
+	OnCommand=function(self)
+		self:zoom(1.2):queuecommand("Loop")
+	end;
 	LoopCommand=function(self)
 	self:diffusealpha(0):zoom(0)
 	:x( math.random(0,SCREEN_RIGHT) ):y( math.random(0,SCREEN_BOTTOM) )
@@ -30,7 +36,9 @@ t[#t+1] = Def.Quad{
 }
 
 t[#t+1] = LoadActor( THEME:GetPathG("","BGElements/CircleOuter") )..{
-	OnCommand=cmd(x,SCREEN_RIGHT;zoom,1.2;queuecommand,"Loop");
+	OnCommand=function(self)
+		self:x(SCREEN_RIGHT):zoom(1.2):queuecommand("Loop")
+	end;
 	LoopCommand=function(self)
 	self:diffusealpha(0):zoom(1.2):sleep(5)
 	:diffusealpha(1):linear(6)
@@ -40,29 +48,41 @@ t[#t+1] = LoadActor( THEME:GetPathG("","BGElements/CircleOuter") )..{
 };
 
 t[#t+1] = Def.Quad{
-	OnCommand=cmd(zoomto,SCREEN_WIDTH,100;Center;diffuse,0,0,0,1;fadetop,0.1;fadebottom,0.1);
+	OnCommand=function(self)
+		self:zoomto(SCREEN_WIDTH,100):Center():diffuse(0,0,0,1):fadetop(0.1):fadebottom(0.1)
+	end;
 };
 
 t[#t+1] = Def.ActorFrame{
-	OnCommand=cmd(CenterY;x,SCREEN_LEFT+20);
+	OnCommand=function(self)
+		self:CenterY():x(SCREEN_LEFT+20)
+	end;
 	
 	LoadFont("Common Normal")..{
 	Text=GAMESTATE:GetCurrentSong():GetDisplayArtist();
-	InitCommand=cmd(horizalign,left;zoom,1;shadowlengthy,2;y,-10);
+	InitCommand=function(self)
+		self:horizalign(left):zoom(1):shadowlengthy(2):y(-10)
+	end;
 	};
 
 	LoadFont("Common Normal")..{
 	Text=GAMESTATE:GetCurrentSong():GetDisplayFullTitle();
-	InitCommand=cmd(horizalign,left;shadowlengthy,2;y,10;zoom,0.8);
+	InitCommand=function(self)
+		self:horizalign(left):shadowlengthy(2):y(10):zoom(0.8)
+	end;
 	};
 }
 
 t[#t+1] = Def.ActorFrame{
-	OnCommand=cmd(CenterY;x,SCREEN_RIGHT-20);
+	OnCommand=function(self)
+		self:CenterY():x(SCREEN_RIGHT-20)
+	end;
 	
 	LoadFont("Common Normal")..{
 	Text=SecondsToMMSS(GAMESTATE:GetCurrentSong():MusicLengthSeconds());
-	InitCommand=cmd(horizalign,right,zoom,1;shadowlengthy,2);
+	InitCommand=function(self)
+		self:horizalign(right,zoom,1):shadowlengthy(2)
+	end;
 	};
 
 }

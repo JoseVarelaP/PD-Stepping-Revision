@@ -26,19 +26,29 @@ end
 local t = Def.ActorFrame{}
 
 t[#t+1] = LoadActor( THEME:GetPathG("","Evaluation/Header") )..{
-	OnCommand=cmd(shadowlengthy,3;horizalign,left;vertalign,top;zoom,1.2;x,SCREEN_LEFT-300;y,12);
+	OnCommand=function(self)
+		self:shadowlengthy(3):horizalign(left):vertalign(top):zoom(1.2):x(SCREEN_LEFT-300):y(12)
+	end;
 	};
 
 t[#t+1] = Def.ActorFrame{
-	OnCommand=cmd(CenterX;y,SCREEN_CENTER_Y-145);
+	OnCommand=function(self)
+		self:CenterX():y(SCREEN_CENTER_Y-145)
+	end;
 	LoadActor( THEME:GetPathG("","Evaluation/StatusBG") )..{
-	OnCommand=cmd(shadowlengthy,3;zoom,1.2);
+	OnCommand=function(self)
+		self:shadowlengthy(3):zoom(1.2)
+	end;
 	};
 };
 
 t[#t+1] = Def.Sprite {
-	InitCommand=cmd(diffusealpha,1;horizalign,left;x,SCREEN_LEFT+100;y,SCREEN_CENTER_Y+20;diffusealpha,0);
-	BeginCommand=cmd(queuecommand,"UpdateBackground");
+	InitCommand=function(self)
+		self:diffusealpha(1):horizalign(left):x(SCREEN_LEFT+100):y(SCREEN_CENTER_Y+20):diffusealpha(0)
+	end;
+	BeginCommand=function(self)
+		self:queuecommand("UpdateBackground")
+	end;
 	UpdateBackgroundCommand=function(self)
 	self:finishtweening()
 	self:visible(false)
@@ -86,13 +96,17 @@ for player in ivalues(Players) do
 	end;
 
 		LoadActor( THEME:GetPathG("","Evaluation/ScoreInfoBG") )..{
-			InitCommand=cmd(horizalign,right;zoom,1.3;shadowlengthy,3);
+			InitCommand=function(self)
+				self:horizalign(right):zoom(1.3):shadowlengthy(3)
+			end;
 		};
 
 		Def.BitmapText{
 			Text=string.format("% 4d", STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetScore() ),
 			Font="dinamight/25px",
-			InitCommand=cmd(strokecolor,color("#2B3D44"));
+			InitCommand=function(self)
+				self:strokecolor(color("#2B3D44"))
+			end;
 			OnCommand=function(self)
 			self:horizalign(right):x( -30 ):y( 105 ):zoom(0.9)
 			end,
@@ -101,7 +115,9 @@ for player in ivalues(Players) do
 		Def.BitmapText{
 			Text="SCORE",
 			Font="dinamight/25px",
-			InitCommand=cmd(strokecolor,color("#2B3D44"));
+			InitCommand=function(self)
+				self:strokecolor(color("#2B3D44"))
+			end;
 			OnCommand=function(self)
 			self:horizalign(left):x( -370 ):y( 105 ):zoom(0.9)
 			end,
@@ -113,7 +129,9 @@ for player in ivalues(Players) do
 		t[#t+1] = Def.BitmapText{
 		Text=string.format("% 4d", NoteScore(player,ValuesToFind[NVal]) ).." /",
 		Font="dinamight/25px",
-		InitCommand=cmd(strokecolor,color("#2B3D44"));
+		InitCommand=function(self)
+			self:strokecolor(color("#2B3D44"))
+		end;
 		OnCommand=function(self)
 		self:x( (player == PLAYER_1 and SCREEN_CENTER_X+260) or SCREEN_CENTER_X+130 ):y( SCREEN_CENTER_Y-(129-20)+(22.9*NVal) )
 		:horizalign(right):zoom(0.7)
@@ -123,7 +141,9 @@ for player in ivalues(Players) do
 		t[#t+1] = Def.BitmapText{
 		Text=NotePercentage(player,ValuesToFind[NVal]),
 		Font="dinamight/25px",
-		InitCommand=cmd(strokecolor,color("#2B3D44"));
+		InitCommand=function(self)
+			self:strokecolor(color("#2B3D44"))
+		end;
 		OnCommand=function(self)
 		self:x( (player == PLAYER_1 and SCREEN_CENTER_X+355) or SCREEN_CENTER_X+130 ):y( SCREEN_CENTER_Y-(129-20)+(22.9*NVal) )
 		:horizalign(right):zoom(0.7):cropright(0.6)
@@ -133,7 +153,9 @@ for player in ivalues(Players) do
 		t[#t+1] = Def.BitmapText{
 		Text=string.sub(NotePercentage(player,ValuesToFind[NVal]), 3),
 		Font="dinamight/25px",
-		InitCommand=cmd(strokecolor,color("#2B3D44"));
+		InitCommand=function(self)
+			self:strokecolor(color("#2B3D44"))
+		end;
 		OnCommand=function(self)
 		self:x( (player == PLAYER_1 and SCREEN_CENTER_X+350) or SCREEN_CENTER_X+130 ):y( SCREEN_CENTER_Y-(129-21)+(22.9*NVal) )
 		:horizalign(right):zoom(0.6)
@@ -143,7 +165,9 @@ for player in ivalues(Players) do
 		t[#t+1] = Def.BitmapText{
 		Text=":",
 		Font="dinamight/25px",
-		InitCommand=cmd(strokecolor,color("#2B3D44"));
+		InitCommand=function(self)
+			self:strokecolor(color("#2B3D44"))
+		end;
 		OnCommand=function(self)
 		self:x( (player == PLAYER_1 and SCREEN_CENTER_X+160) or SCREEN_CENTER_X+130 ):y( SCREEN_CENTER_Y-(129-20)+(22.9*NVal) )
 		:horizalign(right):zoom(.7)

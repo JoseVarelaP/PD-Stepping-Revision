@@ -14,8 +14,19 @@ end
 
 local t = Def.ActorFrame{};
 
-t[#t+1] = LoadActor("Base")..{ OnCommand=cmd(shadowlengthy,3); };
-t[#t+1] = LoadFont("Common Normal")..{ Text="Character", OnCommand=cmd(diffuse,color("#54918D");y,-50;x,40;zoom,0.8); };
+if (DIVA:HasAnyCharacters(PLAYER_1) or DIVA:HasAnyCharacters(PLAYER_2)) then
+	t[#t+1] = LoadActor("Base")..{
+		 OnCommand=function(self)
+			self:shadowlengthy(3)
+		end
+	};
+	
+	t[#t+1] = LoadFont("Common Normal")..{
+		 Text="Character", OnCommand=function(self)
+			self:diffuse(color("#54918D")):xy(40,-50):zoom(0.8)
+		end
+	};
+end
 
 for player in ivalues(PlayerNumber) do
 	if GAMESTATE:IsPlayerEnabled(player) and DIVA:IsSafeToLoad(player) then

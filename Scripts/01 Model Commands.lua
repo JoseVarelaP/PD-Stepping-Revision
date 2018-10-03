@@ -138,6 +138,11 @@ function DIVA:CheckBooleanOnLocationSetting(setting)
 	return false
 end
 
+function Actor:xyz(xpos,ypos,zpos)
+	self:xy(xpos,ypos):z(zpos)
+	return self
+end
+
 -- For all kinds of settings that are number based
 function DIVA:CheckStageConfigurationNumber(def,conf)
 	local result = def or 0

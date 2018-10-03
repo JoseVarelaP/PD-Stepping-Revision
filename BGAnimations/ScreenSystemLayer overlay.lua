@@ -5,19 +5,33 @@ t[#t+1] = LoadActor(THEME:GetPathB("ScreenSystemLayer","aux"));
 t[#t+1] = Def.ActorFrame { };
 	-- Text
 t[#t+1] = Def.ActorFrame {
-	InitCommand=cmd(Center);
+	InitCommand=function(self)
+		self:Center()
+	end;
 	LoadActor( THEME:GetPathG("","WideInterpreter"), { File="Global/TextBox", Width=SCREEN_WIDTH/1.5, Height=50 } )..{
-	InitCommand=cmd(diffuse,1,0,0,0);
-	OnCommand=cmd(finishtweening;zoom,0;zoom,1;diffusealpha,1);
-	OffCommand=cmd(sleep,3;linear,0.5;diffusealpha,0);
+	InitCommand=function(self)
+		self:diffuse(1,0,0,0)
+	end;
+	OnCommand=function(self)
+		self:finishtweening():zoom(0):zoom(1):diffusealpha(1)
+	end;
+	OffCommand=function(self)
+		self:sleep(3):linear(0.5):diffusealpha(0)
+	end;
 	};
 
 	Def.BitmapText{
 		Font="Common Normal";
 		Name="Text";
-		InitCommand=cmd(maxwidth,850;shadowlength,1;diffusealpha,0);
-		OnCommand=cmd(finishtweening;zoom,0;zoom,0.5;diffusealpha,1);
-		OffCommand=cmd(sleep,3;linear,0.5;diffusealpha,0);
+		InitCommand=function(self)
+			self:maxwidth(850):shadowlength(1):diffusealpha(0)
+		end;
+		OnCommand=function(self)
+			self:finishtweening():zoom(0):zoom(0.5):diffusealpha(1)
+		end;
+		OffCommand=function(self)
+			self:sleep(3):linear(0.5):diffusealpha(0)
+		end;
 	};
 	SystemMessageMessageCommand = function(self, params)
 		self:GetChild("Text"):settext( params.Message );
@@ -27,7 +41,9 @@ t[#t+1] = Def.ActorFrame {
 		end
 		self:playcommand( "Off" );
 	end;
-	HideSystemMessageMessageCommand = cmd(finishtweening);
+	HideSystemMessageMessageCommand = function(self)
+		self:finishtweening()
+	end;
 };
 
 return t;

@@ -8,19 +8,31 @@ local function ObtainSongOrCourseName()
 end
 
 t[#t+1] = Def.ActorFrame{
-	OnCommand=cmd(diffusealpha,0;addx,-30;decelerate,0.2;diffusealpha,1;addx,30;sleep,5);
-	OffCommand=cmd(decelerate,0.2;diffusealpha,0;addx,-30);
+	OnCommand=function(self)
+		self:diffusealpha(0):addx(-30):decelerate(0.2):diffusealpha(1):addx(30):sleep(5)
+	end;
+	OffCommand=function(self)
+		self:decelerate(0.2):diffusealpha(0):addx(-30)
+	end;
 		Def.Quad{
-			OnCommand=cmd(diffuse,Color.Black;y,SCREEN_BOTTOM-30;horizalign,left;vertalign,bottom;zoomto,500,70;faderight,1);
+			OnCommand=function(self)
+				self:diffuse(Color.Black):y(SCREEN_BOTTOM-30):horizalign(left):vertalign(bottom):zoomto(500,70):faderight(1)
+			end;
 		};
 
 		Def.Quad{
-			InitCommand=cmd(diffuse,Color.Black;y,SCREEN_BOTTOM-70;horizalign,left;vertalign,bottom;x,SCREEN_LEFT+110;zoomto,350,25;faderight,1;fadeleft,0.1);
-			OnCommand=cmd(diffusealpha,0.6);
+			InitCommand=function(self)
+				self:diffuse(Color.Black):y(SCREEN_BOTTOM-70):horizalign(left):vertalign(bottom):x(SCREEN_LEFT+110):zoomto(350,25):faderight(1):fadeleft(0.1)
+			end;
+			OnCommand=function(self)
+				self:diffusealpha(0.6)
+			end;
 		};
 
 		Def.Sprite {
-			InitCommand=cmd(diffusealpha,1;horizalign,left;vertalign,bottom;x,SCREEN_LEFT+50;y,SCREEN_BOTTOM-38);
+			InitCommand=function(self)
+				self:diffusealpha(1):horizalign(left):vertalign(bottom):x(SCREEN_LEFT+50):y(SCREEN_BOTTOM-38)
+			end;
 			CurrentSongChangedMessageCommand=function(self)
 			self:stoptweening()
 			self:linear(0.05):diffusealpha(0)
@@ -40,7 +52,9 @@ t[#t+1] = Def.ActorFrame{
 
 		LoadFont("Common Normal")..{
 				Text=ObtainSongOrCourseName();
-				InitCommand=cmd(zoom,0.7;horizalign,left;x,SCREEN_LEFT+110;y,SCREEN_BOTTOM-83);
+				InitCommand=function(self)
+					self:zoom(0.7):horizalign(left):x(SCREEN_LEFT+110):y(SCREEN_BOTTOM-83)
+				end;
 				OnCommand=function(self)
 					self:diffusealpha(0):linear(0.5):diffusealpha(1)
 				end;
@@ -49,8 +63,12 @@ t[#t+1] = Def.ActorFrame{
 };
 
 t[#t+1] = Def.Quad{
-	OnCommand=cmd(FullScreen;diffusealpha,0;sleep,5.2);
-	OffCommand=cmd(linear,0.5;diffusealpha,1);
+	OnCommand=function(self)
+		self:FullScreen():diffusealpha(0):sleep(5.2)
+	end;
+	OffCommand=function(self)
+		self:linear(0.5):diffusealpha(1)
+	end;
 };
 
 return t;
