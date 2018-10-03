@@ -13,6 +13,11 @@ t[#t+1] = Def.ActorFrame{
 };
 
 local ThemeNamesToLoad = {
+	-- Safe check for previous versions of PD:SR that
+	-- ran under the name DV-Stepping-Revision.
+	"DV-Stepping-Revision",
+	"DV-Stepping-Revision-master",
+	
 	"PD-Stepping-Revision",
 	"PD-Stepping-Revision-master",
 };
@@ -44,9 +49,9 @@ t.OnCommand=function(self)
 
 	if not DIVA_RandomSong then
 		DIVA_RandomSong = SONGMAN:GetRandomSong()
+		DIVA:ResetRandomSong()
 	end
 
-	DIVA:ResetRandomSong()
 
 
 	-- now let's roll
