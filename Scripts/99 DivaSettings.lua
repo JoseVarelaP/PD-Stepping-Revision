@@ -18,16 +18,15 @@ DSet = {
 		ExpX = function() return SCREEN_RIGHT-310 end,
 		ExpY = function() return SCREEN_CENTER_Y-50 end,
 		ExpOn = function(self)
-		self:wrapwidthpixels(370):horizalign(left):zoom(0.6)
-		:vertalign(top):diffusealpha(0):sleep(1)
+		self:wrapwidthpixels(370):align(0,0):zoom(0.6)
+		:diffusealpha(0):sleep(1)
 		:linear(0.1):diffusealpha(1)
 		end,
 		ExpOff = function(self) self:accelerate(0.2):diffusealpha(0) end,
 	},
 	TitleMenu = {
 		ScrollerTransform = function(self,offset,itemIndex,numItems)
-			self:y((70)*(itemIndex-(numItems-1)/2))
-			self:x(10*offset)
+			self:xy(10*offset, (70)*(itemIndex-(numItems-1)/2))
 		end,
 		LineNames = function()
 		local Result = ''
@@ -76,8 +75,7 @@ DSet = {
 		end,
 
 		RowTransform = function(self,positionIndex,itemIndex,numItems)
-		self:y( (SCREEN_CENTER_Y-WideScale(110,140)) + (WideScale(45,50)*positionIndex) )
-		self:x( 0*positionIndex )
+		self:xy( 0*positionIndex, (SCREEN_CENTER_Y-WideScale(110,140)) + (WideScale(45,50)*positionIndex) )
 		end,
 
 		LineSRCredits = function()
@@ -139,8 +137,7 @@ DSet = {
 		return "gamecommand;screen,ScreenDediCharsSettings;name,Dedicated Character Settings"
 		end,
 		RowTransform = function(self,positionIndex,itemIndex,numItems)
-		self:y( (SCREEN_CENTER_Y-120) + (40*positionIndex) )
-		self:x( 0*positionIndex )
+		self:xy( 0*positionIndex, (SCREEN_CENTER_Y-120) + (40*positionIndex) )
 		end,
 	},
 
@@ -157,7 +154,7 @@ DSet = {
 
 	Gameplay = {
 	LyricDisplay = function(self)
- 	self:xy(SCREEN_LEFT+60, SCREEN_BOTTOM-36):zoom(0.6):horizalign(left):draworder(101)
+ 	self:xy(SCREEN_LEFT+60, SCREEN_BOTTOM-36):zoom(0.6):halign(0):draworder(101)
 	end,
 	},
 
@@ -210,8 +207,7 @@ DSet = {
 
 	MusicWheel = {
 		WheelTransform = function(self,offsetFromCenter,itemIndex,numItems)
-			self:y( offsetFromCenter*85 )
-			self:x( 10*offsetFromCenter )
+			self:xy( 10*offsetFromCenter, offsetFromCenter*85 )
 			self:diffusealpha(1)
 			if itemIndex < 7 then self:diffusealpha( 0.25 ) end
 			if itemIndex > 13 then self:diffusealpha( 0.55 ) end
