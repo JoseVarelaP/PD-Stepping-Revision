@@ -38,4 +38,8 @@ t[#t+1] = Def.ActorFrame{
 	};
 };
 
+t.BeginCommand=function(self)
+	SCREENMAN:GetTopScreen():PostScreenMessage( 'SM_BeginFadingOut', (THEME:GetMetric("ScreenInit","TimerSeconds")) );
+end;
+
 return t;
