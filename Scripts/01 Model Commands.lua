@@ -209,6 +209,10 @@ function DIVA:HasSubtitles(WhatToLoad)
 	return string.len( WhatToLoad:GetDisplaySubTitle() ) > 1
 end
 
+function DIVA:CharactersAllowedToSelect()
+	return ThemePrefs.Get("DedicatedCharacterShow") and #CHARMAN:GetAllCharacters() > 0
+end
+
 -- Check if the current model from the player has any issues.
 function DIVA:IsSafeToLoad(pn)
 	-- Don't apply the check if we have the character set to "off" (default)

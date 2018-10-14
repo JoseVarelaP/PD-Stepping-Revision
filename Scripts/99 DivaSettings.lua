@@ -206,4 +206,14 @@ DSet = {
 			if itemIndex == 8 then self:x(10) end
 		end,
 	},
-}
+};
+
+-- Branch Overrrides
+DivaBranch = {
+	AfterProfileLoad = function()
+		if DIVA:CharactersAllowedToSelect() then
+			return "ScreenDivaSelectCharacter"
+		end
+		return "ScreenSelectPlayMode"
+	end,
+};
