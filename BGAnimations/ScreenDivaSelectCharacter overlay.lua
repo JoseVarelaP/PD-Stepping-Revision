@@ -105,7 +105,7 @@ local function TestActorScroller()
 			LoadFont("proto sans/20px") ..{
 			OnCommand=function(self)
 				self:zoom(0.6):y(0):shadowlength(1):diffuse(Color.Blue):strokecolor(Color.White)
-				self:settext( value:GetDisplayName() )
+				self:settext( value:GetDisplayName() ):wrapwidthpixels(100)
 			end;
 			};
 		};
@@ -118,8 +118,7 @@ end
 local StaticItems = Def.ActorFrame{
 	LoadFont("Common Normal")..{
 		Text=Screen.String("HeaderText");
-		InitCommand=function(self)
-			self:vertalign(top):horizalign(left):xy(30,6):zoom(0.8)
+		InitCommand=function(self) self:align(0,0):xy(30,6):zoom(0.8)
 		end;
 	};
 };
