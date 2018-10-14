@@ -4,14 +4,17 @@ local t=Def.ActorFrame{}
 local ScreenNames = CHARMAN:GetAllCharacters();
 
 ------- Globals -----
-local CurrChoice = 1;
+local ChoiceTable = {};
+local ConfirmedCh = {};
 ------- Globals -----
 
 local function VerifyValues()
 	SBank:GetChild("MoveChoice"):play()
 	-- Current Menu Choice
-	if CurrChoice <= 0 					then CurrChoice = #ScreenNames end
-	if CurrChoice >= #ScreenNames+1 	then CurrChoice = 1 end
+	for player in ivalues(PlayerNumber) do
+		if ChoiceTable[player] <= 0 				then ChoiceTable[player] = #ScreenNames end
+		if ChoiceTable[player] >= #ScreenNames+1 	then ChoiceTable[player] = 1 end
+	end
 end
 
 --------------------------------------------------------
@@ -23,24 +26,37 @@ local function ScrollInput(event)
 		if event.GameButton == "Start" then
 			SBank:GetChild("StartSound"):play()
 
-			GAMESTATE:SetCharacter( PLAYER_1, ScreenNames[CurrChoice]:GetCharacterID() )
+			if event.PlayerNumber then
+				ConfirmedCh[event.PlayerNumber] = true
+				GAMESTATE:SetCharacter( event.PlayerNumber, ScreenNames[ChoiceTable[event.PlayerNumber]]:GetCharacterID() )
+			end
 
-			-- move to next screen
-			SCREENMAN:GetTopScreen():SetNextScreenName("ScreenSelectMusic")
-			SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
+			if DIVA:BothPlayersEnabled() and (ConfirmedCh["PlayerNumber_P1"] and ConfirmedCh["PlayerNumber_P2"]) then
+				-- move to next screen
+				SCREENMAN:GetTopScreen():SetNextScreenName("ScreenSelectMusic")
+				SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
+			elseif not DIVA:BothPlayersEnabled() and (ConfirmedCh["PlayerNumber_P1"] or ConfirmedCh["PlayerNumber_P2"]) then
+				-- move to next screen
+				SCREENMAN:GetTopScreen():SetNextScreenName("ScreenSelectMusic")
+				SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
+			end
+
 		end
 		if event.GameButton == "MenuRight" then
-			CurrChoice = CurrChoice + 1
-			VerifyValues()
+			if event.PlayerNumber and not ConfirmedCh[event.PlayerNumber] then
+				ChoiceTable[event.PlayerNumber] = ChoiceTable[event.PlayerNumber] + 1
+			end
 		end
 		if event.GameButton == "MenuLeft" then
-			CurrChoice = CurrChoice - 1
-			VerifyValues()
+			if event.PlayerNumber and not ConfirmedCh[event.PlayerNumber] then
+				ChoiceTable[event.PlayerNumber] = ChoiceTable[event.PlayerNumber] - 1
+			end
 		end
 		if event.GameButton == "Back" then
 			SCREENMAN:GetTopScreen():SetPrevScreenName("ScreenTitleMenu")
 			SCREENMAN:GetTopScreen():Cancel()
 		end
+		VerifyValues()
 		MESSAGEMAN:Broadcast("UpdateAllValues")
 	end
 end
@@ -100,34 +116,6 @@ local function TestActorScroller()
 end
 
 local StaticItems = Def.ActorFrame{
-	Def.ActorScroller{
-		Name = 'Scroller';
-		NumItemsToDraw=11;
-		OnCommand=function(self)
-			self:xy(SCREEN_CENTER_X,SCREEN_BOTTOM-100)
-			:SetFastCatchup(true):SetSecondsPerItem(0.2)
-			:SetDrawByZPosition(true):zoom( WideScale(0.6,0.8) ):SetWrap(true)
-		end;
-		TransformFunction=function(self, offset, itemIndex, numItems)
-			local curve = math.pi;
-			local WHEEL_3D_RADIUS = 1400;
-			local rotationx_radians = scale(offset,-numItems/2,numItems/2,-curve/2,curve/2);
-			self:x( WHEEL_3D_RADIUS * math.sin(rotationx_radians) );
-			if CurrChoice-3 > itemIndex then
-				self:x( WHEEL_3D_RADIUS * math.sin(rotationx_radians) );
-			end
-
-			self:finishtweening():decelerate(0.2)
-			:diffuse( itemIndex == CurrChoice-1 and Color.White or color("0.3,0.3,0.3,1") )
-			:z( itemIndex == CurrChoice-1 and 110 or (90 * math.cos(rotationx_radians*offset)) )
-			self:diffusealpha( 2 * math.cos(rotationx_radians*offset) )
-		end;
-		children = TestActorScroller();
-		UpdateAllValuesMessageCommand=function(self)
-		self:SetDestinationItem(CurrChoice-1)
-		end;
-	};
-
 	LoadFont("Common Normal")..{
 		Text=Screen.String("HeaderText");
 		InitCommand=function(self)
@@ -135,6 +123,52 @@ local StaticItems = Def.ActorFrame{
 		end;
 	};
 };
+
+local function ModelsToLoad()
+	return DIVA:BothPlayersEnabled() and 7 or 11
+end
+
+for player in ivalues(PlayerNumber) do
+	ChoiceTable[player] = 1;
+	ConfirmedCh[player] = false;
+	StaticItems[#StaticItems+1] = Def.ActorScroller{
+		Name = player..'Scroller';
+		Condition=GAMESTATE:IsHumanPlayer(player);
+		NumItemsToDraw=ModelsToLoad();
+		OnCommand=function(self)
+			self:xy(SCREEN_CENTER_X,SCREEN_BOTTOM-100)
+
+			if DIVA:BothPlayersEnabled() then
+				self:x( player == PLAYER_1 and SCREEN_LEFT+240 or SCREEN_RIGHT-240 )
+			end
+
+			self:SetFastCatchup(true):SetSecondsPerItem(0.2)
+			:SetDrawByZPosition(true):zoom( WideScale(0.6,0.8) ):SetWrap(true)
+		end;
+		TransformFunction=function(self, offset, itemIndex, numItems)
+			local curve = math.pi;
+			local WHEEL_3D_RADIUS = 1400;
+			local rotationx_radians = scale(offset,-numItems/2,numItems/2,-curve/2,curve/2);
+			self:x( WHEEL_3D_RADIUS * math.sin(rotationx_radians) );
+
+			if DIVA:BothPlayersEnabled() then
+				self:x( WHEEL_3D_RADIUS/1.5 * math.sin(rotationx_radians) );
+			end
+			self:finishtweening():decelerate(0.2)
+			:diffuse( itemIndex == ChoiceTable[player]-1 and Color.White or color("0.3,0.3,0.3,1") )
+			:z( itemIndex == ChoiceTable[player]-1 and 110 or (90 * math.cos(rotationx_radians*offset)) )
+
+			self:diffusealpha( 2 * math.cos(rotationx_radians*offset) )
+			if DIVA:BothPlayersEnabled() then
+				self:diffusealpha( 2 * math.cos(rotationx_radians*offset)/2 )
+			end
+		end;
+		children = TestActorScroller();
+		UpdateAllValuesMessageCommand=function(self)
+		self:SetDestinationItem(ChoiceTable[player]-1)
+		end;
+	};
+end
 
 t[#t+1] = Controller
 t[#t+1] = SoundBank
