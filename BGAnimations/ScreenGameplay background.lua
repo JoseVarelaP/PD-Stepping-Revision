@@ -243,14 +243,6 @@ end
 if ThemePrefs.Get("DedicatedCharacterShow") and (DIVA:HasAnyCharacters(PLAYER_1) or DIVA:HasAnyCharacters(PLAYER_2)) then
 	for player in ivalues(PlayerNumber) do
 		if GAMESTATE:IsPlayerEnabled(player) and DIVA:IsSafeToLoad(player) then
-
-		local function BabySizeCheck(pn)
-			if DIVA:HasAnyCharacters(pn) and string.find(GAMESTATE:GetCharacter(pn):GetDisplayName(), "Baby") then
-				self:zoom(0.7)
-			end
-
-			return self
-		end
 		-- This will be the warmup model.
 		t[#t+1] = Def.Model {
 				Condition=GAMESTATE:GetCharacter(player):GetDisplayName() ~= "default",
@@ -267,11 +259,7 @@ if ThemePrefs.Get("DedicatedCharacterShow") and (DIVA:HasAnyCharacters(PLAYER_1)
 				-- Check function to see how it works.
 				self:rate( UpdateModelRate() )
 				self:sleep(Frm)
-				if now<start then
-					self:visible(true)
-				else
-					self:visible(false)
-				end
+				self:visible( now<start and true or false)
 				self:queuecommand("UpdateRate")
 				end,
 		};
@@ -296,13 +284,8 @@ if ThemePrefs.Get("DedicatedCharacterShow") and (DIVA:HasAnyCharacters(PLAYER_1)
 				UpdateRateCommand=function(self)
 				-- Check function to see how it works.
 				self:rate( UpdateModelRate() )
-				print( UpdateModelRate() )
 				self:sleep(Frm)
-				if now<start then
-					self:visible(false)
-				else
-					self:visible(true)
-				end
+				self:visible( now>start and true or false)
 				self:queuecommand("UpdateRate")
 				end,
 		};
