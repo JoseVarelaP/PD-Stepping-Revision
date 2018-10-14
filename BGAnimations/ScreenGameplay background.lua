@@ -236,10 +236,26 @@ local function UpdateModelRate()
 	end
 end
 
+--[[
+	This function is quite literally for one specific thing.
+	That thing being Baby-Lon. I was mentioned about this specific model,
+	being too big from its original size, so this function checks who has Baby-Lon.
+	And if it does, we can do a model size shrink to that player.
+]]
 local function HasBabyCharacter(pn)
 	return GAMESTATE:IsPlayerEnabled(pn) and string.find(GAMESTATE:GetCharacter(pn):GetDisplayName(), "Baby") and DIVA:IsSafeToLoad(pn)
 end
 
+--[[
+	The actual character.
+	Checks if the character is functional, is loaded by the player, and if the Dedi Character Show is enabled.
+	I really wish I could make this only use one model instead of two.
+	It would save a lot of space, without having to do duplicates.
+
+	But due to StepMania's inability to load bones to models directly, I have to "trick" the user
+	Into believing that the character has started dancing, by loading two, and then hiding the
+	warmup model and showing the dance character once the very first note has passed.
+]]
 if ThemePrefs.Get("DedicatedCharacterShow") and (DIVA:HasAnyCharacters(PLAYER_1) or DIVA:HasAnyCharacters(PLAYER_2)) then
 	for player in ivalues(PlayerNumber) do
 		if GAMESTATE:IsPlayerEnabled(player) and DIVA:IsSafeToLoad(player) then

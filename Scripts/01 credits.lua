@@ -1,5 +1,5 @@
 PDSRPInfo = {
-	Version = "0.5.3-c",
+	Version = "0.5.4-c",
 }
 
 function GenerateHeader(texttomake)

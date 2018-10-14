@@ -167,28 +167,20 @@ DSet = {
 	SelectMusic = {
 		DescriptionSet = function(self,param)
 			if param.Steps then
-				if param.Steps and string.len( param.Steps:GetDescription() ) > 1 then
-					self:settext( 
-							ToEnumShortString(param.Steps:GetDifficulty())..
-							"\n"
-							..param.Steps:GetDescription()
-								)
+			local TextRes = ToEnumShortString(param.Steps:GetDifficulty())
+			self:zoom( 0.6 )
+			self:stopeffect()
+				if param.Steps:GetDescription() ~= "" then
+					TextRes = TextRes .."\n"..param.Steps:GetDescription()
 					self:zoom( 0.4 )
-				else
-					self:settext( ToEnumShortString(param.Steps:GetDifficulty()) )
-					self:zoom( 0.6 )
+					if param.Steps:IsAnEdit() then
+						TextRes = "Edit\n".. param.Steps:GetDescription()
+						self:diffuseshift()
+						self:effectcolor1(0,1,1,1)
+						self:effectcolor2(0,0.8,0.8,1)
+					end
 				end
-				self:stopeffect()
-			end
-			if param.Steps and param.Steps:IsAnEdit() then
-				if string.len( param.Steps:GetDescription() ) > 1 then
-					self:settext( "Edit\n".. param.Steps:GetDescription() )
-				else
-					self:settext( "Edit" )
-				end
-				self:diffuseshift()
-				self:effectcolor1(0,1,1,1)
-				self:effectcolor2(0,0.8,0.8,1)
+			self:settext( TextRes )
 			end
 		end,
 
