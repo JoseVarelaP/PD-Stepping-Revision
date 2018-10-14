@@ -211,7 +211,12 @@ local function UpdateModelRate()
 	-- StepMania always kept a rate of 0.75 to 1.5, I wanted to break it a little bit more.
 	
 	-- In case the song is on a rate, then we can multiply it.
-	local MusicRate = GAMESTATE:GetSongOptionsObject("ModsLevel_Song"):MusicRate()
+	-- It also checks for the song's Haste, if you're using that.
+	-- Safe check in case Obtaining HasteRate fails
+	local MusicRate = 1
+	if SCREENMAN:GetTopScreen() and SCREENMAN:GetTopScreen():GetHasteRate() then
+		MusicRate = SCREENMAN:GetTopScreen():GetHasteRate()
+	end
 	local BPM = (GAMESTATE:GetSongBPS()*60)
 	
 	-- We're using scale to compare higher values with lower values.
@@ -222,17 +227,30 @@ local function UpdateModelRate()
 
 	-- Then take what we have and update depending on the music rate.
 	local ToConvert = Clamped*MusicRate
+	local SPos = GAMESTATE:GetSongPosition()
 
-	if not GAMESTATE:GetSongPosition():GetFreeze() then
+	if not SPos:GetFreeze() or not SPos:GetDelay() then
 		return ToConvert
 	else
 		return 0
 	end
 end
 
+local function HasBabyCharacter(pn)
+	return GAMESTATE:IsPlayerEnabled(pn) and string.find(GAMESTATE:GetCharacter(pn):GetDisplayName(), "Baby") and DIVA:IsSafeToLoad(pn)
+end
+
 if ThemePrefs.Get("DedicatedCharacterShow") and (DIVA:HasAnyCharacters(PLAYER_1) or DIVA:HasAnyCharacters(PLAYER_2)) then
 	for player in ivalues(PlayerNumber) do
 		if GAMESTATE:IsPlayerEnabled(player) and DIVA:IsSafeToLoad(player) then
+
+		local function BabySizeCheck(pn)
+			if DIVA:HasAnyCharacters(pn) and string.find(GAMESTATE:GetCharacter(pn):GetDisplayName(), "Baby") then
+				self:zoom(0.7)
+			end
+
+			return self
+		end
 		-- This will be the warmup model.
 		t[#t+1] = Def.Model {
 				Condition=GAMESTATE:GetCharacter(player):GetDisplayName() ~= "default",
@@ -242,6 +260,7 @@ if ThemePrefs.Get("DedicatedCharacterShow") and (DIVA:HasAnyCharacters(PLAYER_1)
 				OnCommand=function(self)
 				self:cullmode("CullMode_None")
 				if DIVA:BothPlayersEnabled() then self:x( (player == PLAYER_1 and 8) or -8 ) end
+				if HasBabyCharacter(player) then self:zoom(0.7) end
 				self:queuecommand("UpdateRate")
 				end,
 				UpdateRateCommand=function(self)
@@ -266,11 +285,10 @@ if ThemePrefs.Get("DedicatedCharacterShow") and (DIVA:HasAnyCharacters(PLAYER_1)
 					self:cullmode("CullMode_None")
 					DebugMessages.ModelLoad()
 				-- position time
-				if DIVA:BothPlayersEnabled() then
-					-- reminder that x position is inverted because we inverted the Y axis
-					-- to make the character face towards the screen.
-					self:x( (player == PLAYER_1 and 8) or -8 )
-				end
+				-- reminder that x position is inverted because we inverted the Y axis
+				-- to make the character face towards the screen.
+				if DIVA:BothPlayersEnabled() then self:x( (player == PLAYER_1 and 8) or -8 ) end
+				if HasBabyCharacter(player) then self:zoom(0.7) end
 				self:queuecommand("UpdateRate")
 				end,
 				-- Update Model animation speed depending on song's BPM.
@@ -278,6 +296,7 @@ if ThemePrefs.Get("DedicatedCharacterShow") and (DIVA:HasAnyCharacters(PLAYER_1)
 				UpdateRateCommand=function(self)
 				-- Check function to see how it works.
 				self:rate( UpdateModelRate() )
+				print( UpdateModelRate() )
 				self:sleep(Frm)
 				if now<start then
 					self:visible(false)
