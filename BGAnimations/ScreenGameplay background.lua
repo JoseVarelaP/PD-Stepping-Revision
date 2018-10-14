@@ -50,16 +50,6 @@ local t = Def.ActorFrame{
 	end;
 };
 
-if ThemePrefs.Get("DedicatedCharacterShow") and (DIVA:HasAnyCharacters(PLAYER_1) or DIVA:HasAnyCharacters(PLAYER_2)) then
-	t[#t+1] = Def.Quad{
-		Condition=ThemePrefs.Get("DedicatedCharacterShow") and ThemePrefs.Get("CurrentStageLocation") ~= "None";
-		OnCommand=function(self)
-			self:zoomto(1000,1000):diffuse(Color.Black);
-		end;
-		CurrentSongChangedMessageCommand=function(self) self:queuemessage("InitialTween") end;
-	};
-end
-
 -- This is to load the stage's time of day.
 -- It goes along the Current Stage Lighting setting found on the
 -- Theme Options.
@@ -149,7 +139,7 @@ t[#t+1] = Def.Quad{
 		:queuemessage("InitialTween"):queuecommand("WaitForStart");
 	end;
 	CurrentSongChangedMessageCommand=function(self)
-		self:queuecommand("WaitForStart");
+		self:stoptweening():queuecommand("WaitForStart"):queuemessage("InitialTween")
 	end;
 	WaitForStartCommand=function(self)
 	-- set globals, we need these later.
