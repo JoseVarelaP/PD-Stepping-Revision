@@ -145,10 +145,10 @@ t[#t+1] = Def.ActorFrame {
 				self:zoom(0.8):x(0):y(60)
 			end;
 			StartSelectingStepsMessageCommand=function(self)
-				self:decelerate(0.2):y(20):zoom(1.4)
+				self:decelerate(0.2):y(20):zoom(1.6)
 			end;
 			TwoPartConfirmCanceledMessageCommand=function(self)
-				self:decelerate(0.2):y(40):zoom(1.2)
+				self:decelerate(0.2):y(40):zoom(1.5)
 			end;
 			PlayerJoinedMessageCommand=function(self)
 				self:queuecommand("Set")
