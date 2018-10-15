@@ -147,6 +147,10 @@ DSet = {
 
 			Result = Result .. "DediSongData,"
 			Result = Result .. "DediMeasureCamera,"
+			Result = Result .. "ModelRateBPMLow,"
+			Result = Result .. "ModelRateBPMMax,"
+			Result = Result .. "ModelRateMulLow,"
+			Result = Result .. "ModelRateMulMax,"
 
 			return Result;
 		end,

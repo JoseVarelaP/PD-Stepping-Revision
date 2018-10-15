@@ -209,6 +209,12 @@ t[#t+1] = Def.ActorFrame{
 local function UpdateModelRate()
 	-- The real kicker, recreating SM's true tempo updater.
 	-- StepMania always kept a rate of 0.75 to 1.5, I wanted to break it a little bit more.
+
+	-- These are options
+	local RangeMax = ThemePrefs.Get("ModelRateBPMMax")
+	local RangeLow = ThemePrefs.Get("ModelRateBPMLow")
+	local MultiMax = ThemePrefs.Get("ModelRateMulMax")
+	local MultiLow = ThemePrefs.Get("ModelRateMulLow")
 	
 	-- In case the song is on a rate, then we can multiply it.
 	-- It also checks for the song's Haste, if you're using that.
@@ -220,7 +226,7 @@ local function UpdateModelRate()
 	local BPM = (GAMESTATE:GetSongBPS()*60)
 	
 	-- We're using scale to compare higher values with lower values.
-	local UpdateScale = scale( BPM, 60, 300, 0.75, 1.5 );
+	local UpdateScale = scale( BPM, RangeLow, RangeMax, MultiLow, MultiMax );
 
 	-- Then clamp it so it's on a max and a low ammount
 	local Clamped = clamp( UpdateScale, 0.5, 2.5 );
@@ -261,7 +267,6 @@ if ThemePrefs.Get("DedicatedCharacterShow") and (DIVA:HasAnyCharacters(PLAYER_1)
 		if GAMESTATE:IsPlayerEnabled(player) and DIVA:IsSafeToLoad(player) then
 		-- This will be the warmup model.
 		t[#t+1] = Def.Model {
-				Condition=GAMESTATE:GetCharacter(player):GetDisplayName() ~= "default",
 				Meshes=GAMESTATE:GetCharacter(player):GetModelPath(),
 				Materials=GAMESTATE:GetCharacter(player):GetModelPath(),
 				Bones=GAMESTATE:GetCharacter(player):GetWarmUpAnimationPath(),
@@ -281,13 +286,11 @@ if ThemePrefs.Get("DedicatedCharacterShow") and (DIVA:HasAnyCharacters(PLAYER_1)
 		};
 		-- Load the Character
 		t[#t+1] = Def.Model {
-				Condition=GAMESTATE:GetCharacter(player):GetDisplayName() ~= "default",
 				Meshes=GAMESTATE:GetCharacter(player):GetModelPath(),
 				Materials=GAMESTATE:GetCharacter(player):GetModelPath(),
 				Bones=GAMESTATE:GetCharacter(player):GetDanceAnimationPath(),
 				OnCommand=function(self)
-					self:cullmode("CullMode_None")
-					DebugMessages.ModelLoad()
+				self:cullmode("CullMode_None")
 				-- position time
 				-- reminder that x position is inverted because we inverted the Y axis
 				-- to make the character face towards the screen.

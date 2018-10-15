@@ -46,13 +46,6 @@ DIVA = {
 	NoSongsWarning = function()
 	lua.ReportScriptError( THEME:GetString("Common","SongLoaderNoSongs") )
 	end,
-
-	Locations_List = {
-		{"Japonica",true},
-		{"CyberWorld",false},
-		{"RoofTop",false},
-		{"Penthouse",true},
-	};
 	
 	--[[
 		Here's the song table that will contain all the songs.

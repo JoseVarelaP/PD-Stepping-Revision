@@ -193,6 +193,32 @@ Prefs =
 		Choices = MusicFolder_AddChoices(),
 		Values = MusicFolder_AddChoices(),
 	},
+
+	-- Model Updater Options
+	ModelRateBPMLow =
+	{
+		Default = 60,
+		Choices = range(50, 800, 10),
+		Values = range(50, 800, 10),
+	},
+	ModelRateBPMMax =
+	{
+		Default = 300,
+		Choices = range(50, 800, 10),
+		Values = range(50, 800, 10),
+	},
+	ModelRateMulLow =
+	{
+		Default = 0.75,
+		Choices = range(0.25, 5, 0.25),
+		Values = range(0.25, 5, 0.25),
+	},
+	ModelRateMulMax =
+	{
+		Default = 1.5,
+		Choices = range(0.25, 5, 0.25),
+		Values = range(0.25, 5, 0.25),
+	},
 }
 
 ThemePrefs.InitAll(Prefs)
