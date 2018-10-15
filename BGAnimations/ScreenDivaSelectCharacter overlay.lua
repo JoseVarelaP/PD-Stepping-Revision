@@ -1,7 +1,7 @@
 local t=Def.ActorFrame{}
 
 -- Character List!
-local ScreenNames = CHARMAN:GetAllCharacters();
+local CharList = CHARMAN:GetAllCharacters();
 
 ------- Globals -----
 local ChoiceTable = {};
@@ -12,8 +12,8 @@ local function VerifyValues()
 	SBank:GetChild("MoveChoice"):play()
 	-- Current Menu Choice
 	for player in ivalues(PlayerNumber) do
-		if ChoiceTable[player] <= 0 				then ChoiceTable[player] = #ScreenNames end
-		if ChoiceTable[player] >= #ScreenNames+1 	then ChoiceTable[player] = 1 end
+		if ChoiceTable[player] <= 0 				then ChoiceTable[player] = #CharList end
+		if ChoiceTable[player] >= #CharList+1 	then ChoiceTable[player] = 1 end
 	end
 end
 
@@ -28,7 +28,7 @@ local function ScrollInput(event)
 
 			if event.PlayerNumber then
 				ConfirmedCh[event.PlayerNumber] = true
-				GAMESTATE:SetCharacter( event.PlayerNumber, ScreenNames[ChoiceTable[event.PlayerNumber]]:GetCharacterID() )
+				GAMESTATE:SetCharacter( event.PlayerNumber, CharList[ChoiceTable[event.PlayerNumber]]:GetCharacterID() )
 			end
 
 			if DIVA:BothPlayersEnabled() and (ConfirmedCh["PlayerNumber_P1"] and ConfirmedCh["PlayerNumber_P2"]) then
@@ -77,7 +77,7 @@ local ChoiceStrip = Def.ActorFrame{}
 
 local function TestActorScroller()
 	local t = Def.ActorFrame{}
-	for value in ivalues(ScreenNames) do
+	for value in ivalues(CharList) do
 		local Result = Def.ActorFrame{
 			OnCommand=function(self)
 			self:fov(90)
@@ -148,6 +148,9 @@ for player in ivalues(PlayerNumber) do
 			local curve = math.pi;
 			local WHEEL_3D_RADIUS = 1400;
 			local rotationx_radians = scale(offset,-numItems/2,numItems/2,-curve/2,curve/2);
+
+			-- Need to check this value, as the wheel gets completely broken if there's less
+			-- than 10-12 characters.
 			self:x( WHEEL_3D_RADIUS * math.sin(rotationx_radians) );
 
 			if DIVA:BothPlayersEnabled() then
