@@ -75,7 +75,7 @@ DSet = {
 		end,
 
 		RowTransform = function(self,positionIndex,itemIndex,numItems)
-		self:xy( 0*positionIndex, (SCREEN_CENTER_Y-WideScale(110,140)) + (WideScale(45,50)*positionIndex) )
+		self:xy( 0, (SCREEN_CENTER_Y-WideScale(110,140)) + (WideScale(45,50)*positionIndex) )
 		end,
 
 		LineSRCredits = function()
@@ -137,7 +137,7 @@ DSet = {
 		return "gamecommand;screen,ScreenDediCharsSettings;name,Dedicated Character Settings"
 		end,
 		RowTransform = function(self,positionIndex,itemIndex,numItems)
-		self:xy( 0*positionIndex, (SCREEN_CENTER_Y-120) + (40*positionIndex) )
+		self:xy( 0, (SCREEN_CENTER_Y-120) + (40*positionIndex) )
 		end,
 	},
 
@@ -180,8 +180,7 @@ DSet = {
 					if param.Steps:IsAnEdit() then
 						TextRes = "Edit\n".. param.Steps:GetDescription()
 						self:diffuseshift()
-						self:effectcolor1(0,1,1,1)
-						self:effectcolor2(0,0.8,0.8,1)
+						:effectcolor1(0,1,1,1):effectcolor2(0,0.8,0.8,1)
 					end
 				end
 			self:settext( TextRes )

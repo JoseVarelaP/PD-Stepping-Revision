@@ -235,7 +235,7 @@ local function UpdateModelRate()
 	local ToConvert = Clamped*MusicRate
 	local SPos = GAMESTATE:GetSongPosition()
 
-	if not SPos:GetFreeze() or not SPos:GetDelay() then
+	if not SPos:GetFreeze() and not SPos:GetDelay() then
 		return ToConvert
 	else
 		return 0
