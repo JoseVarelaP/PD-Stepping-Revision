@@ -12,20 +12,6 @@
 ]]
 local background = Def.ActorFrame{};
 
---[[
-	Change this to true in case you want to see the timer
-	before the next animation on your Log Display. (Only windows)
-	If mac, it needs to be on a SystemMessage as the mac cannot display the Log Display.
-	Unless you run the game via the terminal.
-
-	Just ensure this is on.
-	ShowLogOutput=1
-]]
-local DebugMode = true
-
--- In case you want frame-by-frame info on specific stuff.
-local MassiveLog = false
-
 -- In case location is disabled, but characters are still shown, display
 -- the song's background.
 if ThemePrefs.Get("CurrentStageLocation") == "None" then
@@ -84,52 +70,17 @@ local function CameraRandom()
 				CurrentStageCamera = 1
 			end
 			return CurrentStageCamera
-		else
-			return ( NumCam > 1 and math.random(1, NumCam ) ) or NumCam
 		end
-	else
-		return math.random(1,5)
+		return ( NumCam > 1 and math.random(1, NumCam ) ) or NumCam
 	end
+	return math.random(1,5)
 end
 
--- Messages to trace when Debug Mode is on.
-local DebugMessages = {
-	ModelLoad = function()
-		if DebugMode then
-			for player in ivalues(PlayerNumber) do
-				if GAMESTATE:IsPlayerEnabled(player) then
-					print(
-					"-------------------------------------------\n"..
-					"CharacterDisplay: Character Loaded. ("..player..")"..
-					"\nCharacterName: "..GAMESTATE:GetCharacter(player):GetDisplayName()
-					.."\nCurrentAnimation: "..GAMESTATE:GetCharacter(player):GetDanceAnimationPath()
-					.."\nCharacter Location: "..GAMESTATE:GetCharacter(player):GetCharacterDir()
-					.."\n-------------------------------------------"
-					)
-				end
-			end
-		end
-	end,
-	TimeBeforeNextCamera = function()
-		if DebugMode and MassiveLog then
-			print("CharacterDisplay: Neccesary time before next Camera: ".. NextSegment - now)
-		end
-	end,
-	CameraLoaded = function()
-		if DebugMode then
-			for player in ivalues(PlayerNumber) do
-				if GAMESTATE:IsPlayerEnabled(player) and DIVA:HasAnyCharacters(player) then
-					print(
-					"\n-------------------------------------------\n"..
-					"Next Camera Loaded (".. CameraRandom() .."), returning to command.\n"..
-					"\nCurrentAnimation: "..GAMESTATE:GetCharacter(player):GetDanceAnimationPath()..
-					"\n-------------------------------------------\n"
-					)
-				end
-			end
-		end
-	end,
-};
+local function SetTimingData()
+	setenv("song", 	GAMESTATE:GetCurrentSong() )
+	setenv("start", getenv("song"):GetFirstBeat() )
+	setenv("now",	GAMESTATE:GetSongBeat() )
+end
 
 -- timing manager
 t[#t+1] = Def.Quad{
@@ -143,16 +94,14 @@ t[#t+1] = Def.Quad{
 	end;
 	WaitForStartCommand=function(self)
 	-- set globals, we need these later.
-	song = GAMESTATE:GetCurrentSong();
-	start = song:GetFirstBeat();
-	now = GAMESTATE:GetSongBeat();
+	SetTimingData()
 
 	-- Clear this one out in case the player restarts the screen.
 	-- And to also properly reset the counter if it does.
-	NextSegment = nil
+	setenv("NextSegment",nil)
 
 	self:sleep(Frm)
-	if now<start then
+	if getenv("now")<getenv("start") then
 		self:queuecommand("WaitForStart")
 	else
 		self:queuemessage("Camera1")
@@ -161,26 +110,20 @@ t[#t+1] = Def.Quad{
 	end
 	end,
 	TrackTimeCommand=function(self)
-	if not NextSegment then
-		NextSegment = now + BeatsBeforeNextSegment
+	if not getenv("NextSegment") then
+		setenv("NextSegment",getenv("now") + BeatsBeforeNextSegment)
 	end
 
-	song = GAMESTATE:GetCurrentSong();
-	start = song:GetFirstBeat();
-	now = GAMESTATE:GetSongBeat();
+	SetTimingData()
 
 	self:sleep(Frm)
 	if (DIVA:HasAnyCharacters(PLAYER_1) or DIVA:HasAnyCharacters(PLAYER_2)) then
-		if now < NextSegment then
-			DebugMessages.TimeBeforeNextCamera()
-			self:queuecommand("TrackTime")
-		else
+		if getenv("now") >= getenv("NextSegment") then
 			self:queuemessage("Camera"..CameraRandom())
 			CurrentStageCamera = CurrentStageCamera + 1
-			NextSegment = now + BeatsBeforeNextSegment
-			DebugMessages.CameraLoaded()
-			self:queuecommand("TrackTime")
+			setenv("NextSegment",getenv("now") + BeatsBeforeNextSegment)
 		end
+		self:queuecommand("TrackTime")
 	end
 	end,
 }
@@ -237,9 +180,8 @@ local function UpdateModelRate()
 
 	if not SPos:GetFreeze() and not SPos:GetDelay() then
 		return ToConvert
-	else
-		return 0
 	end
+	return 0
 end
 
 --[[
@@ -273,15 +215,14 @@ if ThemePrefs.Get("DedicatedCharacterShow") and (DIVA:HasAnyCharacters(PLAYER_1)
 				OnCommand=function(self)
 				self:cullmode("CullMode_None")
 				if DIVA:BothPlayersEnabled() then self:x( (player == PLAYER_1 and 8) or -8 ) end
-				if HasBabyCharacter(player) then self:zoom(0.7) end
-				self:queuecommand("UpdateRate")
+				self:zoom( HasBabyCharacter(player) and 0.7 or 1 )
+				:queuecommand("UpdateRate")
 				end,
 				UpdateRateCommand=function(self)
 				-- Check function to see how it works.
-				self:rate( UpdateModelRate() )
-				self:sleep(Frm)
-				self:visible( now<start and true or false)
-				self:queuecommand("UpdateRate")
+				self:rate( UpdateModelRate() ):sleep(Frm)
+				:visible( getenv("now")<getenv("start") and true or false)
+				:queuecommand("UpdateRate")
 				end,
 		};
 		-- Load the Character
@@ -295,17 +236,16 @@ if ThemePrefs.Get("DedicatedCharacterShow") and (DIVA:HasAnyCharacters(PLAYER_1)
 				-- reminder that x position is inverted because we inverted the Y axis
 				-- to make the character face towards the screen.
 				if DIVA:BothPlayersEnabled() then self:x( (player == PLAYER_1 and 8) or -8 ) end
-				if HasBabyCharacter(player) then self:zoom(0.7) end
-				self:queuecommand("UpdateRate")
+				self:zoom( HasBabyCharacter(player) and 0.7 or 1 )
+				:queuecommand("UpdateRate")
 				end,
 				-- Update Model animation speed depending on song's BPM.
 				-- To match SM's way of animation speeds
 				UpdateRateCommand=function(self)
 				-- Check function to see how it works.
-				self:rate( UpdateModelRate() )
-				self:sleep(Frm)
-				self:visible( now>start and true or false)
-				self:queuecommand("UpdateRate")
+				self:rate( UpdateModelRate() ):sleep(Frm)
+				:visible( getenv("now")>getenv("start") and true or false)
+				:queuecommand("UpdateRate")
 				end,
 		};
 		end
@@ -358,7 +298,7 @@ t[#t+1] = Def.ActorFrame{
 
 	OnCommand=function(self) self:queuecommand("UpdateToSleep") end;
 	UpdateToSleepCommand=function(self)
-	if now<(start-4) then
+	if getenv("now")<( getenv("start")-4 ) then
 		self:queuecommand("UpdateToSleep")
 		self:sleep(Frm)
 	else
@@ -372,10 +312,8 @@ t[#t+1] = Def.ActorFrame{
 -- The cameras
 if StageHasCamera then
 	t[#t+1] = LoadActor( "../../../"..DIVA:CallCurrentStage().."/Cameras.lua" )
-	print( "CAMERA: Loaded custom Camera!" )
 else
 	t[#t+1] = LoadActor( "../Locations/Default_Camera.lua" )
-	print( "CAMERA: Loaded Default Camera!" )
 end
 
 background[#background+1] = t;

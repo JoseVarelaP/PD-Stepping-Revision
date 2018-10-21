@@ -49,13 +49,6 @@ t.OnCommand=function(self)
 		end
 	end
 
-	if not DIVA_RandomSong then
-		DIVA_RandomSong = SONGMAN:GetRandomSong()
-		DIVA:ResetRandomSong()
-	end
-
-
-
 	-- now let's roll
 	Jose:Center():diffusealpha(0):sleep(0.5):decelerate(0.2):diffusealpha(1):sleep(1):accelerate(.2):diffusealpha(0)
 	Logo:Center():diffusealpha(0):zoom(1):sleep(2.5):decelerate(0.2):diffusealpha(1):sleep(3):accelerate(.2):diffusealpha(0)

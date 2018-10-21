@@ -5,8 +5,8 @@ local t = Def.ActorFrame{
             SCREENMAN:SystemMessage("ThemePrefs doesn't exist; creating file...")
             ThemePrefs.ForceSave()
         end
+        MESSAGEMAN:Broadcast("HideBackground")
     ThemePrefs.Save()
-    DIVA:ResetRandomSong()
 end
 }
 

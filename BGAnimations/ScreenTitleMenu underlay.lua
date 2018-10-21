@@ -1,28 +1,24 @@
 local t = Def.ActorFrame{
 	OnCommand=function(self)
-	DIVA_LogoAlreadyShown = false
+	setenv("DIVA_LogoAlreadyShown",false)
+	self:queuecommand("UpdateSongStuff")
+	end,
+	UpdateSongStuffCommand=function(self)
 	if ThemePrefs.Get("EnableRandomSongPlay") then
-		GAMESTATE:SetPreferredSong(DIVA_RandomSong)
+		GAMESTATE:SetPreferredSong( getenv("DIVA_RandomSong") )
 		MESSAGEMAN:Broadcast("ShowBackground")
 	end
-	end,
-}
+	end;
+};
 
 if #SONGMAN:GetAllSongs() > 0 and ThemePrefs.Get("EnableRandomSongPlay") then
-
-	local FadeIn = function(self)
-		self:sleep(.3):decelerate(0.2):diffuse(0,0,0,1)
-	end;
-	local GlobalItems = function(self)
-		self:horizalign(left):diffuse(0,0,0,1):zoom(0.6):shadowlengthy(1)
-	end;
 
 	t[#t+1] = Def.ActorFrame{
 		InitCommand=function(self)
 		self:diffusealpha(0)
 		end,
 		OnCommand=function(self)
-		self:zoom(0.8):x(SCREEN_LEFT+70):y(SCREEN_BOTTOM-35):sleep(.3):decelerate(0.2):diffusealpha(1)
+		self:zoom(0.8):xy(SCREEN_LEFT+70,SCREEN_BOTTOM-35):sleep(.3):decelerate(0.2):diffusealpha(1)
 		end,
 		OffCommand=function(self)
 		self:accelerate(0.2):diffusealpha(0)
@@ -30,20 +26,24 @@ if #SONGMAN:GetAllSongs() > 0 and ThemePrefs.Get("EnableRandomSongPlay") then
 
 		LoadActor( THEME:GetPathG("","TitleMenu/MusicNote"))..{
 		OnCommand=function(self)
-		self:zoom(0.15):x(-15):y(-3)
+		self:zoom(0.15):xy(-15,-3)
 		end,
 		};
 
 		LoadFont("Common Normal")..{
-		Text=DIVA_RandomSong:GetDisplayFullTitle() .." - ".. DIVA_RandomSong:GetDisplayArtist();
 		InitCommand=function(self)
-		self:horizalign(left):diffuse(0,0,0,1):zoom(0.6):shadowlengthy(1)
+		self:halign(0):diffuse(0,0,0,1):zoom(0.6):shadowlengthy(1)
 		end;
 		OnCommand=function(self)
-		self:strokecolor( Color.White )
-		local ToMove = -2
-		self:y(ToMove)
+		self:strokecolor( Color.White ):y(-2)
+		:queuecommand("UpdateInfo")
 		end,
+		UpdateInfoCommand=function(self)
+		if getenv("DIVA_RandomSong") then
+			local so = getenv("DIVA_RandomSong")
+			self:settext( so:GetDisplayFullTitle() .." - ".. so:GetDisplayArtist() )
+		end
+		end;
 		};
 	};
 end

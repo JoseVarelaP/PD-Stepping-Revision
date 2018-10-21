@@ -35,8 +35,8 @@ DIVA = {
 	Trace(
 		"-----------------------------------\n"..
 		"New Folder_Random Song: " ..
-		DIVA_RandomSong:GetDisplayFullTitle().." - "
-		..DIVA_RandomSong:GetDisplayArtist().."\n"..
+		getenv("DIVA_RandomSong"):GetDisplayFullTitle().." - "
+		..getenv("DIVA_RandomSong"):GetDisplayArtist().."\n"..
 		"-----------------------------------"
 	)
 	end,
@@ -164,15 +164,15 @@ function DIVA:ResetRandomSong()
 			if ThemePrefs.Get("FolderToPlayRandomMusic") ~= "All" then
 				local Sel = SONGMAN:GetSongsInGroup(ThemePrefs.Get("FolderToPlayRandomMusic"))
 				if #Sel > 1 then
-					DIVA_RandomSong = Sel[math.random(1,#Sel)]
+					setenv( "DIVA_RandomSong", Sel[math.random(1,#Sel)] )
 					DIVA:Folder_Random()
 				else
 					-- But if the folder only has 1 song, warn about it, and set it directly to it.
-					DIVA_RandomSong = Sel[1]
+					setenv( "DIVA_RandomSong", Sel[1] )
 					DIVA:SingleSongWarning()
 				end
 			else
-				DIVA_RandomSong = SONGMAN:GetRandomSong()
+				setenv( "DIVA_RandomSong", SONGMAN:GetRandomSong() )
 			end
 			-- After this is done, send a Update MessageCommand to alert the actors that
 			-- the Random song has changed. 
@@ -243,3 +243,6 @@ function CAMERA:ResetCamera()
 
 	return self
 end
+
+function setenv(name,value) GAMESTATE:Env()[name] = value end
+function getenv(name) return GAMESTATE:Env()[name] end

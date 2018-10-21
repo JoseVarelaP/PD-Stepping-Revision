@@ -34,10 +34,10 @@ t[#t+1] = Def.ActorFrame{
 	end;
 	OnCommand=function(self)
 	self:zoom( WideScale(0.5,0.7) )
-	if not DIVA_LogoAlreadyShown then
+	if not getenv("DIVA_LogoAlreadyShown") then
 	self:diffusealpha(0)
 	self:sleep(.3):decelerate(0.2):diffusealpha(1)
-	DIVA_LogoAlreadyShown = true
+	setenv("DIVA_LogoAlreadyShown",true)
 	end
 	end,
 	OffCommand=function(self)

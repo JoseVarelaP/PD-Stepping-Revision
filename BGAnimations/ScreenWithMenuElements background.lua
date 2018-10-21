@@ -1,13 +1,9 @@
 local t = Def.ActorFrame{
-	OnCommand=function(self)
-		self:fov(90)
-	end;
-}
+	OnCommand=function(self) self:fov(90) end;
+};
 
 t[#t+1] = Def.Quad{
-	OnCommand=function(self)
-		self:FullScreen()
-	end;
+	OnCommand=function(self) self:FullScreen() end;
 };
 
 if ThemePrefs.Get("ShowRandomSongBackground") then
@@ -16,20 +12,21 @@ if ThemePrefs.Get("ShowRandomSongBackground") then
 			self:FullScreen():diffusealpha(0)
 		end;
 		DivaSongChangedMessageCommand=function(self)
-		if DIVA_RandomSong:GetBackgroundPath() then
-			self:Load( DIVA_RandomSong:GetBackgroundPath() )
-			self:scale_or_crop_background()
-			self:diffusealpha(0)
-			self:linear(0.2)
-			self:diffusealpha(0.4)
+		if getenv("DIVA_RandomSong"):GetBackgroundPath() then
+			self:finishtweening()
+			:Load( getenv("DIVA_RandomSong"):GetBackgroundPath() )
+			:scale_or_crop_background()
+			:linear(0.2)
+			:diffusealpha(0.4)
 		end
 		end,
 		HideBackgroundMessageCommand=function(self)
-			self:linear(0.2):diffusealpha(0)
+			self:finishtweening():linear(0.2):diffusealpha(0)
 		end;
 		ShowBackgroundMessageCommand=function(self)
-		self:linear(0.2)
-		self:diffusealpha(0.4)
+		if getenv("DIVA_RandomSong"):GetBackgroundPath() then
+			self:finishtweening():linear(0.2):diffusealpha(0.4)
+		end
 		end,
 	};
 end
