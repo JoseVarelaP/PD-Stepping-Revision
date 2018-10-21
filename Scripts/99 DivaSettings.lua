@@ -8,14 +8,15 @@ DSet = {
 	
 	Shared = {
 		ScrollOn = function(self)
-			self:xy(SCREEN_RIGHT-310,SCREEN_CENTER_Y-50)
-			:maxwidth(180):zoom( WideScale(0.5,0.7) )
+			self:maxwidth(180):zoom( WideScale(0.5,0.7) )
 			:addx(-300):decelerate(0.2):addx(300)
 		end,
 		ScrollOff = function(self)
 			self:accelerate(0.2):addx(-300)
 		end,
 
+		ExpX = function() return SCREEN_RIGHT-310 end,
+		ExpY = function() return SCREEN_CENTER_Y-50 end,
 		ExpOn = function(self)
 		self:wrapwidthpixels(370):align(0,0):zoom(0.6)
 		:diffusealpha(0):sleep(1)
@@ -162,7 +163,7 @@ DSet = {
 	},
 
 	ScreenPrompt = {
-		AnswerShow = function(self) self:y(SCREEN_CENTER_Y+20):maxwidth(100):strokecolor(Color.Black):zoom(0.5):draworder(101) end,
+		AnswerShow = function(self) self:maxwidth(100):zoom(0.5):draworder(101) end,
 		AnswerHide = function(self) self:sleep(0.3):accelerate(0.2):diffusealpha(0) end,
 		AnswerY = function() return SCREEN_CENTER_Y+20 end,
 	},
