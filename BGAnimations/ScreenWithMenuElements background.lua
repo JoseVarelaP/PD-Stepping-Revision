@@ -52,13 +52,14 @@ end
 
 t[#t+1] = LoadActor( THEME:GetPathG("","BGElements/DotTileBG") )..{
 	OnCommand=function(self)
-		self:x(SCREEN_RIGHT+100):horizalign(right):vertalign(top):diffusealpha(0.2):zoom(2):cropleft(0.05):rotationz(5):fadeleft(1)
+		self:x(SCREEN_RIGHT+100):align(1,1):diffusealpha(0.2):zoom(2)
+		:cropleft(0.05):rotationz(5):fadeleft(1)
 	end;
 };
 
 t[#t+1] = LoadActor( THEME:GetPathG("","BGElements/DotCircle") )..{
 	OnCommand=function(self)
-		self:x(SCREEN_RIGHT):y(SCREEN_BOTTOM):diffusealpha(0.5):spin():effectmagnitude(0,0,10)
+		self:xy(SCREEN_RIGHT,SCREEN_BOTTOM):diffusealpha(0.5):spin():effectmagnitude(0,0,10)
 	end;
 };
 
