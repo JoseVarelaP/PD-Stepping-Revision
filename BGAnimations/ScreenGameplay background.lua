@@ -31,9 +31,7 @@ local t = Def.ActorFrame{
 	InitCommand=function(self)
 		self:Center():fov(90):rotationy(180):z( WideScale(300,400) ):addy(10);
 	end;
-	OnCommand=function(self)
-	Camera = self;
-	end;
+	OnCommand=function(self) Camera = self; end;
 };
 
 -- This is to load the stage's time of day.
@@ -50,10 +48,11 @@ local BeatsBeforeNextSegment = 8*ThemePrefs.Get("DediMeasureCamera")
 -- This will check if the current stage is able to change its lighting cycle.
 -- Not all locations can do this, so doing this will save space.
 local function Load_Appropiate_Material()
+	local ToFind = "/main_material.txt"
 	if DIVA:CheckBooleanOnLocationSetting("AbleToChangeLight") then
-		return DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/"..FuturaToLoad.."_material.txt");
+		ToFind = "/"..FuturaToLoad.."_material.txt"
 	end
-	return DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/main_material.txt");
+	return DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation")..ToFind);
 end
 
 -- Set the time to wait
@@ -80,6 +79,10 @@ local function SetTimingData()
 	setenv("song", 	GAMESTATE:GetCurrentSong() )
 	setenv("start", getenv("song"):GetFirstBeat() )
 	setenv("now",	GAMESTATE:GetSongBeat() )
+end
+
+local function AnyoneHasChar()
+	return (DIVA:HasAnyCharacters(PLAYER_1) or DIVA:HasAnyCharacters(PLAYER_2))
 end
 
 -- timing manager
@@ -117,7 +120,7 @@ t[#t+1] = Def.Quad{
 	SetTimingData()
 
 	self:sleep(Frm)
-	if (DIVA:HasAnyCharacters(PLAYER_1) or DIVA:HasAnyCharacters(PLAYER_2)) then
+	if AnyoneHasChar() then
 		if getenv("now") >= getenv("NextSegment") then
 			self:queuemessage("Camera"..CameraRandom())
 			CurrentStageCamera = CurrentStageCamera + 1
@@ -131,19 +134,18 @@ t[#t+1] = Def.Quad{
 
 -- Stage Enviroment
 t[#t+1] = Def.ActorFrame{
-	Condition=ThemePrefs.Get("DedicatedCharacterShow") and (DIVA:HasAnyCharacters(PLAYER_1) or DIVA:HasAnyCharacters(PLAYER_2));
+	Condition=ThemePrefs.Get("DedicatedCharacterShow") and AnyoneHasChar() and
+	ThemePrefs.Get("CurrentStageLocation") ~= "None";
 
 		--Load the Stage
 		Def.Model {
-			Condition=ThemePrefs.Get("CurrentStageLocation") ~= "None" and DIVA:LocationIsSafeToLoad();
+			Condition=DIVA:LocationIsSafeToLoad();
 			Meshes=DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
 			Materials=Load_Appropiate_Material();
 			Bones=DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
 			OnCommand=function(self)
-				self:cullmode("CullMode_None")
-				self:zoom( DIVA:CheckStageConfigurationNumber(1,"StageZoom") )
-				self:addy( DIVA:CheckStageConfigurationNumber(0,"StageYOffset") )
-				self:addx( DIVA:CheckStageConfigurationNumber(0,"StageXOffset") )
+				self:cullmode("CullMode_None"):zoom( DIVA:CheckStageConfigurationNumber(1,"StageZoom") )
+				self:xy( DIVA:CheckStageConfigurationNumber(0,"StageXOffset"), DIVA:CheckStageConfigurationNumber(0,"StageYOffset") )
 			end,
 		};
 
@@ -204,7 +206,7 @@ end
 	Into believing that the character has started dancing, by loading two, and then hiding the
 	warmup model and showing the dance character once the very first note has passed.
 ]]
-if ThemePrefs.Get("DedicatedCharacterShow") and (DIVA:HasAnyCharacters(PLAYER_1) or DIVA:HasAnyCharacters(PLAYER_2)) then
+if ThemePrefs.Get("DedicatedCharacterShow") and AnyoneHasChar() then
 	for player in ivalues(PlayerNumber) do
 		if GAMESTATE:IsPlayerEnabled(player) and DIVA:IsSafeToLoad(player) then
 		-- This will be the warmup model.
@@ -298,11 +300,10 @@ t[#t+1] = Def.ActorFrame{
 
 	OnCommand=function(self) self:queuecommand("UpdateToSleep") end;
 	UpdateToSleepCommand=function(self)
+	self:sleep(Frm)
 	if getenv("now")<( getenv("start")-4 ) then
 		self:queuecommand("UpdateToSleep")
-		self:sleep(Frm)
 	else
-		self:sleep(Frm)
 		self:queuecommand("FadeAway")
 	end
 	end,
