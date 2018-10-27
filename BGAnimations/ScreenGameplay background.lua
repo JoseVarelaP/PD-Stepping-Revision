@@ -45,45 +45,12 @@ local FuturaToLoad = (
 --Settings & Shortcuts
 local BeatsBeforeNextSegment = 8*ThemePrefs.Get("DediMeasureCamera")
 
--- This will check if the current stage is able to change its lighting cycle.
--- Not all locations can do this, so doing this will save space.
-local function Load_Appropiate_Material()
-	local ToFind = "/main_material.txt"
-	if DIVA:CheckBooleanOnLocationSetting("AbleToChangeLight") then
-		ToFind = "/"..FuturaToLoad.."_material.txt"
-	end
-	return DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation")..ToFind);
-end
-
 -- Set the time to wait
 local Frm = 1/60
 
 local NumCam = DIVA:CheckStageConfigurationNumber(5,"NumCameras")
 local StageHasCamera = FILEMAN:DoesFileExist(DIVA:CallCurrentStage().."/Cameras.lua")
 CurrentStageCamera = 0
-
-local function CameraRandom()
-	if NumCam and StageHasCamera then
-		if DIVA:CheckBooleanOnLocationSetting("IsCameraTweenSequential") then
-			if CurrentStageCamera > NumCam then
-				CurrentStageCamera = 1
-			end
-			return CurrentStageCamera
-		end
-		return ( NumCam > 1 and math.random(1, NumCam ) ) or NumCam
-	end
-	return math.random(1,5)
-end
-
-local function SetTimingData()
-	setenv("song", 	GAMESTATE:GetCurrentSong() )
-	setenv("start", getenv("song"):GetFirstBeat() )
-	setenv("now",	GAMESTATE:GetSongBeat() )
-end
-
-local function AnyoneHasChar()
-	return (DIVA:HasAnyCharacters(PLAYER_1) or DIVA:HasAnyCharacters(PLAYER_2))
-end
 
 -- timing manager
 t[#t+1] = Def.Quad{
@@ -97,7 +64,7 @@ t[#t+1] = Def.Quad{
 	end;
 	WaitForStartCommand=function(self)
 	-- set globals, we need these later.
-	SetTimingData()
+	DEDICHAR:SetTimingData()
 
 	-- Clear this one out in case the player restarts the screen.
 	-- And to also properly reset the counter if it does.
@@ -117,31 +84,30 @@ t[#t+1] = Def.Quad{
 		setenv("NextSegment",getenv("now") + BeatsBeforeNextSegment)
 	end
 
-	SetTimingData()
+	DEDICHAR:SetTimingData()
 
 	self:sleep(Frm)
-	if AnyoneHasChar() then
+	if DIVA:AnyoneHasChar() then
 		if getenv("now") >= getenv("NextSegment") then
-			self:queuemessage("Camera"..CameraRandom())
+			self:queuemessage("Camera".. DEDICHAR:CameraRandom())
 			CurrentStageCamera = CurrentStageCamera + 1
 			setenv("NextSegment",getenv("now") + BeatsBeforeNextSegment)
 		end
 		self:queuecommand("TrackTime")
 	end
 	end,
-}
-
+};
 
 -- Stage Enviroment
 t[#t+1] = Def.ActorFrame{
-	Condition=ThemePrefs.Get("DedicatedCharacterShow") and AnyoneHasChar() and
+	Condition=ThemePrefs.Get("DedicatedCharacterShow") and DIVA:AnyoneHasChar() and
 	ThemePrefs.Get("CurrentStageLocation") ~= "None";
 
 		--Load the Stage
 		Def.Model {
 			Condition=DIVA:LocationIsSafeToLoad();
 			Meshes=DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
-			Materials=Load_Appropiate_Material();
+			Materials=DEDICHAR:Load_Appropiate_Material();
 			Bones=DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
 			OnCommand=function(self)
 				self:cullmode("CullMode_None"):zoom( DIVA:CheckStageConfigurationNumber(1,"StageZoom") )
@@ -150,51 +116,6 @@ t[#t+1] = Def.ActorFrame{
 		};
 
 };
-
-local function UpdateModelRate()
-	-- The real kicker, recreating SM's true tempo updater.
-	-- StepMania always kept a rate of 0.75 to 1.5, I wanted to break it a little bit more.
-
-	-- These are options
-	local RangeMax = ThemePrefs.Get("ModelRateBPMMax")
-	local RangeLow = ThemePrefs.Get("ModelRateBPMLow")
-	local MultiMax = ThemePrefs.Get("ModelRateMulMax")
-	local MultiLow = ThemePrefs.Get("ModelRateMulLow")
-	
-	-- In case the song is on a rate, then we can multiply it.
-	-- It also checks for the song's Haste, if you're using that.
-	-- Safe check in case Obtaining HasteRate fails
-	local MusicRate = 1
-	if SCREENMAN:GetTopScreen() and SCREENMAN:GetTopScreen():GetHasteRate() then
-		MusicRate = SCREENMAN:GetTopScreen():GetHasteRate()
-	end
-	local BPM = (GAMESTATE:GetSongBPS()*60)
-	
-	-- We're using scale to compare higher values with lower values.
-	local UpdateScale = scale( BPM, RangeLow, RangeMax, MultiLow, MultiMax );
-
-	-- Then clamp it so it's on a max and a low ammount
-	local Clamped = clamp( UpdateScale, 0.5, 2.5 );
-
-	-- Then take what we have and update depending on the music rate.
-	local ToConvert = Clamped*MusicRate
-	local SPos = GAMESTATE:GetSongPosition()
-
-	if not SPos:GetFreeze() and not SPos:GetDelay() then
-		return ToConvert
-	end
-	return 0
-end
-
---[[
-	This function is quite literally for one specific thing.
-	That thing being Baby-Lon. I was mentioned about this specific model,
-	being too big from its original size, so this function checks who has Baby-Lon.
-	And if it does, we can do a model size shrink to that player.
-]]
-local function HasBabyCharacter(pn)
-	return GAMESTATE:IsPlayerEnabled(pn) and string.find(GAMESTATE:GetCharacter(pn):GetDisplayName(), "Baby") and DIVA:IsSafeToLoad(pn)
-end
 
 --[[
 	The actual character.
@@ -206,7 +127,8 @@ end
 	Into believing that the character has started dancing, by loading two, and then hiding the
 	warmup model and showing the dance character once the very first note has passed.
 ]]
-if ThemePrefs.Get("DedicatedCharacterShow") and AnyoneHasChar() then
+
+if ThemePrefs.Get("DedicatedCharacterShow") and DIVA:AnyoneHasChar() then
 	for player in ivalues(PlayerNumber) do
 		if GAMESTATE:IsPlayerEnabled(player) and DIVA:IsSafeToLoad(player) then
 		-- This will be the warmup model.
@@ -217,12 +139,12 @@ if ThemePrefs.Get("DedicatedCharacterShow") and AnyoneHasChar() then
 				OnCommand=function(self)
 				self:cullmode("CullMode_None")
 				if DIVA:BothPlayersEnabled() then self:x( (player == PLAYER_1 and 8) or -8 ) end
-				self:zoom( HasBabyCharacter(player) and 0.7 or 1 )
+				self:zoom( DEDICHAR:HasBabyCharacter(player) and 0.7 or 1 )
 				:queuecommand("UpdateRate")
 				end,
 				UpdateRateCommand=function(self)
 				-- Check function to see how it works.
-				self:rate( UpdateModelRate() ):sleep(Frm)
+				self:rate( DEDICHAR:UpdateModelRate() ):sleep(Frm)
 				:visible( getenv("now")<getenv("start") and true or false)
 				:queuecommand("UpdateRate")
 				end,
@@ -238,14 +160,14 @@ if ThemePrefs.Get("DedicatedCharacterShow") and AnyoneHasChar() then
 				-- reminder that x position is inverted because we inverted the Y axis
 				-- to make the character face towards the screen.
 				if DIVA:BothPlayersEnabled() then self:x( (player == PLAYER_1 and 8) or -8 ) end
-				self:zoom( HasBabyCharacter(player) and 0.7 or 1 )
+				self:zoom( DEDICHAR:HasBabyCharacter(player) and 0.7 or 1 )
 				:queuecommand("UpdateRate")
 				end,
 				-- Update Model animation speed depending on song's BPM.
 				-- To match SM's way of animation speeds
 				UpdateRateCommand=function(self)
 				-- Check function to see how it works.
-				self:rate( UpdateModelRate() ):sleep(Frm)
+				self:rate( DEDICHAR:UpdateModelRate() ):sleep(Frm)
 				:visible( getenv("now")>getenv("start") and true or false)
 				:queuecommand("UpdateRate")
 				end,

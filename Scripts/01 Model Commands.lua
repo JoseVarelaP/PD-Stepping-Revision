@@ -240,6 +240,10 @@ function DIVA:BothPlayersEnabled()
 	return GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsPlayerEnabled(PLAYER_2)
 end
 
+function DIVA:AnyoneHasChar()
+	return (DIVA:HasAnyCharacters(PLAYER_1) or DIVA:HasAnyCharacters(PLAYER_2))
+end
+
 -- Camera utilities
 CAMERA = {}
 -- some utilities
