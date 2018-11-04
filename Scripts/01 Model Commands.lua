@@ -146,11 +146,14 @@ function DIVA:CheckStageConfigurationNumber(def,conf)
 end
 
 function DIVA:LocationIsSafeToLoad()
-	if not FILEMAN:DoesFileExist(DIVA:CallCurrentStage().."/model.txt") then
-		lua.ReportScriptError(
-			string.format( THEME:GetString("Common","LocationLoadError"), ThemePrefs.Get("CurrentStageLocation"))
-			)
-		return false
+	-- Make sure this check does not happen on None, since that Location has nothing.
+	if ThemePrefs.Get("CurrentStageLocation") ~= "None" then
+		if not FILEMAN:DoesFileExist(DIVA:CallCurrentStage().."/model.txt") then
+			lua.ReportScriptError(
+				string.format( THEME:GetString("Common","LocationLoadError"), ThemePrefs.Get("CurrentStageLocation"))
+				)
+			return false
+		end
 	end
 	return true
 end
@@ -165,7 +168,6 @@ function DIVA:ResetRandomSong()
 				local Sel = SONGMAN:GetSongsInGroup(ThemePrefs.Get("FolderToPlayRandomMusic"))
 				if #Sel > 1 then
 					setenv( "DIVA_RandomSong", Sel[math.random(1,#Sel)] )
-					DIVA:Folder_Random()
 				else
 					-- But if the folder only has 1 song, warn about it, and set it directly to it.
 					setenv( "DIVA_RandomSong", Sel[1] )

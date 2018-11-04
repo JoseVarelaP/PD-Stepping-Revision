@@ -34,14 +34,6 @@ local t = Def.ActorFrame{
 	OnCommand=function(self) Camera = self; end;
 };
 
--- This is to load the stage's time of day.
--- It goes along the Current Stage Lighting setting found on the
--- Theme Options.
-local FuturaToLoad = ( 
-		ThemePrefs.Get("CurrentStageLighting") == "Auto" and 
-			((Hour() < 6 or Hour() > 19) and "Night" or "Day")
-		) or ThemePrefs.Get("CurrentStageLighting")
-
 --Settings & Shortcuts
 local BeatsBeforeNextSegment = 8*ThemePrefs.Get("DediMeasureCamera")
 

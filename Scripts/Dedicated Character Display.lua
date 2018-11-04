@@ -5,7 +5,7 @@ DEDICHAR = {};
 function DEDICHAR:Load_Appropiate_Material()
 	local ToFind = "/main_material.txt"
 	if DIVA:CheckBooleanOnLocationSetting("AbleToChangeLight") then
-		ToFind = "/"..FuturaToLoad.."_material.txt"
+		ToFind = "/"..DEDICHAR:LightToLoad().."_material.txt"
 	end
 	return DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation")..ToFind);
 end
@@ -43,7 +43,7 @@ function DEDICHAR:UpdateModelRate()
 	-- It also checks for the song's Haste, if you're using that.
 	-- Safe check in case Obtaining HasteRate fails
 	local MusicRate = 1
-	if SCREENMAN:GetTopScreen() and SCREENMAN:GetTopScreen():GetHasteRate() then
+	if SCREENMAN:GetTopScreen():GetScreenType() == "ScreenType_Gameplay" and SCREENMAN:GetTopScreen():GetHasteRate() then
 		MusicRate = SCREENMAN:GetTopScreen():GetHasteRate()
 	end
 	local BPM = (GAMESTATE:GetSongBPS()*60)
@@ -62,6 +62,15 @@ function DEDICHAR:UpdateModelRate()
 		return ToConvert
 	end
 	return 0
+end
+
+-- This is to load the stage's time of day.
+-- It goes along the Current Stage Lighting setting found on the
+-- Theme Options.
+function DEDICHAR:LightToLoad()
+	return ( ThemePrefs.Get("CurrentStageLighting") == "Auto" and 
+			((Hour() < 6 or Hour() > 19) and "Night" or "Day")
+		) or ThemePrefs.Get("CurrentStageLighting")
 end
 
 --[[
