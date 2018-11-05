@@ -3,10 +3,11 @@ local function LoadCharacterFromPlayer(pn)
 					Condition=GAMESTATE:IsPlayerEnabled(pn) and GAMESTATE:GetCharacter(pn):GetDisplayName() ~= "default",
 					Meshes=GAMESTATE:GetCharacter(pn):GetModelPath(),
 					Materials=GAMESTATE:GetCharacter(pn):GetModelPath(),
-					Bones=GAMESTATE:GetCharacter(pn):GetRestAnimationPath(),
+					Bones=GAMESTATE:GetCharacter(pn):GetDanceAnimationPath(),
 					InitCommand=function(self)
-						self:cullmode("CullMode_None"):rate(0)
+						self:cullmode("CullMode_None")
 						self:zoom(5):y(60):rotationy(180):x(-8)
+						self:position( math.random(5,15) ):rate(0)
 					end,
 				};
 	return t;

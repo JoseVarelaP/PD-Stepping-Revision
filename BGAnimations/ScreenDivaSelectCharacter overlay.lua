@@ -12,7 +12,7 @@ local function VerifyValues()
 	SBank:GetChild("MoveChoice"):play()
 	-- Current Menu Choice
 	for player in ivalues(PlayerNumber) do
-		if ChoiceTable[player] <= 0 				then ChoiceTable[player] = #CharList end
+		if ChoiceTable[player] <= 0 			then ChoiceTable[player] = #CharList end
 		if ChoiceTable[player] >= #CharList+1 	then ChoiceTable[player] = 1 end
 	end
 end
@@ -75,6 +75,30 @@ local SoundBank = Def.ActorFrame{ OnCommand=function(self) SBank = self end;
 
 local ChoiceStrip = Def.ActorFrame{}
 
+local function ModelIsSafeToLoad(character)
+	local CharLoad = CHARMAN:GetCharacter( character:GetCharacterID() )
+	-- Don't apply the check if we have the character set to "off" (default)
+	if CharLoad:GetDisplayName() ~= "default" then
+		-- Otherwise, check the model path.
+		if CharLoad:GetModelPath() == "" then
+			lua.ReportScriptError(
+				"no"
+			)
+			return false
+		end
+		if CharLoad:GetDanceAnimationPath() == "" or
+			CharLoad:GetRestAnimationPath() == "" or 
+			CharLoad:GetWarmUpAnimationPath() == ""
+			then
+			lua.ReportScriptError(
+				"no"
+			)
+			return false
+		end
+	end
+	return true
+end
+
 local function TestActorScroller()
 	local t = Def.ActorFrame{}
 	for value in ivalues(CharList) do
@@ -85,6 +109,7 @@ local function TestActorScroller()
 			end;
 
 			Def.Model{
+				Condition=ModelIsSafeToLoad(value),
 				Meshes=value:GetModelPath(),
 				Materials=value:GetModelPath(),
 				Bones=value:GetRestAnimationPath(),
