@@ -130,11 +130,16 @@ DSet = {
 				Result = Result .. "ModelsInRoom,"
 			end
 
+			Result = Result .. "DebugCamera,"
+
 			return Result;
 		end,
 
 		LineDediCharsSettings = function()
 		return "gamecommand;screen,ScreenDediCharsSettings;name,Dedicated Character Settings"
+		end,
+		LineDebugCamera = function()
+		return "gamecommand;screen,CameraDebug;name,Debug Camera"
 		end,
 		RowTransform = function(self,positionIndex,itemIndex,numItems)
 		self:xy( 0, (SCREEN_CENTER_Y-120) + (40*positionIndex) )
