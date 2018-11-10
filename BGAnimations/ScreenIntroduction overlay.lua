@@ -19,9 +19,7 @@ t[#t+1] = Def.ActorFrame{
 ------------------------------------------
 -- Check for filling the characters with a room for the Diva Room.
 -- First a Save Directory where the content will be placed.
-DIVADATA = {};
-function DIVADATA:LoadSaveDir() return "Save/SteppingRevision/" end
-local RoomSpots = DIVADATA:LoadSaveDir().."RoomLocations.ini"
+local RoomSpots = DIVA.LoadSaveDir().."RoomLocations.ini"
 
 -- If it isn't there, then do the loop
 if not FILEMAN:DoesFileExist( RoomSpots ) then

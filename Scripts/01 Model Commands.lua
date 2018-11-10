@@ -88,6 +88,7 @@ DIVA = {
 	NoSongsWarning = function()
 	lua.ReportScriptError( THEME:GetString("Common","SongLoaderNoSongs") )
 	end,
+	LoadSaveDir = function() return "Save/SteppingRevision/" end,
 	
 	--[[
 		Here's the song table that will contain all the songs.

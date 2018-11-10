@@ -5,12 +5,7 @@ if not getenv("CharSelIndex") then
     setenv("CharSelIndex",1)
 end
 
-DIVADATA = {};
-function DIVADATA:LoadSaveDir()
-    return "Save/SteppingRevision/"
-end
-
-local RoomSpots = DIVADATA:LoadSaveDir().."RoomLocations.ini"
+local RoomSpots = DIVA.LoadSaveDir().."RoomLocations.ini"
 
 -- Allowed input on screen
 local BTInput = {
