@@ -14,6 +14,26 @@ t[#t+1] = Def.ActorFrame{
 	};
 };
 
+
+-- DIVA ROOM FALLBACK SAVE
+------------------------------------------
+-- Check for filling the characters with a room for the Diva Room.
+-- First a Save Directory where the content will be placed.
+DIVADATA = {};
+function DIVADATA:LoadSaveDir() return "Save/SteppingRevision/" end
+local RoomSpots = DIVADATA:LoadSaveDir().."RoomLocations.ini"
+
+-- If it isn't there, then do the loop
+if not FILEMAN:DoesFileExist( RoomSpots ) then
+	-- Warn the user about it
+	lua.Warn("Room Locations have not been found! Creating...")
+	for cval in ivalues( CHARMAN:GetAllCharacters() ) do
+		-- And save it to a file located in Save/RoomLocations.ini
+		Config.Save( cval:GetDisplayName(), LOADER:LoadStages()[math.random(1,#LOADER:LoadStages())], RoomSpots )
+	end
+end
+------------------------------------------
+
 local ThemeNamesToLoad = {
 	-- Safe check for previous versions of PD:SR that
 	-- ran under the name DV-Stepping-Revision.
