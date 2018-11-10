@@ -1,5 +1,4 @@
 -- Location Viewer
--- A.k.a, my version of the DIVA Room feature
 
 -- Locals that define position around the play area
 local Camera = {
@@ -92,15 +91,33 @@ local Controller = Def.ActorFrame{
 
 local RandomChar1 = CHARMAN:GetRandomCharacter();
 
+local CRFileLoc = "Save/DIVA_CharacterRooms.ini"
+for char in ivalues( CHARMAN:GetAllCharacters() ) do
+    local LocRandom = LOADER:LoadStages()[math.random( 1,#LOADER:LoadStages() )]
+    if not Config.Load( char:GetCharacterID() ,CRFileLoc) then
+        Config.Save( tostring(char:GetCharacterID()) , LocRandom , CRFileLoc)
+    end
+end
+
+local LocLoad = Config.Load( RandomChar1:GetCharacterID(), CRFileLoc)
+
+-- This will just load the appropiate material from the stage loaded from the config file generated.
+function DICLoad_Appropiate_Material()
+    local ToFind = "/main_material.txt"
+	if Config.Load( "AbleToChangeLight", DIVA:GetPathLocation("",LocLoad.."/ModelConfig.cfg") ) then
+		ToFind = "/"..DEDICHAR:LightToLoad().."_material.txt"
+	end
+	return DIVA:GetPathLocation("",LocLoad..ToFind);
+end
+
 -- Add Controller to the input
 AllObjects[#AllObjects+1] = Controller;
 
 -- Load stage into the 3D space.
 LocationSce[#LocationSce+1] = Def.Model {
-    Condition=DIVA:LocationIsSafeToLoad();
-    Meshes=DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
-    Materials=DEDICHAR:Load_Appropiate_Material();
-    Bones=DIVA:GetPathLocation("",ThemePrefs.Get("CurrentStageLocation").."/model.txt");
+    Meshes=DIVA:GetPathLocation("",LocLoad.."/model.txt");
+    Materials=DICLoad_Appropiate_Material();
+    Bones=DIVA:GetPathLocation("",LocLoad.."/model.txt");
     OnCommand=function(self)
         self:cullmode("CullMode_None"):zoom( DIVA:CheckStageConfigurationNumber(1,"StageZoom") )
         self:xy( DIVA:CheckStageConfigurationNumber(0,"StageXOffset"), DIVA:CheckStageConfigurationNumber(0,"StageYOffset") )
@@ -143,5 +160,7 @@ UI[#UI+1] = Def.Quad{
 
 AllObjects[#AllObjects+1] = LocationSce;
 AllObjects[#AllObjects+1] = UI;
+
+--Config.Save( "CharacterRoom"..RandomChar1:GetCharacterID() , ThemePrefs.Get("CurrentStageLocation") , CRFileLoc)
 
 return AllObjects;

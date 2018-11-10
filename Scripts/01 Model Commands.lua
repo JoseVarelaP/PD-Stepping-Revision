@@ -4,8 +4,7 @@
 -- Configuration board by Jousway
 Config = {};
 
--- We don't need the write, just load
-function Config.Load(key,file)
+function Config.Load(key,file,backupval)
 	if not FILEMAN:DoesFileExist(file) then return false end
 	
 	local Container = {}
@@ -21,8 +20,51 @@ function Config.Load(key,file)
 	for line in string.gmatch(configcontent.."\n", "(.-)\n") do
 		for KeyVal, Val in string.gmatch(line, "(.-)=(.+)") do
 			if key == KeyVal then return Val end
+		end
+	end
+	return backupval or false
+end
+
+function Config.Save(key,value,file)
+	if not FILEMAN:DoesFileExist(file) then 
+		local Createfile = RageFileUtil.CreateRageFile()
+		Createfile:Open(file, 2)
+		Createfile:Write("")
+		Createfile:Close()
+		Createfile:destroy()
+	end
+
+
+	local Container = {}
+
+	local configfile = RageFileUtil.CreateRageFile()
+	configfile:Open(file, 1)
+	
+	local configcontent = configfile:Read()
+	
+	configfile:Close()
+	
+	local found = false
+	
+	for line in string.gmatch(configcontent.."\n", "(.-)\n") do
+		for KeyVal, Val in string.gmatch(line, "(.-)=(.+)") do
+			if key == KeyVal then Val = value found = true end
+			Container[KeyVal] = Val
 		end		
 	end
+	
+	if found == false then Container[key] = value end
+	
+	local output = ""
+	
+	for k,v in pairs(Container) do
+		output = output..k.."="..v.."\n"
+	end	
+	
+	configfile:Open(file, 2)
+	configfile:Write(output)
+	configfile:Close()
+	configfile:destroy()
 end
 
 ------------------------------------------------
@@ -116,7 +158,7 @@ end
 
 -- Used to retrieve files from the 'Locations' folder.
 function DIVA:GetPathLocation(filepart1,filepart2)
-	return "/"..THEME:GetCurrentThemeDirectory().."/Locations/"..filepart1 .. filepart2
+	return "/"..THEME:GetCurrentThemeDirectory().."Locations/"..filepart1 .. filepart2
 end
 
 function DIVA:CallCurrentStage()

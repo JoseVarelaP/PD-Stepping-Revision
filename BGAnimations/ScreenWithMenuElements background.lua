@@ -52,7 +52,7 @@ end
 
 t[#t+1] = LoadActor( THEME:GetPathG("","BGElements/DotTileBG") )..{
 	OnCommand=function(self)
-		self:x(SCREEN_RIGHT+100):align(1,1):diffusealpha(0.2):zoom(2)
+		self:x(SCREEN_RIGHT+100):align(1,0):diffusealpha(0.2):zoom(2)
 		:cropleft(0.05):rotationz(5):fadeleft(1)
 	end;
 };

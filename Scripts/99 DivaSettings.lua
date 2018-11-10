@@ -139,7 +139,8 @@ DSet = {
 		return "gamecommand;screen,ScreenDediCharsSettings;name,Dedicated Character Settings"
 		end,
 		LineDebugCamera = function()
-		return "gamecommand;screen,CameraDebug;name,Debug Camera"
+		--return "gamecommand;screen,CameraDebug;name,Debug Camera"
+		return "gamecommand;screen,DivaRoom_SelectCharacter;name,Debug Camera"
 		end,
 		RowTransform = function(self,positionIndex,itemIndex,numItems)
 		self:xy( 0, (SCREEN_CENTER_Y-120) + (40*positionIndex) )
