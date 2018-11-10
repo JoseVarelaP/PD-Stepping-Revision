@@ -17,15 +17,8 @@ local CPr = 1;
 
 local InputListing = {
     -- Global buttons that occur before going on a menu.
-    ["Global"] = {
-        ["MenuRight"]   = function() CPr = CPr + 1 end,   
-        ["MenuLeft"]   = function() CPr = CPr - 1 end,   
-    },
-    -- Main Menu inputs
-    ["MainMenu"] = {
-        ["MenuUp"] = function() MenuIndex = MenuIndex - 1 end,
-        ["MenuDown"] = function() MenuIndex = MenuIndex + 1 end,
-    };
+    ["MenuRight"]   = function() CPr = CPr + 1 end,   
+    ["MenuLeft"]   = function() CPr = CPr - 1 end,   
 };
 
 local function CheckValues()
@@ -71,19 +64,14 @@ local function InputHandler(event)
     -- Input that occurs at the moment the button is pressed.
     if ToEnumShortString(event.type) == "FirstPress" then
         if event.GameButton == "Start" then
-            if not InsideMainMenu then InsideMainMenu = true; InputMode = "MainMenu"; end
+            -- Load the main menu if the button is pressed.
+            SCREENMAN:GetTopScreen():SetNextScreenName("DivaRoom")
+            SCREENMAN:AddNewScreenToTop("DivaRoom overlay/CharChooser", "SM_GoToNextScreen")
         end
         if event.GameButton == "Back" then
-            if InsideMainMenu then
-                InsideMainMenu = false;
-                InputMode = "Global"
-                MESSAGEMAN:Broadcast("ExitMainMenu")
-            end
-            SCREENMAN:GetTopScreen():SetPrevScreenName("DivaRoom_SelectCharacter"):Cancel()
-            return
         end
-        if InputListing[InputMode][event.GameButton] then
-            InputListing[InputMode][event.GameButton]()
+        if InputListing[event.GameButton] then
+            InputListing[event.GameButton]()
         end
     end
     CheckValues()
