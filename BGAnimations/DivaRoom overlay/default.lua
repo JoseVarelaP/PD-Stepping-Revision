@@ -58,10 +58,6 @@ local InputMode = "Global";
 
 local StageToShow = ThemePrefs.Get("CurrentStageLocation")
 
--- local function LoadCharacterHome()
---     if ThemePrefs.Get( GAMESTATE:GetMasterPlayerNumber():Get().."" )
--- end
-
 -- Input handler, manages all the Input data that will be recieved by the player.
 local function InputHandler(event)
     -- Safe check to input nothing if any value happens to be not a player.
@@ -104,7 +100,6 @@ local function Load_CharLoc_Material()
     if tostring(ConfigFile) == "true" then
         ToFind = "/"..DEDICHAR:LightToLoad().."_material.txt"
 	end
-    --SCREENMAN:SystemMessage( tostring( LocCfg ) )
     return DIVA:GetPathLocation("",getenv("DivaRoom_LocaLoad")..ToFind);
 end
 
