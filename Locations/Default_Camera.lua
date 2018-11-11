@@ -1,3 +1,12 @@
+-- Default Camera
+--[[
+----------------------------------------
+	PLEASE DO NOT DELETE THIS FILE
+----------------------------------------
+This file is meant as a fallback for any location that does not include a camera.
+Deleting this file can cause the game to crash directly in Gameplay.
+]]
+
 local t = Def.ActorFrame{}
 
 t.InitialTweenMessageCommand=function(self)
