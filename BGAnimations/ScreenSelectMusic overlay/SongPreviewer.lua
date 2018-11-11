@@ -34,7 +34,7 @@ t[#t+1] = Def.ActorFrame {
 			self:CenterY():x(WideScale(SCREEN_LEFT+180,SCREEN_LEFT+230)):diffusealpha(0):zoom(0)
 		end;
 		StartSelectingStepsMessageCommand=function(self)
-			self:stoptweening():decelerate(0.2):diffusealpha(1):zoom(0.6)
+			self:stoptweening():visible(true):decelerate(0.2):diffusealpha(1):zoom(0.6)
 		end;
 		PreviousSongMessageCommand=function(self)
 			self:playcommand("Close")
@@ -52,7 +52,7 @@ t[#t+1] = Def.ActorFrame {
 			self:playcommand("Close")
 		end;
 		CloseCommand=function(self)
-			self:stoptweening():queuemessage("ReturnWheel"):accelerate(0.2):diffusealpha(0):zoom(0.5)
+			self:stoptweening():queuemessage("ReturnWheel"):accelerate(0.2):diffusealpha(0):zoom(0.5):visible(false)
 		end;
 
 		LoadActor( THEME:GetPathG("","SelectMusic/SummarySelection") )..{
@@ -145,10 +145,10 @@ t[#t+1] = Def.ActorFrame {
 				self:zoom(0.8):x(0):y(60)
 			end;
 			StartSelectingStepsMessageCommand=function(self)
-				self:decelerate(0.2):y(20):zoom(1.6)
+				self:stoptweening():decelerate(0.2):y(20):zoom(1.6)
 			end;
 			TwoPartConfirmCanceledMessageCommand=function(self)
-				self:decelerate(0.2):y(40):zoom(1.5)
+				self:stoptweening():decelerate(0.2):y(40):zoom(1.5)
 			end;
 			PlayerJoinedMessageCommand=function(self)
 				self:queuecommand("Set")
@@ -160,10 +160,10 @@ t[#t+1] = Def.ActorFrame {
 					self:zoomto(270,22):y(-1):horizalign(left):x(-140):fadeleft(0.4):faderight(0.4):diffusealpha(0)
 				end;
 				StartSelectingStepsMessageCommand=function(self)
-					self:decelerate(0.2):diffuse(( GAMESTATE:IsPlayerEnabled(PLAYER_1) and Color.Blue) or 0,0,0,0)
+					self:stoptweening():decelerate(0.2):diffuse(( GAMESTATE:IsPlayerEnabled(PLAYER_1) and Color.Blue) or 0,0,0,0)
 				end;
 				TwoPartConfirmCanceledMessageCommand=function(self)
-					self:decelerate(0.2):diffusealpha(0)
+					self:stoptweening():decelerate(0.2):diffusealpha(0)
 				end;
 				PlayerJoinedMessageCommand=function(self,param)
 				self:visible(true)
@@ -200,10 +200,10 @@ t[#t+1] = Def.ActorFrame {
 						self:zoomto(270,22):y(-1):horizalign(right):x(140):fadeleft(0.4):faderight(0.4):diffusealpha(0)
 					end;
 					StartSelectingStepsMessageCommand=function(self)
-						self:decelerate(0.2):diffuse(( GAMESTATE:IsPlayerEnabled(PLAYER_2) and Color.Orange) or 0,0,0,0)
+						self:stoptweening():decelerate(0.2):diffuse(( GAMESTATE:IsPlayerEnabled(PLAYER_2) and Color.Orange) or 0,0,0,0)
 					end;
 					TwoPartConfirmCanceledMessageCommand=function(self)
-						self:decelerate(0.2):diffusealpha(0)
+						self:stoptweening():decelerate(0.2):diffusealpha(0)
 					end;
 				};
 				LoadActor(THEME:GetPathG('SelectMusic/DifficultyList', 'cursor p2'))..{
@@ -246,7 +246,7 @@ t[#t+1] = Def.ActorFrame{
 			self:playcommand("Close")
 		end;
 		StartSelectingStepsMessageCommand=function(self)
-			self:decelerate(0.5):y(SCREEN_CENTER_Y-100):diffusealpha(1)
+			self:stoptweening():decelerate(0.5):y(SCREEN_CENTER_Y-100):diffusealpha(1)
 		end;
 		StepsChosenMessageCommand=function(self)
 			self:playcommand("Close")

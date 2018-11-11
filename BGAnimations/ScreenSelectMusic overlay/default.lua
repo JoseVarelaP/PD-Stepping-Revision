@@ -102,26 +102,26 @@ t[#t+1] = LoadFont("Common Normal")..{
 		self:playcommand("RegularTextFade")
 	end;
 	TwoPartConfirmCanceledMessageCommand=function(self)
-	self:decelerate(0.2):diffusealpha(0):queuecommand("UpdateTextInst_DiffSel")
+	self:stoptweening():decelerate(0.2):diffusealpha(0):queuecommand("UpdateTextInst_DiffSel")
 	end,
 	UpdateTextInst_DiffSelCommand=function(self)
-	self:accelerate(0.2):diffusealpha(1):settext( THEME:GetString("ScreenSelectMusic","Inst_DiffSel") )
+	self:stoptweening():accelerate(0.2):diffusealpha(1):settext( THEME:GetString("ScreenSelectMusic","Inst_DiffSel") )
 	end,
 	StartSelectingStepsMessageCommand=function(self)
 	AlreadyExited = false
-	self:decelerate(0.2):diffusealpha(0):queuecommand("UpdateTextInst_Decided")
+	self:stoptweening():decelerate(0.2):diffusealpha(0):queuecommand("UpdateTextInst_Decided")
 	end,
 	UpdateTextInst_DecidedCommand=function(self)
-	self:accelerate(0.2):diffusealpha(1):settext( THEME:GetString("ScreenSelectMusic","Inst_Decided") )
+	self:stoptweening():accelerate(0.2):diffusealpha(1):settext( THEME:GetString("ScreenSelectMusic","Inst_Decided") )
 	end,
 	RegularTextFadeCommand=function(self)
 	if not AlreadyExited then
 		AlreadyExited = true
-		self:decelerate(0.2):diffusealpha(0):queuecommand("RegularTextSet")
+		self:stoptweening():decelerate(0.2):diffusealpha(0):queuecommand("RegularTextSet")
 	end
 	end,
 	RegularTextSetCommand=function(self)
-	self:accelerate(0.2):diffusealpha(1):settext( THEME:GetString("ScreenSelectMusic","Tip_ButtonHelp") )
+	self:stoptweening():accelerate(0.2):diffusealpha(1):settext( THEME:GetString("ScreenSelectMusic","Tip_ButtonHelp") )
 	end,
 };
 
