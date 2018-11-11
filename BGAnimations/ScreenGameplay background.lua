@@ -189,7 +189,7 @@ t[#t+1] = Def.ActorFrame{
 		};
 
 		Def.Sprite {
-			BeginCommand=function(self) self:LoadFromCurrentSongBackground() end;
+			InitCommand=function(self) self:LoadFromCurrentSongBackground() end;
 			OnCommand=function(self)
 				self:scaletoclipped(648/30,480/30)
 				:croptop(0.37):cropbottom(0.25)
@@ -198,14 +198,14 @@ t[#t+1] = Def.ActorFrame{
 			end;
 		};
 	
-		LoadFont("Common Normal")..{
+		LoadFont("bold handel gothic/25px")..{
 		Text=GAMESTATE:GetCurrentSong():GetDisplayArtist();
 		InitCommand=function(self)
 			self:zoom(0.07):shadowlengthy(0.2);
 		end;
 		};
 	
-		LoadFont("Common Normal")..{
+		LoadFont("bold handel gothic/25px")..{
 		Text=GAMESTATE:GetCurrentSong():GetDisplayFullTitle();
 		InitCommand=function(self)
 			self:shadowlengthy(0.2):y(2):zoom(0.05)
