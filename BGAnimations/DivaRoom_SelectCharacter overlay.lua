@@ -4,6 +4,7 @@ local CharTable = CHARMAN:GetAllCharacters();
 if not getenv("CharSelIndex") then
     setenv("CharSelIndex",1)
 end
+setenv("DivaRoomNextScreen", "DivaRoom")
 
 local RoomSpots = DIVA.LoadSaveDir().."RoomLocations.ini"
 

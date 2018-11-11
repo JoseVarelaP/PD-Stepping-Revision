@@ -24,8 +24,8 @@ local BTInput = {
         setenv( "DivaRoom_LocaLoad", Config.Load( CharTable[ getenv("CharSelIndex") ]:GetDisplayName(), RoomSpots ) )
 
         -- After this is done, continue by going to the main Diva Room screen.
-        SCREENMAN:GetTopScreen():SetNextScreenName("DivaRoom")
-        :StartTransitioningScreen("SM_GoToNextScreen")
+        setenv("DivaRoomNextScreen", "DivaRoom")
+        SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
     end,
 };
 
