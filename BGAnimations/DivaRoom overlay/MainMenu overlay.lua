@@ -8,6 +8,7 @@ local ChoicesList = {
     { function() SCREENMAN:AddNewScreenToTop("DivaRoom overlay/LocaChooser", "SM_GoToNextScreen") end,"Switch Location" },
     { function()
         GAMESTATE:SetCharacter(PLAYER_1, getenv("DivaRoom_CharLoad"):GetCharacterID())
+        ThemePrefs.Set("CurrentStageLocation", getenv("DivaRoom_LocaLoad") )
         setenv( "DivaRoomNextScreen", "ScreenSelectMusic" )
         SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
     end,"Use as Gameplay Character\n(This will start the game as player 1!)" },
