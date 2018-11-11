@@ -16,7 +16,7 @@ local BTInput = {
         setenv("CharSelIndex",getenv("CharSelIndex") + 1)
     end,
     ["Back"] = function()
-        SCREENMAN:GetTopScreen():SetPrevScreenName("ScreenTitleMenu"):Cancel()
+        SCREENMAN:GetTopScreen():SetPrevScreenName("DivaRoom"):Cancel()
     end,
     ["Start"] = function()
         -- Set Location and Character based on selection
@@ -95,6 +95,9 @@ local function LoadCharacterList()
                         self:strokecolor( Color.Black )
                         :halign(0):xy(-150,-10):zoom(0.8)
                         :settext( cval:GetDisplayName() )
+                        if cval == getenv("DivaRoom_CharLoad") then
+                            self:diffuse( Color.Green ):zoom(0.9)
+                        end
                     end;
                 };
 
@@ -124,10 +127,10 @@ CHList[#CHList+1] = Def.ActorScroller{
     NumItemsToDraw=7;
     OnCommand=function(self)
     self:y(7):SetFastCatchup(true):SetSecondsPerItem(0.3):SetWrap(true)
-    :SetDestinationItem( getenv("CharSelIndex") )
+    :SetDestinationItem( getenv("CharSelIndex")-1 )
+    self:addx(-SCREEN_WIDTH):decelerate(0.3):addx(SCREEN_WIDTH)
     end;
     TransformFunction=function(self, offset, itemIndex, numItems)
-        local focus = scale(math.abs(offset),0,2,1,0);
         self:visible(true);
         self:y(math.floor( offset*70 ));
         self:zoom(
@@ -135,9 +138,9 @@ CHList[#CHList+1] = Def.ActorScroller{
             (offset < -1 or offset > 1) and 0.8 or 1
         )
         :diffusealpha(
-            (offset < -1 or offset > 1) and 0.7 or 1
+            (offset == 0 and 1) or 
+            (offset < -1 or offset > 1) and 0.4 or 0.7
         )
-        --self:zoom( itemIndex == getenv("CharSelIndex") and focus or focus/2 )
     end;
     children = LoadCharacterList();
 };

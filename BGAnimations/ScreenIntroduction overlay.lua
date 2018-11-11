@@ -22,19 +22,18 @@ t[#t+1] = Def.ActorFrame{
 local RoomSpots = DIVA.LoadSaveDir().."RoomLocations.ini"
 
 -- If it isn't there, then do the loop
-if not FILEMAN:DoesFileExist( RoomSpots ) then
-	local LocationsAvailable = LOADER:LoadStages()
-	for i=1,#LocationsAvailable do
-		if LocationsAvailable[i] == "None" then
-			table.remove( LocationsAvailable, i )
-		end
+local LocationsAvailable = LOADER:LoadStages()
+for i=1,#LocationsAvailable do
+	if LocationsAvailable[i] == "None" then
+		table.remove( LocationsAvailable, i )
 	end
-	-- Warn the user about it
-	lua.Warn("Room Locations have not been found! Creating...")
-	-- Remove the None stage
-	-- Which is in fact a stage that should not be chosen by the player outside of gameplay.
-	for cval in ivalues( CHARMAN:GetAllCharacters() ) do
-		-- And save it to a file located in Save/RoomLocations.ini
+end
+-- Remove the None stage
+-- Which is in fact a stage that should not be chosen by the player outside of gameplay.
+for cval in ivalues( CHARMAN:GetAllCharacters() ) do
+	-- And save it to a file located in Save/RoomLocations.ini
+	if not Config.Load( cval:GetDisplayName(), RoomSpots ) then
+		lua.Warn("Room Locations have not been found for character ".. cval:GetDisplayName() .."! Creating...")
 		Config.Save( cval:GetDisplayName(), LocationsAvailable[math.random(1,#LocationsAvailable)], RoomSpots )
 	end
 end

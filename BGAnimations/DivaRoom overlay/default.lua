@@ -69,6 +69,7 @@ local function InputHandler(event)
             SCREENMAN:AddNewScreenToTop("DivaRoom overlay/CharChooser", "SM_GoToNextScreen")
         end
         if event.GameButton == "Back" then
+            SCREENMAN:GetTopScreen():SetPrevScreenName("ScreenTitleMenu"):Cancel()
         end
         if InputListing[event.GameButton] then
             InputListing[event.GameButton]()
@@ -122,11 +123,23 @@ end;
 LocationSce[#LocationSce+1] = Def.Model {
     Meshes=LoadedCharacter:GetModelPath();
     Materials=LoadedCharacter:GetModelPath();
-    Bones=LoadedCharacter:GetDanceAnimationPath();
-    OnCommand=function(self) self:cullmode("CullMode_None") end,
+    Bones=LoadedCharacter:GetRestAnimationPath();
+    OnCommand=function(self)
+        self:cullmode("CullMode_None")
+
+        if string.find(LoadedCharacter:GetDisplayName(), "Baby") then
+            self:zoom(0.6)
+        end;
+    end,
 };
 
 UI[#UI+1] = LoadActor("../Borders.lua");
+
+UI[#UI+1] = Def.Quad{
+    OnCommand=function(self)
+        self:FullScreen():diffuse(Color.Black):decelerate(0.2):diffusealpha(0)
+    end;
+};
 
 AllObjects[#AllObjects+1] = LocationSce;
 AllObjects[#AllObjects+1] = UI;
