@@ -174,7 +174,7 @@ local t = Def.ActorFrame {};
 			SetMessageCommand=function(self,params)
 			local song = params.Song;
 				if song and PROFILEMAN:IsSongNew(song) then
-					self:settext("NEW!")
+					self:settext( THEME:GetString("ScreenSelectMusic","NEW!") )
 					self:diffuse(Color.Red)
 					self:strokecolor( Color.Orange )
 				else
