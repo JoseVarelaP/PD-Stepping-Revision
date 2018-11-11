@@ -11,6 +11,7 @@ local CameraPresets = {
     {x=0 ,y=10 ,z=0 ,rotx=0 ,roty=0},
     {x=10 ,y=15 ,z=-20 ,rotx=10 ,roty=20},
     {x=-30 ,y=15 ,z=-40 ,rotx=10 ,roty=-40},
+    {x=30 ,y=15 ,z=-40 ,rotx=10 ,roty=40},
     {x=0 ,y=8 ,z=0 ,rotx=10 ,roty=140},
 }
 
@@ -33,7 +34,7 @@ local AllObjects = Def.ActorFrame{};
 local UI = Def.ActorFrame{};
 local LocationSce = Def.ActorFrame{
     InitCommand=function(self)
-        self:Center():fov(90):rotationy(180):z( WideScale(300,400) ):addy(10);
+        self:Center():fov(90):rotationy(180):z( WideScale(300,400) ):addy(10):spin():effectmagnitude(0,10,0)
     end;
     UpAllValMessageCommand=function(self)
         if getenv("DivaRoomNextScreen") == "ScreenSelectMusic" then
@@ -163,7 +164,7 @@ UI[#UI+1] = Def.ActorFrame{
     
     LoadActor( THEME:GetPathG("","DivaRoom/Mask_DateInfo") )..{
         OnCommand=function(self)
-            self:halign(0):MaskSource():x(-1)
+            self:halign(0):MaskSource():x(-1):cropright(0.76)
         end;
     };
 

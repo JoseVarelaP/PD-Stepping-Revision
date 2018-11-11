@@ -59,12 +59,12 @@ local function InputHandler(event)
         if BTInput[event.GameButton] then BTInput[event.GameButton]() end
     end
     CheckValueOffsets()
-    MESSAGEMAN:Broadcast("UpAllVal")
+    MESSAGEMAN:Broadcast("LocUpAllVal")
     CHList:GetChild("CharacterScroller"):SetDestinationItem(getenv("CharSelIndex")-1);
 end
 
 local Controller = Def.ActorFrame{
-	OnCommand=function(self) MESSAGEMAN:Broadcast("UpAllVal")
+	OnCommand=function(self) MESSAGEMAN:Broadcast("LocUpAllVal")
 	SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end;
 };
 
@@ -84,14 +84,41 @@ local function LoadCharacterList()
     local t = Def.ActorFrame{};
     for index,cval in ipairs(LocationsAvailable) do
         local Result =  Def.ActorFrame{
+
+            LoadActor( THEME:GetPathG("","MenuScrollers/SettingBase") )..{
+                OnCommand=function(self)
+                    self:zoom(0.35)
+                end;
+            };
+
+            LoadActor( THEME:GetPathG("","MenuScrollers/SettingHighlight") )..{
+                OnCommand=function(self)
+                    self:zoom(0.35)
+                end;
+                LocUpAllValMessageCommand=function(self)
+                    self:stopeffect():diffusealpha(0)
+                    if index == getenv("CharSelIndex") then
+                        self:diffuseshift():diffusealpha(1)
+                        :effectcolor1(1,1,1,0):effectcolor2(Color.White)
+                    end
+                end;
+            };
+
             Def.BitmapText{ Font="renner/20px",
                 OnCommand=function(self)
                     self:strokecolor( Color.Black )
-                    :halign(0):xy(-150,-10):zoom(0.8)
+                    :halign(0):xy(-150,0):zoom(0.8)
                     :settext( cval )
-                    if cval == getenv("DivaRoom_CharLoad") then
-                        self:diffuse( Color.Green ):zoom(0.9)
-                    end
+                end;
+            };
+
+            Def.BitmapText{ Font="renner/20px",
+            Text="Currently Selected",
+                OnCommand=function(self)
+                    self:strokecolor( Color.Black )
+                    :halign(0):xy(80,-2):zoom(0.6)
+                    :diffuse( Color.Green )
+                    :visible( getenv("DivaRoom_LocaLoad") == cval )
                 end;
             };
         };
@@ -110,7 +137,7 @@ CHList[#CHList+1] = Def.ActorScroller{
     Name = 'CharacterScroller';
     NumItemsToDraw=7;
     OnCommand=function(self)
-    self:y(7):SetFastCatchup(true):SetSecondsPerItem(0.3):SetWrap(true)
+    self:y(7):SetFastCatchup(true):SetSecondsPerItem(0.1):SetWrap(false)
     :SetDestinationItem( getenv("CharSelIndex")-1 )
     self:addx(-SCREEN_WIDTH):decelerate(0.3):addx(SCREEN_WIDTH)
     end;
@@ -125,9 +152,6 @@ CHList[#CHList+1] = Def.ActorScroller{
         :diffusealpha(
             (offset == 0 and 1) or 
             (offset < -1 or offset > 1) and 0.4 or 0.7
-        )
-        self:x(
-            (offset < -1 or offset > 1) and -100 or math.sin(offset)*offset
         )
     end;
     children = LoadCharacterList();

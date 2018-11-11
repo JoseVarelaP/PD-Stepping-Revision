@@ -4,7 +4,7 @@
 local MenuIndex = 1
 
 local ChoicesList = {
-    { function() SCREENMAN:AddNewScreenToTop("DivaRoom overlay/CharChooser", "SM_GoToNextScreen") end,"Character Chooser" },
+    { function() SCREENMAN:AddNewScreenToTop("DivaRoom overlay/CharChooser", "SM_GoToNextScreen") end,"Select Character" },
     { function() SCREENMAN:AddNewScreenToTop("DivaRoom overlay/LocaChooser", "SM_GoToNextScreen") end,"Switch Location" },
     { function()
         GAMESTATE:SetCharacter(PLAYER_1, getenv("DivaRoom_CharLoad"):GetCharacterID())
@@ -54,14 +54,16 @@ local function InputHandler(event)
         if BTInput[event.GameButton] then BTInput[event.GameButton]() end
     end
     CheckValueOffsets()
-    MESSAGEMAN:Broadcast("UpAllVal")
-    if CHList and CHList:GetChild("MenuScroller") then
-        CHList:GetChild("MenuScroller"):SetDestinationItem( MenuIndex-1 );
+    MESSAGEMAN:Broadcast("MenUpAllVal")
+    if CHList then
+        if CHList:GetChild("MenuScroller") then
+            CHList:GetChild("MenuScroller"):SetDestinationItem( MenuIndex-1 );
+        end
     end
 end
 
 local Controller = Def.ActorFrame{
-	OnCommand=function(self) MESSAGEMAN:Broadcast("UpAllVal")
+	OnCommand=function(self) MESSAGEMAN:Broadcast("MenUpAllVal")
 	SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end;
 };
 
@@ -69,7 +71,7 @@ local Controller = Def.ActorFrame{
 AllObjects[#AllObjects+1] = Controller;
 
 CHList = Def.ActorFrame{
-    OnCommand=function(self)
+    InitCommand=function(self)
         self:Center();
         CHList = self;
     end;
@@ -81,10 +83,30 @@ local function LoadCharacterList()
     local t = Def.ActorFrame{};
     for index,cval in ipairs(ChoicesList) do
         local Result = Def.ActorFrame{
+
+            LoadActor( THEME:GetPathG("","MenuScrollers/SettingBase") )..{
+                OnCommand=function(self)
+                    self:zoom(0.35)
+                end;
+            };
+
+            LoadActor( THEME:GetPathG("","MenuScrollers/SettingHighlight") )..{
+                OnCommand=function(self)
+                    self:zoom(0.35)
+                end;
+                MenUpAllValMessageCommand=function(self)
+                    self:stopeffect():diffusealpha(0)
+                    if index == MenuIndex then
+                        self:diffuseshift():diffusealpha(1)
+                        :effectcolor1(1,1,1,0):effectcolor2(Color.White)
+                    end
+                end;
+            };
+
             Def.BitmapText{ Font="renner/20px",
                 OnCommand=function(self)
                     self:strokecolor( Color.Black )
-                    :halign(0):xy(-150,-10):zoom(0.8)
+                    :halign(0):xy(-150,0):zoom(0.8)
                     :settext( cval[2] )
                 end;
             };
@@ -104,7 +126,7 @@ CHList[#CHList+1] = Def.ActorScroller{
     Name = 'MenuScroller';
     NumItemsToDraw=7;
     OnCommand=function(self)
-    self:y(7):SetFastCatchup(true):SetSecondsPerItem(0.3):SetWrap(false)
+    self:y(7):SetFastCatchup(true):SetSecondsPerItem(0.1):SetWrap(false)
     self:addx(-SCREEN_WIDTH):decelerate(0.3):addx(SCREEN_WIDTH)
     end;
     TransformFunction=function(self, offset, itemIndex, numItems)
@@ -115,8 +137,8 @@ CHList[#CHList+1] = Def.ActorScroller{
             (offset == 0 and 1) or 
             (offset < -1 or offset > 1) and 0.4 or 0.7
         )
-        :x(
-            (offset < -1 or offset > 1) and math.sqrt(900) or 1
+        :zoom(
+            (offset < 0 or offset > 0) and 0.8 or 1
         )
     end;
     children = LoadCharacterList();

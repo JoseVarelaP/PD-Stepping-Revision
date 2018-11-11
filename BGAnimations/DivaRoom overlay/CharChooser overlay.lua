@@ -57,12 +57,12 @@ local function InputHandler(event)
         if BTInput[event.GameButton] then BTInput[event.GameButton]() end
     end
     CheckValueOffsets()
-    MESSAGEMAN:Broadcast("UpAllVal")
+    MESSAGEMAN:Broadcast("CharUpAllVal")
     CHList:GetChild("CharacterScroller"):SetDestinationItem(getenv("CharSelIndex")-1);
 end
 
 local Controller = Def.ActorFrame{
-	OnCommand=function(self) MESSAGEMAN:Broadcast("UpAllVal")
+	OnCommand=function(self) MESSAGEMAN:Broadcast("CharUpAllVal")
 	SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end;
 };
 
@@ -83,28 +83,60 @@ local function LoadCharacterList()
     for index,cval in ipairs(CharTable) do
         if cval:GetDisplayName() ~= "" then
             local Result =  Def.ActorFrame{
+
+                LoadActor( THEME:GetPathG("","DivaRoom/DateInfo") )..{
+                    OnCommand=function(self)
+                        self:zoom(0.35)
+                    end;
+                };
+                
+                LoadActor( THEME:GetPathG("","DivaRoom/Mask_DateInfo") )..{
+                    OnCommand=function(self)
+                        self:MaskSource():x(-1):zoom(0.35):cropright(0.6):croptop(0.16):cropbottom(0.3)
+                    end;
+                };
+
                 Def.Sprite{
                     Texture=cval:GetCardPath();
                     OnCommand=function(self)
-                        self:zoom(0.5):setsize(90,140):x(-200):fadetop(0.2):fadebottom(0.2)
+                        self:zoom(0.75):setsize(90,140):xy(-155,4):MaskDest():cropbottom(0.4):croptop(0.2)
+                    end;
+                };
+                
+                LoadActor( THEME:GetPathG("","MenuScrollers/SettingHighlight") )..{
+                    OnCommand=function(self)
+                        self:zoom(0.35)
+                    end;
+                    CharUpAllValMessageCommand=function(self)
+                        self:stopeffect():diffusealpha(0)
+                        if index == getenv("CharSelIndex") then
+                            self:diffuseshift():diffusealpha(1)
+                            :effectcolor1(1,1,1,0):effectcolor2(Color.White)
+                        end
                     end;
                 };
 
                 Def.BitmapText{ Font="renner/20px",
                     OnCommand=function(self)
                         self:strokecolor( Color.Black )
-                        :halign(0):xy(-150,-10):zoom(0.8)
+                        :halign(0):xy(-120,-10):zoom(0.7)
                         :settext( cval:GetDisplayName() )
-                        if cval == getenv("DivaRoom_CharLoad") then
-                            self:diffuse( Color.Green ):zoom(0.9)
-                        end
+                    end;
+                };
+
+                Def.BitmapText{ Font="renner/20px",
+                Condition=(getenv("DivaRoom_CharLoad") == cval);
+                    OnCommand=function(self)
+                        self:strokecolor( Color.Black )
+                        :halign(1):xy(180,5):zoom(0.5)
+                        :settext( "Currently Selected" )
                     end;
                 };
 
                 Def.BitmapText{ Font="Common Normal",
                     OnCommand=function(self)
                         self:strokecolor( Color.Black )
-                        :halign(0):xy(-150,10):zoom(0.6)
+                        :halign(0):xy(-130,7):zoom(0.6)
                         -- Get current loction for the character    
                         :settext( "Current Location: "..Config.Load( cval:GetDisplayName(), RoomSpots ) )
                     end;
@@ -126,13 +158,13 @@ CHList[#CHList+1] = Def.ActorScroller{
     Name = 'CharacterScroller';
     NumItemsToDraw=7;
     OnCommand=function(self)
-    self:y(7):SetFastCatchup(true):SetSecondsPerItem(0.3):SetWrap(true)
+    self:y(7):SetFastCatchup(true):SetSecondsPerItem(0.1):SetWrap(false)
     :SetDestinationItem( getenv("CharSelIndex")-1 )
     self:addx(-SCREEN_WIDTH):decelerate(0.3):addx(SCREEN_WIDTH)
     end;
     TransformFunction=function(self, offset, itemIndex, numItems)
         self:visible(true);
-        self:y(math.floor( offset*70 ))
+        self:y(math.floor( offset*60 ))
         self:decelerate(0.2)
         self:zoom(
             (offset == 0 and 1.1) or 
@@ -140,10 +172,7 @@ CHList[#CHList+1] = Def.ActorScroller{
         )
         :diffusealpha(
             (offset == 0 and 1) or 
-            (offset < -1 or offset > 1) and 0.4 or 0.7
-        )
-        self:x(
-            (offset < -1 or offset > 1) and -100 or math.sin(offset)*offset
+            (offset < -1 or offset > 1) and 0.1 or 0.7
         )
     end;
     children = LoadCharacterList();
