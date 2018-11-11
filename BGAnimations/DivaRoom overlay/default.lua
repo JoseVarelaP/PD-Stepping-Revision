@@ -11,6 +11,7 @@ local CameraPresets = {
     {x=0 ,y=10 ,z=0 ,rotx=0 ,roty=0},
     {x=10 ,y=15 ,z=-20 ,rotx=10 ,roty=20},
     {x=-30 ,y=15 ,z=-40 ,rotx=10 ,roty=-40},
+    {x=0 ,y=8 ,z=0 ,rotx=10 ,roty=140},
 }
 
 local CPr = 1;
@@ -35,7 +36,7 @@ local LocationSce = Def.ActorFrame{
         self:Center():fov(90):rotationy(180):z( WideScale(300,400) ):addy(10);
     end;
     UpAllValMessageCommand=function(self)
-        self:stoptweening():decelerate(0.1)
+        self:stoptweening():decelerate(0.3)
         if CameraPresets[CPr] then
             self:xyz(
                 SCREEN_CENTER_X+(CameraPresets[CPr].x)*-1,
@@ -66,7 +67,7 @@ local function InputHandler(event)
         if event.GameButton == "Start" then
             -- Load the main menu if the button is pressed.
             SCREENMAN:GetTopScreen():SetNextScreenName("DivaRoom")
-            SCREENMAN:AddNewScreenToTop("DivaRoom overlay/CharChooser", "SM_GoToNextScreen")
+            SCREENMAN:AddNewScreenToTop("DivaRoom overlay/MainMenu", "SM_GoToNextScreen")
         end
         if event.GameButton == "Back" then
             SCREENMAN:GetTopScreen():SetPrevScreenName("ScreenTitleMenu"):Cancel()

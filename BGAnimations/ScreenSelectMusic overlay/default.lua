@@ -91,7 +91,7 @@ t[#t+1] = LoadFont("Common Normal")..{
 };
 
 t[#t+1] = LoadFont("Common Normal")..{
-	Text="Stuck? Press the &SELECT; button for a button guide.";
+	Text=THEME:GetString("ScreenSelectMusic","Tip_ButtonHelp");
 	InitCommand=function(self)
 		self:vertalign(bottom):horizalign(left):xy(10,SCREEN_BOTTOM-8):zoom(0.6):maxwidth(SCREEN_WIDTH*1.6)
 	end;
@@ -121,7 +121,7 @@ t[#t+1] = LoadFont("Common Normal")..{
 	end
 	end,
 	RegularTextSetCommand=function(self)
-	self:accelerate(0.2):diffusealpha(1):settext( "Stuck? Press the &SELECT; button for a button guide." )
+	self:accelerate(0.2):diffusealpha(1):settext( THEME:GetString("ScreenSelectMusic","Tip_ButtonHelp") )
 	end,
 };
 

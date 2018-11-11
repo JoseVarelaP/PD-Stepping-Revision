@@ -1,8 +1,10 @@
 -- Diva Rooom - CharacterSelection
 -- Load the characters, put them in a table so we can select.
-local CharTable = CHARMAN:GetAllCharacters();
-if not getenv("CharSelIndex") then
-    setenv("CharSelIndex",1)
+local LocationsAvailable = LOADER:LoadStages()
+for i=1,#LocationsAvailable do
+	if LocationsAvailable[i] == "None" then
+		table.remove( LocationsAvailable, i )
+	end
 end
 
 local RoomSpots = DIVA.LoadSaveDir().."RoomLocations.ini"
@@ -20,8 +22,8 @@ local BTInput = {
     end,
     ["Start"] = function()
         -- Set Location and Character based on selection
-        setenv( "DivaRoom_CharLoad", CharTable[getenv("CharSelIndex")] )
-        setenv( "DivaRoom_LocaLoad", Config.Load( CharTable[ getenv("CharSelIndex") ]:GetDisplayName(), RoomSpots ) )
+        setenv( "DivaRoom_LocaLoad", LocationsAvailable[getenv("CharSelIndex")] )
+        Config.Save( getenv("DivaRoom_CharLoad"):GetDisplayName(), LocationsAvailable[getenv("CharSelIndex")], RoomSpots )
 
         -- After this is done, continue by going to the main Diva Room screen.
         SCREENMAN:GetTopScreen():SetNextScreenName("DivaRoom")
@@ -35,8 +37,8 @@ local AllObjects = Def.ActorFrame{};
 local UI = Def.ActorFrame{};
 
 local function CheckValueOffsets()
-    if getenv("CharSelIndex") > #CharTable then setenv("CharSelIndex",1) end
-    if getenv("CharSelIndex") < 1 then setenv("CharSelIndex",#CharTable) end
+    if getenv("CharSelIndex") > #LocationsAvailable then setenv("CharSelIndex",1) end
+    if getenv("CharSelIndex") < 1 then setenv("CharSelIndex",#LocationsAvailable) end
 end;
 
 -- Input handler, manages all the Input data that will be recieved by the player.
@@ -80,38 +82,20 @@ local ItSp = 70;
 
 local function LoadCharacterList()
     local t = Def.ActorFrame{};
-    for index,cval in ipairs(CharTable) do
-        if cval:GetDisplayName() ~= "" then
-            local Result =  Def.ActorFrame{
-                Def.Sprite{
-                    Texture=cval:GetCardPath();
-                    OnCommand=function(self)
-                        self:zoom(0.5):setsize(90,140):x(-200):fadetop(0.2):fadebottom(0.2)
-                    end;
-                };
-
-                Def.BitmapText{ Font="renner/20px",
-                    OnCommand=function(self)
-                        self:strokecolor( Color.Black )
-                        :halign(0):xy(-150,-10):zoom(0.8)
-                        :settext( cval:GetDisplayName() )
-                        if cval == getenv("DivaRoom_CharLoad") then
-                            self:diffuse( Color.Green ):zoom(0.9)
-                        end
-                    end;
-                };
-
-                Def.BitmapText{ Font="Common Normal",
-                    OnCommand=function(self)
-                        self:strokecolor( Color.Black )
-                        :halign(0):xy(-150,10):zoom(0.6)
-                        -- Get current loction for the character    
-                        :settext( "Current Location: "..Config.Load( cval:GetDisplayName(), RoomSpots ) )
-                    end;
-                };
+    for index,cval in ipairs(LocationsAvailable) do
+        local Result =  Def.ActorFrame{
+            Def.BitmapText{ Font="renner/20px",
+                OnCommand=function(self)
+                    self:strokecolor( Color.Black )
+                    :halign(0):xy(-150,-10):zoom(0.8)
+                    :settext( cval )
+                    if cval == getenv("DivaRoom_CharLoad") then
+                        self:diffuse( Color.Green ):zoom(0.9)
+                    end
+                end;
             };
-            t[#t+1] = Result
-        end
+        };
+        t[#t+1] = Result
     end
     return t;
 end;
