@@ -219,6 +219,14 @@ Prefs =
 		Choices = range(0.25, 5, 0.25),
 		Values = range(0.25, 5, 0.25),
 	},
+
+	-- Diva room options
+	Enable12HourDivaRoom =
+	{
+		Default = false,
+		Choices = { OptionNameString("Off"), OptionNameString("On") },
+		Values = { false,true },
+	},
 }
 
 ThemePrefs.InitAll(Prefs)

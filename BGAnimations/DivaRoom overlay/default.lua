@@ -76,10 +76,10 @@ local function InputHandler(event)
         end
         if InputListing[event.GameButton] then
             InputListing[event.GameButton]()
+            CheckValues()
+            MESSAGEMAN:Broadcast("UpAllVal")
         end
     end
-    CheckValues()
-    MESSAGEMAN:Broadcast("UpAllVal")
 end
 
 local Controller = Def.ActorFrame{
@@ -146,7 +146,8 @@ local function Hour12Set()
 end
 
 local function StringMonth()
-    return THEME:GetString("MonthOfYear",MonthOfYear())
+    -- Bring it one over from the original, because the function starts from 0
+    return THEME:GetString("MonthOfYear",MonthOfYear()+1)
 end
 
 UI[#UI+1] = Def.ActorFrame{
@@ -181,7 +182,7 @@ UI[#UI+1] = Def.ActorFrame{
             local Time = string.format( "%02.0f:%02.0f:%02.0f",
                 Hour(),Minute(),Second()
             )
-            if not ThemePrefs.Get("Enable12HourDivaRoom") then
+            if ThemePrefs.Get("Enable12HourDivaRoom") then
                 Time = string.format( "%02.0f:%02.0f:%02.0f %s",
                     Hour12Set()[1],Minute(),Second(),Hour12Set()[2]
                 )
@@ -214,7 +215,7 @@ UI[#UI+1] = Def.ActorFrame{
     LoadActor( THEME:GetPathG("","DivaRoom/CameraView") )..{
         OnCommand=function(self)
             self:zoom(0.2):halign(0)
-        end
+        end;
     };
 
     Def.BitmapText{
