@@ -165,6 +165,12 @@ Prefs =
 		Choices = { OptionNameString("Off"), OptionNameString("On") },
 		Values = { false,true },
 	},
+	DediExpLight =
+	{
+		Default = false,
+		Choices = { OptionNameString("Off"), OptionNameString("On") },
+		Values = { false,true },
+	},
 	DediMeasureCamera =
 	{
 		Default = 2,

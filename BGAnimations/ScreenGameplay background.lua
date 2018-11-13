@@ -132,7 +132,8 @@ if ThemePrefs.Get("DedicatedCharacterShow") and DIVA:AnyoneHasChar() then
 				self:cullmode("CullMode_None")
 				if DIVA:BothPlayersEnabled() then self:x( (player == PLAYER_1 and 8) or -8 ) end
 				self:zoom( DEDICHAR:HasBabyCharacter(player) and 0.7 or 1 )
-				:queuecommand("UpdateRate")
+				if ThemePrefs.Get("DediExpLight") then self:diffuse( 0.750,0.750,0.750,1 ) end
+				self:queuecommand("UpdateRate")
 				end,
 				UpdateRateCommand=function(self)
 				-- Check function to see how it works.
@@ -153,7 +154,9 @@ if ThemePrefs.Get("DedicatedCharacterShow") and DIVA:AnyoneHasChar() then
 				-- to make the character face towards the screen.
 				if DIVA:BothPlayersEnabled() then self:x( (player == PLAYER_1 and 8) or -8 ) end
 				self:zoom( DEDICHAR:HasBabyCharacter(player) and 0.7 or 1 )
-				:queuecommand("UpdateRate")
+				-- Check if the Experimental light fix is on
+				if ThemePrefs.Get("DediExpLight") then self:diffuse( 0.750,0.750,0.750,1 ) end
+				self:queuecommand("UpdateRate")
 				end,
 				-- Update Model animation speed depending on song's BPM.
 				-- To match SM's way of animation speeds

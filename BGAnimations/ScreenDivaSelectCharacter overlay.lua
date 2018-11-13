@@ -176,13 +176,16 @@ for player in ivalues(PlayerNumber) do
 
 			-- Need to check this value, as the wheel gets completely broken if there's less
 			-- than 10-12 characters.
-			self:x( WHEEL_3D_RADIUS * math.sin(rotationx_radians) );
+			self:x( WHEEL_3D_RADIUS * math.sin( scale(offset,-60/2,60/2,-curve/2,curve/2) ) )
 
 			if DIVA:BothPlayersEnabled() then
 				self:x( WHEEL_3D_RADIUS/1.5 * math.sin(rotationx_radians) );
 			end
 			self:finishtweening():decelerate(0.2)
-			:diffuse( itemIndex == ChoiceTable[player]-1 and Color.White or color("0.3,0.3,0.3,1") )
+			:diffuse( itemIndex == ChoiceTable[player]-1 and
+			-- Check if the Experimental light fix is on
+			 (ThemePrefs.Get("DediExpLight") and color("0.6,0.6,0.6,1") or Color.White)
+			or color("0.3,0.3,0.3,1") )
 			:z( itemIndex == ChoiceTable[player]-1 and 110 or (90 * math.cos(rotationx_radians*offset)) )
 
 			self:diffusealpha( 2 * math.cos(rotationx_radians*offset) )

@@ -54,9 +54,6 @@ local LocationSce = Def.ActorFrame{
         end
     end;
 };
-local InputMode = "Global";
-
-local StageToShow = ThemePrefs.Get("CurrentStageLocation")
 
 -- Input handler, manages all the Input data that will be recieved by the player.
 local function InputHandler(event)
@@ -128,6 +125,8 @@ LocationSce[#LocationSce+1] = Def.Model {
     Bones=LoadedCharacter:GetRestAnimationPath();
     OnCommand=function(self)
         self:cullmode("CullMode_None")
+
+        if ThemePrefs.Get("DediExpLight") then self:diffuse( 0.5,0.5,0.5,1 ) end	
 
         if string.find(LoadedCharacter:GetDisplayName(), "Baby") then
             self:zoom(0.6)

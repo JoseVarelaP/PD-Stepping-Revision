@@ -7,28 +7,6 @@ local t = Def.ActorFrame{
 }
 
 t[#t+1] = Def.ActorFrame{
-	OnCommand=function(self)
-		self:x(SCREEN_RIGHT-70):y(SCREEN_BOTTOM-150):diffusealpha(0):sleep(0.3):decelerate(0.2):diffusealpha(1)
-	end;
-	OffCommand=function(self)
-		self:accelerate(0.2):diffusealpha(0)
-	end;
-
-		LoadActor( THEME:GetPathG("","Title_Explanation") )..{
-		OnCommand=function(self)
-			self:horizalign(right):zoom(1.5)
-		end;
-		GainFocusCommand=function(self)
-			self:stoptweening():visible(true)
-		end;
-		LoseFocusCommand=function(self)
-			self:stoptweening():visible(false)
-		end;
-		};
-
-	};
-
-t[#t+1] = Def.ActorFrame{
 	InitCommand=function(self)
 		self:x(SCREEN_RIGHT-WideScale(170,240)):y(100)
 	end;

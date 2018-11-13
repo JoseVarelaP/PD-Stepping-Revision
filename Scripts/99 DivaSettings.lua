@@ -18,8 +18,8 @@ DSet = {
 		ExpX = function() return SCREEN_RIGHT-310 end,
 		ExpY = function() return SCREEN_CENTER_Y-50 end,
 		ExpOn = function(self)
-		self:wrapwidthpixels(370):align(0,0):zoom(0.6)
-		:diffusealpha(0):sleep(1)
+		self:wrapwidthpixels( WideScale(370,500) ):align(0,0):zoom(0.6):y( SCREEN_CENTER_Y-50 )
+		:strokecolor(Color.White):diffuse(0,0,0,0):sleep(1)
 		:linear(0.1):diffusealpha(1)
 		end,
 		ExpOff = function(self) self:accelerate(0.2):diffusealpha(0) end,
@@ -153,6 +153,7 @@ DSet = {
 
 			Result = Result .. "DediSongData,"
 			Result = Result .. "DediMeasureCamera,"
+			Result = Result .. "DediExpLight,"
 			Result = Result .. "ModelRateBPMLow,"
 			Result = Result .. "ModelRateBPMMax,"
 			Result = Result .. "ModelRateMulLow,"
