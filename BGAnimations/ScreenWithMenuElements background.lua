@@ -37,6 +37,12 @@ t[#t+1] = Def.Quad{
 	end;
 };
 
+t[#t+1] = LoadActor( THEME:GetPathG("","BGElements/ColorBG") )..{
+	OnCommand=function(self)
+		self:Center():zoom(0.9):diffusealpha(0.8)
+	end
+};
+
 local function IsMikuBirthday()
 	return DayOfYear() == 242
 end
@@ -87,6 +93,16 @@ t[#t+1] = Def.ActorFrame{
 		end;
 	};
 };
+end
+
+for i=1,100 do
+	t[#t+1] = LoadActor( THEME:GetPathG("","BGElements/TrTile") )..{
+		OnCommand=function(self)
+			self:xy( (self:GetWidth()*-1)+(self:GetWidth()-39)*i, SCREEN_CENTER_Y )
+			self:texcoordvelocity(0.7,0):customtexturerect(0,0,1,1):zoom(0.40)
+			:rainbow():effectoffset(2.4*i):effectperiod( 100 )
+		end;
+	};
 end
 
 t[#t+1] = LoadActor("Borders.lua");

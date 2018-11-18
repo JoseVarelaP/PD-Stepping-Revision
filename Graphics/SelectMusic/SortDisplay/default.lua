@@ -1,10 +1,6 @@
 return Def.ActorFrame{
 	
-	LoadActor("Base")..{
-		 OnCommand=function(self)
-			self:shadowlengthy(3)
-		end
-	};
+	LoadActor("Base")..{ OnCommand=function(self) self:shadowlengthy(3) end };
 	
 	LoadFont("Common Normal")..{
 		 Text=string.upper(THEME:GetString("OptionTitles","Sort")), OnCommand=function(self)
@@ -12,11 +8,9 @@ return Def.ActorFrame{
 		end
 	};
 	LoadFont("Common Normal")..{
-	OnCommand=function(self)
-		self:y(12)
-	end;
+	OnCommand=function(self) self:y(12) end;
 	CurrentSongChangedMessageCommand=function(self)
-	self:settext( string.upper(THEME:GetString("SortOrder", ToEnumShortString( GAMESTATE:GetSortOrder() ) ) ) )
+		self:settext( string.upper(THEME:GetString("SortOrder", ToEnumShortString( GAMESTATE:GetSortOrder() ) ) ) )
 	end,
 	};
 }

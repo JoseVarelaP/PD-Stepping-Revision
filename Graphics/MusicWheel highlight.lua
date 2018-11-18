@@ -1,14 +1,4 @@
-local t = Def.ActorFrame{
-	CurrentStepsP1ChangedMessageCommand=function(self)
-		self:queuemessage("UpdateSteps")
-	end;
-	CurrentStepsP2ChangedMessageCommand=function(self)
-		self:queuemessage("UpdateSteps")
-	end;
-	CurrentSongChangedMessageCommand=function(self)
-		self:queuemessage("UpdateSteps")
-	end;
-};
+local t = Def.ActorFrame{};
 
 	t[#t+1] = Def.ActorFrame{
 		OnCommand=function(self)

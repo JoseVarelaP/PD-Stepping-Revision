@@ -82,7 +82,7 @@ t.OnCommand=function(self)
 	self:sleep(8):queuecommand("SendToNewScreen")
 end
 t.SendToNewScreenCommand=function(self)
-	SCREENMAN:SetNewScreen("ScreenInit")
+	SCREENMAN:SetNewScreen("Diva_TitleMenu")
 end
 
 return t;

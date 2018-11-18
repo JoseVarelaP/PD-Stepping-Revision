@@ -33,11 +33,11 @@ local function ScrollInput(event)
 
 			if DIVA:BothPlayersEnabled() and (ConfirmedCh["PlayerNumber_P1"] and ConfirmedCh["PlayerNumber_P2"]) then
 				-- move to next screen
-				SCREENMAN:GetTopScreen():SetNextScreenName("ScreenSelectMusic")
+				SCREENMAN:GetTopScreen():SetNextScreenName("ScreenSelectPlayMode")
 				SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 			elseif not DIVA:BothPlayersEnabled() and (ConfirmedCh["PlayerNumber_P1"] or ConfirmedCh["PlayerNumber_P2"]) then
 				-- move to next screen
-				SCREENMAN:GetTopScreen():SetNextScreenName("ScreenSelectMusic")
+				SCREENMAN:GetTopScreen():SetNextScreenName("ScreenSelectPlayMode")
 				SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 			end
 
@@ -53,7 +53,7 @@ local function ScrollInput(event)
 			end
 		end
 		if event.GameButton == "Back" then
-			SCREENMAN:GetTopScreen():SetPrevScreenName("ScreenTitleMenu")
+			SCREENMAN:GetTopScreen():SetPrevScreenName( Branch.TitleMenu() )
 			SCREENMAN:GetTopScreen():Cancel()
 		end
 		VerifyValues()
