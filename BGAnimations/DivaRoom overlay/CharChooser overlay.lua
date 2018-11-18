@@ -92,7 +92,8 @@ local function LoadCharacterList()
                 
                 LoadActor( THEME:GetPathG("","DivaRoom/Mask_DateInfo") )..{
                     OnCommand=function(self)
-                        self:MaskSource():x(-1):zoom(0.35):cropright(0.6):croptop(0.16):cropbottom(0.3)
+                        self:MaskSource():x(-1):zoom(0.35):cropright(0.6)
+                        :clearzbuffer(true)
                     end;
                 };
 
