@@ -38,9 +38,9 @@ local LocationSce = Def.ActorFrame{
     end;
     UpAllValMessageCommand=function(self)
         if getenv("DivaRoomNextScreen") == "ScreenSelectMusic" then
-            GAMESTATE:UnjoinPlayer( PLAYER_2 )
             GAMESTATE:SetCurrentStyle("single")
-            SCREENMAN:SetNewScreen( getenv("DivaRoomNextScreen") )
+            SCREENMAN:GetTopScreen():SetNextScreenName( getenv("DivaRoomNextScreen") )
+            :StartTransitioningScreen("SM_GoToNextScreen")
         end
         self:stoptweening():decelerate(0.3)
         if CameraPresets[CPr] then

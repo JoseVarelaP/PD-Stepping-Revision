@@ -6,12 +6,13 @@ local MenuIndex = 1
 local ChoicesList = {
     { function() SCREENMAN:AddNewScreenToTop("DivaRoom overlay/CharChooser", "SM_GoToNextScreen") end,"Select Character" },
     { function() SCREENMAN:AddNewScreenToTop("DivaRoom overlay/LocaChooser", "SM_GoToNextScreen") end,"Switch Location" },
-    { function()
-        GAMESTATE:SetCharacter(PLAYER_1, getenv("DivaRoom_CharLoad"):GetCharacterID())
+    { function(event)
+        GAMESTATE:JoinPlayer(event)
+        GAMESTATE:SetCharacter(event, getenv("DivaRoom_CharLoad"):GetCharacterID())
         ThemePrefs.Set("CurrentStageLocation", getenv("DivaRoom_LocaLoad") )
         setenv( "DivaRoomNextScreen", "ScreenSelectMusic" )
         SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
-    end,"Use as Gameplay Character\n(This will start the game as player 1!)" },
+    end,"Use as Gameplay Character\n(This will start Music Selection!)" },
 };
 
 local BTInput = {
@@ -21,8 +22,8 @@ local BTInput = {
         SCREENMAN:GetTopScreen():SetPrevScreenName("DivaRoom"):Cancel()
         return
     end,
-    ["Start"] = function()
-        ChoicesList[MenuIndex][1]()
+    ["Start"] = function(event)
+        ChoicesList[MenuIndex][1](event)
     end,
 };
 
@@ -42,16 +43,18 @@ local function InputHandler(event)
     -- ( AI, or engine input )
     if not event.PlayerNumber then return end
 
+    -- event.PlayerNumber is given for functions to do Player-Specific actions.
+
     -- Input that occurs at the moment the button is pressed.
     if ToEnumShortString(event.type) == "FirstPress" then
-        if BTInput[event.GameButton] then BTInput[event.GameButton]() end
+        if BTInput[event.GameButton] then BTInput[event.GameButton](event.PlayerNumber) end
     end
 
     -- Input that loops if the same button that was pressed is still held.
     -- Usually I have to loop the same commands from FirstPress to do this
     -- and honestly it's messy.
     if ToEnumShortString(event.type) == "Repeat" then
-        if BTInput[event.GameButton] then BTInput[event.GameButton]() end
+        if BTInput[event.GameButton] then BTInput[event.GameButton](event.PlayerNumber) end
     end
     CheckValueOffsets()
     MESSAGEMAN:Broadcast("MenUpAllVal")
@@ -63,7 +66,7 @@ local function InputHandler(event)
 end
 
 local Controller = Def.ActorFrame{
-	OnCommand=function(self) MESSAGEMAN:Broadcast("MenUpAllVal")
+    OnCommand=function(self) MESSAGEMAN:Broadcast("MenUpAllVal")
 	SCREENMAN:GetTopScreen():AddInputCallback(InputHandler) end;
 };
 
